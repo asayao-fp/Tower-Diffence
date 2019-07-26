@@ -1,0 +1,11 @@
+Animations:
+
+-Goblin - axe warrior
+Uses the animations from "Goblin- blade assassin"
+
+-Goblin- blade assassin
+Some animations doesn´t work for this character because of the knife position.
+Those animations are designed to "Goblin - axe warrior"
+
+-Goblin- spear ranger
+Uses his own animations
