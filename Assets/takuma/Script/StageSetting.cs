@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
@@ -6,7 +6,7 @@ using System.Text;
 using System;
 using System.Linq;
 
-public class StagePosition : MonoBehaviour
+public class StageSetting : MonoBehaviour
 {
     private List<Stage> stagelist = new List<Stage>();
     public Boolean isText;
@@ -14,12 +14,6 @@ public class StagePosition : MonoBehaviour
     void Awake()
     {
       setStage();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 
     public Stage getStageList(int num){

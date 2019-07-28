@@ -7,7 +7,7 @@ using System;
 using System.Linq;
 
 
-public class FacilityPosition : MonoBehaviour
+public class FacilitySetting : MonoBehaviour
 {
     private List<Facility> facilitylist = new List<Facility>();
 
@@ -50,17 +50,16 @@ public class FacilityPosition : MonoBehaviour
           }
         }else if(line.StartsWith("facilitypos")){
           String pstr = line.Substring(12);
-          Debug.Log(pstr + " afd;lsaj");
           f.setpos = new Vector2(float.Parse(pstr.Substring(0,pstr.IndexOf(","))),float.Parse(pstr.Substring(pstr.IndexOf(",")+1,pstr.Length - (pstr.IndexOf(",") + 1))));
         }else if(line.StartsWith("facilityatk")){
           String pstr = line.Substring(12);
           float posx = float.Parse(pstr.Substring(0,pstr.IndexOf(",")));
           float posz = float.Parse(pstr.Substring(pstr.IndexOf(",") + 1,pstr.IndexOf(":") - (pstr.IndexOf(",") + 1)));
           String atkstr = pstr.Substring(pstr.IndexOf(":")+1);
-          float atkx = float.Parse(atkstr.Substring(0,atkstr.IndexOf(",")));
-          float atkz = float.Parse(atkstr.Substring(atkstr.IndexOf(",")+1,atkstr.Length - (atkstr.IndexOf(",")+1)));
+          float size = float.Parse(atkstr.Substring(0,atkstr.IndexOf(";")));
+        //  float atkz = float.Parse(atkstr.Substring(atkstr.IndexOf(",")+1,atkstr.Length - (atkstr.IndexOf(",")+1)));
         //  Debug.Log("atk : " + atkx + " " + atkz);
-          f.attackpos = new Vector4(posx,posz,atkx,atkz);
+          f.attackpos = new Vector4(posx,posz,size);
         }else if(line.StartsWith("facilitytype")){
           f.settype = int.Parse(line.Substring(13));
         }
@@ -88,6 +87,6 @@ public class Facility{
     public int facilityid;
     public String facilityname="";
     public Vector2 setpos;
-    public Vector4 attackpos;
+    public Vector3 attackpos;
     public int settype;
 }
