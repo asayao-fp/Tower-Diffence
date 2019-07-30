@@ -12,6 +12,7 @@ TagManager:
   - Type_4
   - Type_8
   - Type_3
+  - Enemy
   layers:
   - Default
   - TransparentFX

@@ -126,7 +126,7 @@ public class InputManager : MonoBehaviour
            if(checkPosition()){
            //|| isMoving){
              GameObject generate = Instantiate (prefab, generatePrefab.transform.position, Quaternion.identity) as GameObject;
-             generate.GetComponent<FacilityManager>().Generate(atkPrefab.transform.position,atkPrefab.transform.localScale);
+             generate.GetComponent<FacilityManager>().Generate(atkPrefab.transform.position,atkPrefab.transform.localScale,nowFacility);
 
              isShow = false;
              FacilityName = "";
