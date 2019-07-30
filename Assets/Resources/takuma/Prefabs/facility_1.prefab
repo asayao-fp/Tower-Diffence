@@ -278,7 +278,7 @@ GameObject:
   - component: {fileID: 4094236407142081652}
   m_Layer: 0
   m_Name: facility_1
-  m_TagString: Untagged
+  m_TagString: Facility
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

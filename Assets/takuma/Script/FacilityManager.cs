@@ -56,6 +56,9 @@ public class FacilityManager : MonoBehaviour
     public void Generate(Vector3 pos,Vector3 scale,Facility f){
       isGenerate = true;
 
+      GameObject ppre = (GameObject)Resources.Load("takuma/Prefabs/GenerateParticle");
+      Instantiate(ppre,new Vector3(pos.x,pos.y-0.05f,pos.z),Quaternion.identity);
+
       GameObject atkpre = (GameObject)Resources.Load("takuma/Prefabs/AtkCheck");
       GameObject atkcheck = Instantiate(atkpre,pos,Quaternion.identity) as GameObject;
       atkcheck.transform.position = pos;

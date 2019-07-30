@@ -13,6 +13,7 @@ TagManager:
   - Type_8
   - Type_3
   - Enemy
+  - Facility
   layers:
   - Default
   - TransparentFX

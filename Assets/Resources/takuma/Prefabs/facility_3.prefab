@@ -250,7 +250,7 @@ GameObject:
   - component: {fileID: 910380083983910704}
   m_Layer: 0
   m_Name: facility_3
-  m_TagString: Untagged
+  m_TagString: Facility
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -262,7 +262,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2186154825430239553}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -3.9808044, y: -1.0359735, z: -92.17999}
   m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
   m_Children:
