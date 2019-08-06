@@ -14,6 +14,7 @@ TagManager:
   - Type_3
   - Enemy
   - Facility
+  - GameManager
   layers:
   - Default
   - TransparentFX
