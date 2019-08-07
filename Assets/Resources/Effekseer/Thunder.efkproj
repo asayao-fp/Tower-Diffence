@@ -1373,6 +1373,13 @@
           </Node>
         </Children>
       </Node>
+      <Node>
+        <DrawingValues>
+          <Type>0</Type>
+        </DrawingValues>
+        <Name>Node</Name>
+        <Children />
+      </Node>
     </Children>
   </Root>
   <ToolVersion>1.43d</ToolVersion>
