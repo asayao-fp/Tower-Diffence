@@ -4,17 +4,10 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - StaticObjects
-  - Stage
-  - StageType
-  - Type_1
-  - Type_2
-  - Type_4
-  - Type_8
-  - Type_3
-  - Enemy
-  - Facility
-  - GameManager
+  - Statue
+  - Goblin
+  - GoblinAttack
+  - StatueAttack
   layers:
   - Default
   - TransparentFX
