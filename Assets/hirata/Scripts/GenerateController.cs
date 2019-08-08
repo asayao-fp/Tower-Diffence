@@ -2,21 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NaviMeshTestMove : MonoBehaviour
+public class GenerateController : MonoBehaviour
 {
-    public Transform goal;
-    UnityEngine.AI.NavMeshAgent agent;
+    [SerializeField]
+    private GameObject goblin;
 
     // Start is called before the first frame update
     void Start()
     {
-        agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
-        agent.SetDestination(goal.position);
+
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        if (Input.GetMouseButtonDown(2))
+        {
+            Instantiate(goblin);
+        }
     }
 }

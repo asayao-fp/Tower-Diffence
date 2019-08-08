@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class playerTest : MonoBehaviour
+public class PlayerTest : MonoBehaviour
 {
 
     public float Speed = 1.0f; // 移動速度 m/s
