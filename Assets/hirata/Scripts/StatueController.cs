@@ -23,7 +23,7 @@ public class StatueController : MonoBehaviour
     void OnTriggerEnter(Collider collider)
     {
         Debug.Log(collider.gameObject.name + "にがぶつかってきた。");
-        if ((collider.gameObject.tag == Constants.GOBLIN_ATTACK_TAG) && (collider.gameObject.GetComponent<Weapon>() != null))
+        if ((collider.gameObject.tag == Constants.GOBLIN_TAG) && (collider.gameObject.GetComponent<Weapon>() != null))
         {
             int enemyPower = collider.gameObject.GetComponent<Weapon>().Power;
             this.HP -= enemyPower;
