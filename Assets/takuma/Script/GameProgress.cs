@@ -7,6 +7,8 @@ public class GameProgress : MonoBehaviour
     private List<GameObject> sg_objs;
     FacilitySetting fs;
 
+
+
     void Start()
     {
       fs = GameObject.FindWithTag("StaticObjects").GetComponent<FacilitySetting>();
