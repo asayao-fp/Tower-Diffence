@@ -290,6 +290,7 @@ GameObject:
   m_Component:
   - component: {fileID: 403211751}
   - component: {fileID: 403211750}
+  - component: {fileID: 403211752}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: GameManager
@@ -331,6 +332,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &403211752
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 403211749}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2a77c402d59344cb84b209246c54125, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &518095108
 GameObject:
   m_ObjectHideFlags: 0
@@ -464,7 +477,7 @@ PrefabInstance:
     - target: {fileID: 8260806482151186198, guid: d9c45888afd734491906e7a0e8bb6264,
         type: 3}
       propertyPath: m_TagString
-      value: Enemy
+      value: Goblin
       objectReference: {fileID: 0}
     - target: {fileID: 8260806482150949750, guid: d9c45888afd734491906e7a0e8bb6264,
         type: 3}
@@ -541,7 +554,18 @@ PrefabInstance:
       propertyPath: goal
       value: 
       objectReference: {fileID: 1816221177}
-    m_RemovedComponents: []
+    - target: {fileID: 8260806482286059921, guid: d9c45888afd734491906e7a0e8bb6264,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8260806482286059922, guid: d9c45888afd734491906e7a0e8bb6264,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 8260806482151086551, guid: d9c45888afd734491906e7a0e8bb6264, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: d9c45888afd734491906e7a0e8bb6264, type: 3}
 --- !u!1 &622689057
 GameObject:

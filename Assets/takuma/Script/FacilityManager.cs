@@ -92,7 +92,9 @@ public class FacilityManager : MonoBehaviour
     }
 
     public void EnemyOnArea(GameObject obj){
-      if(obj.CompareTag("Enemy") && !enemylist.Contains(obj)){
+
+      if(obj.CompareTag(Constants.GOBLIN_TAG) && !enemylist.Contains(obj)){
+        Debug.Log("atatatatatata");
         enemylist.Add(obj);
       }
     }
