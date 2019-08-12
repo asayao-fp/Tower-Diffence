@@ -7,7 +7,7 @@ public class GameProgress : MonoBehaviour
     private List<GameObject> sg_objs;
     FacilitySetting fs;
 
-
+    //てて手手手手手手手ててててた；l代田橋駅出ました💨sfじゃs；lf.u.pooler@icloud.comじゃkdlfじゃs；ljふぁdsl；f.u.pooler@icloud.comjdさl；kfdさhl；f.u.pooler@icloud.coml；代田橋駅出ました💨さl；ファ代田橋駅出ました💨ls；fl；亜sfl；
 
     void Start()
     {
