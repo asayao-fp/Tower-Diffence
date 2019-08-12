@@ -2,28 +2,44 @@ MAXNUM=10
 
 facilityid=0
 facilityname=facility_1
-facilitypos=0.05,0.05
-facilityatk=0,0:0.4;
+facilitypos=1,1
+facilityatk=0,0:5;
 facilitytype=4
 facilityendid=0
 
 facilityid=1
 facilityname=facility_2
-facilitypos=0.05,0.05
-facilityatk=0,0:0.5;
+facilitypos=1,1
+facilityatk=0,0:5;
 facilitytype=4
 facilityendid=1
 
 facilityid=2
 facilityname=facility_3
-facilitypos=0.05,0.05
-facilityatk=0,0:0.4;
+facilitypos=1,1
+facilityatk=0,0:10;
 facilitytype=4
 facilityendid=2
 
 facilityid=3
 facilityname=facility_4
-facilitypos=0.05,0.05
-facilityatk=0,0:0.4;
+facilitypos=1,1
+facilityatk=0,0:5;
 facilitytype=4
 facilityendid=3
+
+
+facilityid=4
+facilityname=gobrin_1
+facilitypos=1,1
+facilityatk=0,0:5;
+facilitytype=5
+facilityendid=4
+
+facilityid=5
+facilityname=gobrin_2
+facilitypos=1,1
+facilityatk=0,0:5;
+facilitytype=4
+facilityendid=5
+

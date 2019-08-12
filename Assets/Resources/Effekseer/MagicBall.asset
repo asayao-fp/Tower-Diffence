@@ -24,4 +24,4 @@ MonoBehaviour:
   modelResources:
   - path: mqo/ball2.asset
     asset: {fileID: 11400000, guid: ea4aa413fc1894aeab380ead38d46b1e, type: 2}
-  Scale: 0.5
+  Scale: 6

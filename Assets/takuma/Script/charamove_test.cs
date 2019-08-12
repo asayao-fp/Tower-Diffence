@@ -15,7 +15,7 @@ public class charamove_test : MonoBehaviour
 
     public void Update(){
       if((goal.position.z - transform.position.z) < 0.05f){
-        transform.position = new Vector3(0,0,0);
+//        transform.position = new Vector3(0,0,0);
       }
     }
 }

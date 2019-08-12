@@ -3,12 +3,13 @@ MAXNUM=10
 stageid=0
 stagename=Stage_1
 setpositionstart
-stagenum=100,100
-NUM=4
-XZ=0~1,0~0.2:VALUE=1
-XZ=0.35~0.65,0.6~1:VALUE=2
-XZ=0.55~0.85,0.35~0.65:VALUE=3
-XZ=0~0.4,0.25~0.75:VALUE=4
+stagenum=40000,11000
+NUM=5
+XZ=0~40.0,0~2.2:VALUE=1
+XZ=14.0~26.0,6.7~11.0:VALUE=2
+XZ=22.0~33.0,3.8~7.2:VALUE=3
+XZ=0~16.0,3.3~7.7:VALUE=4
+XZ=34~40,0~11,0:VALUE=5
 setpositionend
 stageendid=0
 

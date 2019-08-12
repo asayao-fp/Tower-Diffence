@@ -160,9 +160,11 @@ public class InputManager : MonoBehaviour
         stage.GetComponent<ShowStagePosition>().hideSetPosition();
       }
       else if (Input.GetMouseButton(0)) {
-        if (Physics.Raycast(ray,out hit,10.0f))
+        if (Physics.Raycast(ray,out hit,100.0f))
         {
           setpos = hit.point;
+          setpos.y = 0.1f;
+        //  Debug.Log(setpos.x + " " + setpos.y + " " + setpos.z);
         }
         if(isSelect && (nowFacility != null) && canSelect){
           spos = getSetPosition(nowFacility,setpos);
@@ -240,7 +242,7 @@ public class InputManager : MonoBehaviour
           float[] area = nowStage.enablelist[j];
           if((area[0] <= spos[i].x) && (spos[i].x <= area[1]) && (area[2] <= spos[i].y) && (spos[i].y <= area[3])){
             isin = true;
-            break;
+              break;
           }
         }
         if(isin)incount++;
