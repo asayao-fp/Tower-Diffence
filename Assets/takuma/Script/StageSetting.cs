@@ -13,6 +13,7 @@ public class StageSetting : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
+      DontDestroyOnLoad(this);
       setStage();
     }
 
@@ -50,9 +51,6 @@ public class StageSetting : MonoBehaviour
               int fieldx = int.Parse(field.Substring(9, l - 9)); //stageのxの数*100
               int fieldz = int.Parse(field.Substring(l + 1, field.Length - (l + 1))); //stageのzの数*10000
 
-              Debug.Log("field : " + fieldx + " " + fieldz);
-              //0.01指定できる
-              //1には0.01の座標が入っているので、チェックするときは注意
               s.enablemap = new float[fieldx][];
               s.enablelist = new List<float[]>();
 
@@ -78,7 +76,6 @@ public class StageSetting : MonoBehaviour
                   float sz = float.Parse(zrange.Substring(0, zrange.IndexOf("~")));//zの開始座標
                   float ez = float.Parse(zrange.Substring(zrange.IndexOf("~") + 1)); //zの終了座標
                   float[] ssee = new float[]{sx,ex,sz,ez,value};
-                  Debug.Log("ssee : " + ssee[0] + " " + ssee[1] + " " + ssee[2] + " " + ssee[3] + " " + ssee[4]);
                   s.enablelist.Add(ssee);
                   for(int j= (int)(sx * 100); j < (int)(ex * 100); j++)
                   {

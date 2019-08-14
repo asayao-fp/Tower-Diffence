@@ -6,14 +6,15 @@ using System;
 
 public class GenerateBarManager : MonoBehaviour
 {
-
+    public Image blackImage; //召喚不可能時に表示するテクスチャ
     public GameObject generatebar;
     private Boolean isGenerate; //設置しているか
     private Boolean canGenerate; //設置可能か
     public float generateTime; //設置してから次に召喚するまでの時間
     private float time;
     float fill;
-    // Start is called before the first frame update
+    GameProgress gp;
+
     void Start()
     {
       time = 0.0f;
@@ -21,11 +22,13 @@ public class GenerateBarManager : MonoBehaviour
       canGenerate = true;
       fill = generatebar.GetComponent<Image>().fillAmount;
       fill = 0;
+      gp = GameObject.FindWithTag("GameManager").GetComponent<GameProgress>();
+
     }
 
-    // Update is called once per frame
     void Update()
     {
+      if(gp.getStatus() != gp.NOW_GAME)return;
       if(!isGenerate)return;
 
       time += Time.deltaTime;
@@ -37,7 +40,10 @@ public class GenerateBarManager : MonoBehaviour
         time = 0.0f;
         isGenerate = false;
         canGenerate = true;
+      }else{
+        canGenerate = false;
       }
+
 
       generatebar.GetComponent<Image>().fillAmount = fill;
     }

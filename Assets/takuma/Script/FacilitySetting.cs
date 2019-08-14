@@ -12,6 +12,8 @@ public class FacilitySetting : MonoBehaviour
     private List<Facility> facilitylist = new List<Facility>();
 
     void Awake(){
+      DontDestroyOnLoad(this);
+
       setFacility();
     }
 
@@ -62,31 +64,27 @@ public class FacilitySetting : MonoBehaviour
           f.attackpos = new Vector4(posx,posz,size);
         }else if(line.StartsWith("facilitytype")){
           f.settype = int.Parse(line.Substring(13));
+        }else if(line.StartsWith("facilitycost")){
+          f.cost = int.Parse(line.Substring(13));
+        }else if(line.StartsWith("facilityhp")){
+          f.hp = int.Parse(line.Substring(11));
+        }else if(line.StartsWith("facilitytime")){
+          f.time = int.Parse(line.Substring(13));
         }
-
         if(add){
           facilitylist.Add(f);
         }
-
       }
-
-/*      for(int i=0;i<facilitylist.Count;i++){
-        Debug.Log("facilitylist :"
-           + facilitylist[i].facilityid + "¥n"
-          + facilitylist[i].facilityname + "¥n"+
-           facilitylist[i].setpos + "¥n"
-           + facilitylist[i].attackpos + "¥n"
-           + facilitylist[i].settype);
-      }*/
     }
-
-
 }
 
 public class Facility{
-    public int facilityid;
-    public String facilityname="";
-    public Vector2 setpos;
-    public Vector3 attackpos;
-    public int settype;
+    public int facilityid; //ユニークid
+    public String facilityname=""; //名前
+    public Vector2 setpos; //召喚可能範囲
+    public Vector3 attackpos; //攻撃範囲
+    public int settype; //設置可能タイプ
+    public int cost; //召喚コスト
+    public int hp; //体力
+    public int time; //消滅までの時間
 }

@@ -5,17 +5,6 @@ using UnityEngine;
 public class ShowStagePosition : MonoBehaviour
 {
     public static int MAXSETTYPE = 4;
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 
     public void showSetPosition(int t){
       for(int i=0;i<transform.childCount;i++){

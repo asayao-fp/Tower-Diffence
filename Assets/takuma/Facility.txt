@@ -5,6 +5,9 @@ facilityname=facility_1
 facilitypos=1,1
 facilityatk=0,0:5;
 facilitytype=4
+facilitycost=5
+facilityhp=5
+facilitytime=10
 facilityendid=0
 
 facilityid=1
@@ -12,6 +15,9 @@ facilityname=facility_2
 facilitypos=1,1
 facilityatk=0,0:5;
 facilitytype=4
+facilitycost=5
+facilityhp=10
+facilitytime=10
 facilityendid=1
 
 facilityid=2
@@ -19,6 +25,9 @@ facilityname=facility_3
 facilitypos=1,1
 facilityatk=0,0:10;
 facilitytype=4
+facilitycost=8
+facilityhp=20
+facilitytime=10
 facilityendid=2
 
 facilityid=3
@@ -26,7 +35,20 @@ facilityname=facility_4
 facilitypos=1,1
 facilityatk=0,0:5;
 facilitytype=4
+facilitycost=10
+facilityhp=30
+facilitytime=10
 facilityendid=3
+
+facilityid=6
+facilityname=facility_5
+facilitypos=1,1
+facilityatk=0,0:5;
+facilitytype=4
+facilitycost=50
+facilityhp=90
+facilitytime=10
+facilityendid=6
 
 
 facilityid=4
