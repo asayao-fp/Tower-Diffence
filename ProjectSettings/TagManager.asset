@@ -18,6 +18,10 @@ TagManager:
   - Type_5
   - Facility
   - Enemy
+  - LimitTime
+  - StartTime
+  - GenerateCost
+  - GenerateIcon
   layers:
   - Default
   - TransparentFX
