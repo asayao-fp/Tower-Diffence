@@ -105,6 +105,7 @@ GameObject:
   - component: {fileID: 1710864015}
   - component: {fileID: 1710864017}
   - component: {fileID: 2315700230193334008}
+  - component: {fileID: 6635956307504172183}
   m_Layer: 2
   m_Name: AtkCollider
   m_TagString: Untagged
@@ -169,3 +170,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 10
   removetime: 0
+  AttackDamage: -5
+--- !u!114 &6635956307504172183
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8525483076466197797}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d182cd5ac2db64995bffd00a8388b579, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

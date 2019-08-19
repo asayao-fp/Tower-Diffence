@@ -427,6 +427,7 @@ MonoBehaviour:
   deletetime: 0
   atkObj: {fileID: 0}
   Atk: {fileID: 4444384589812880815}
+  isStatue: 1
 --- !u!1 &1287835644115273501
 GameObject:
   m_ObjectHideFlags: 0

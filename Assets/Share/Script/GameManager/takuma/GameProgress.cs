@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
+
 
 public class GameProgress : MonoBehaviour
 {
-    private List<GameObject> sg_objs;
+    private Dictionary<int,GameObject> sg_objs;
+    private int count;
     FacilitySetting fs;
     GameSettings gs;
 
@@ -21,7 +24,7 @@ public class GameProgress : MonoBehaviour
     private Text limittime;
     private Text starttime;
     private GenerateCostManager gcm;
- 
+    public GameObject Debug_obj;//デバッグ用のgobrin
 
     void Awake(){
       game_status = 0;
@@ -31,7 +34,8 @@ public class GameProgress : MonoBehaviour
     void Start()
     {
       fs = GameObject.FindWithTag("StaticObjects").GetComponent<FacilitySetting>();
-      sg_objs = new List<GameObject>();
+      sg_objs = new Dictionary<int,GameObject>();
+      count = 0;
       limittime = GameObject.FindWithTag("LimitTime").GetComponent<Text>();
       gs = GameObject.FindWithTag("StaticObjects").GetComponent<GameSettings>();
       limit = gs.getLimitTime();
@@ -66,6 +70,36 @@ public class GameProgress : MonoBehaviour
         limittime.text = "GAME FINISH";
       }
 
+      checkObjs();
+
+    }
+
+    public void checkObjs(){
+      if(Debug_obj != null){
+        if(Debug_obj.GetComponent<FacilityManager>().fInfo.hp <= 0){
+          Debug.Log("dead debug_obj");
+          Destroy(Debug_obj);
+        }
+      }
+      foreach(KeyValuePair<int,GameObject> pair in sg_objs){
+        if(pair.Value == null){
+          //Debug.Log("null : " + pair.Key);
+        }else{
+          //Debug.Log (pair.Key + " " + pair.Value.name);
+          if(pair.Value.GetComponent<FacilityManager>().fInfo.hp <= 0){
+            Debug.Log("dead");
+            Dead(pair.Key);
+          }
+        }        
+      }
+    }
+
+    public Facility getFM(int obj_id,Boolean isDebug){
+      if(isDebug){
+        return Debug_obj.GetComponent<FacilityManager>().fInfo;
+      }else{
+        return sg_objs[obj_id].GetComponent<FacilityManager>().fInfo;
+      }
     }
 
     //現在のステータスを取得
@@ -74,8 +108,9 @@ public class GameProgress : MonoBehaviour
     }
 
     //死んだ
-    public void Dead(GameObject obj){
-
+    public void Dead(int obj_id){
+      sg_objs.Remove(obj_id);
+      
     }
 
     //召喚された
@@ -86,11 +121,26 @@ public class GameProgress : MonoBehaviour
 
       gcm.generateCost(obj.GetComponent<FacilityManager>().fInfo.cost);
 
+      {
+        obj.GetComponent<FacilityManager>().setId(count);
+        sg_objs.Add(count++,obj);
+
+      }
+
     }
 
     //攻撃受けた
-    public void AddHP(int serial_id,int hp){
+    public void AddHP(int obj_id,int hp,Boolean isDebug){
+      FacilityManager fm = null;
 
+      if(isDebug){
+        Debug_obj.GetComponent<FacilityManager>().fInfo.hp += hp;
+        fm = Debug_obj.GetComponent<FacilityManager>();
+      }else{
+       fm = sg_objs[obj_id].GetComponent<FacilityManager>();
+       fm.fInfo.hp += hp;
+      }
+      Debug.Log("fm attack : " + fm.fInfo.hp + " " + fm.name);
     }
 
 }

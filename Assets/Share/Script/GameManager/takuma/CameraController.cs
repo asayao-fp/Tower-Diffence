@@ -7,10 +7,10 @@ using System;
 public class CameraController : MonoBehaviour
 {
 
-    private float positionStep = 2.0f;
+    private float positionStep = 5.0f;
 
     //マウス感度
-    private float mouseSensitive = 90.0f;
+    private float mouseSensitive = 2.0f;
 
     private Boolean cameraMoveActive = true;
 
@@ -54,7 +54,32 @@ public class CameraController : MonoBehaviour
 
          Vector3 velocity = _camTransform.rotation * new Vector3(x, 0, 0);
          velocity = velocity + presentCamPos;
+
+         if(velocity.x >= Constants.CAMERA_MAX_X){
+          velocity.x = Constants.CAMERA_MAX_X;
+         }else if( velocity.x <= Constants.CAMERA_MIN_X){
+            velocity.x = Constants.CAMERA_MIN_X;
+         }
+
          _camTransform.position = velocity;
+
+    
+
       }
+    }
+
+    public void CameraMove(){
+      Vector3 cpos = _camTransform.position;
+
+      if(cpos.x == Constants.CAMERA_MIN_X){
+        cpos.x = Constants.CAMERA_MAX_X;
+      }else if(cpos.x == Constants.CAMERA_MAX_X){
+        cpos.x = Constants.CAMERA_MIN_X;
+      }else{
+        cpos.x = Constants.CAMERA_MIN_X;
+      }
+
+      _camTransform.position = cpos;
+
     }
 }

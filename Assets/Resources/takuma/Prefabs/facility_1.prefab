@@ -176,6 +176,7 @@ MonoBehaviour:
   deletetime: 0
   atkObj: {fileID: 0}
   Atk: {fileID: 3274549475186683013}
+  isStatue: 1
 --- !u!1 &1536355646541994744
 GameObject:
   m_ObjectHideFlags: 0
@@ -534,20 +535,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: AtkLaser
       objectReference: {fileID: 0}
-    - target: {fileID: 676303267797568650, guid: 5f1dac41a47a541f6bfe4dfe27a30cd7,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 676303267797568650, guid: 5f1dac41a47a541f6bfe4dfe27a30cd7,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 1756586434, guid: 5f1dac41a47a541f6bfe4dfe27a30cd7, type: 3}
-      propertyPath: m_PlayAutomatically
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 6454193238281102481, guid: 5f1dac41a47a541f6bfe4dfe27a30cd7,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -601,6 +588,20 @@ PrefabInstance:
     - target: {fileID: 6454193238281102481, guid: 5f1dac41a47a541f6bfe4dfe27a30cd7,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 676303267797568650, guid: 5f1dac41a47a541f6bfe4dfe27a30cd7,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 676303267797568650, guid: 5f1dac41a47a541f6bfe4dfe27a30cd7,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1756586434, guid: 5f1dac41a47a541f6bfe4dfe27a30cd7, type: 3}
+      propertyPath: m_PlayAutomatically
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

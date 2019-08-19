@@ -56,6 +56,7 @@ facilityname=gobrin_1
 facilitypos=1,1
 facilityatk=0,0:5;
 facilitytype=5
+facilityhp=30
 facilityendid=4
 
 facilityid=5
@@ -63,5 +64,6 @@ facilityname=gobrin_2
 facilitypos=1,1
 facilityatk=0,0:5;
 facilitytype=4
+facilityhp=50
 facilityendid=5
 

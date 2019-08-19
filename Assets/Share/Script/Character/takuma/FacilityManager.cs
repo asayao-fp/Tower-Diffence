@@ -19,6 +19,10 @@ public class FacilityManager : MonoBehaviour
     public GameObject Atk; //攻撃、召喚時のエフェクト用オブジェクト
     private Boolean isGene,isAtk; //エフェクトを使用したかどうかのフラグ
     private GameProgress gp;    
+    private int obj_num; //オブジェクトのユニークid
+    public Boolean isStatue;
+    public Boolean isDebug;
+    FacilitySetting fs;
 
     void Start()
     {
@@ -28,6 +32,11 @@ public class FacilityManager : MonoBehaviour
       enemylist = new List<GameObject>();
 
       gp = GameObject.FindWithTag("GameManager").GetComponent<GameProgress>();
+      if(isDebug){
+        fs = GameObject.FindWithTag("StaticObjects").GetComponent<FacilitySetting>();
+        fInfo = fs.getFacility("gobrin_1");
+
+      }
     }
 
     // Update is called once per frame
@@ -38,36 +47,46 @@ public class FacilityManager : MonoBehaviour
 
         if(!isGenerate)return;
 
+        fInfo = gp.getFM(obj_num,isDebug);
+
         deletetime += Time.deltaTime;
 
-        if(deletetime > fInfo.time){
-          Debug.Log("delete");
-          Destroy(transform.root.gameObject);
+
+
+        if(isStatue){
+          if(deletetime > fInfo.time){
+            gp.Dead(obj_num);
+            Destroy(transform.root.gameObject);
+          }else{
+            if(!isGene){
+              Gene.transform.position = transform.position;
+              Atk.transform.position = transform.position;
+              EffekseerEmitter ee = Gene.GetComponent<EffekseerEmitter>();
+              EffekseerEffectAsset ea = ee.effectAsset;
+              ee.Play(ea);
+              isGene = true;
+            }
+
+            time += Time.deltaTime;
+            
+
+            if(time >= atkInterval){
+              Atk.GetComponent<AttackManager>().Attack();
+              time = 0;
+              Attack();
+            }
+          }
         }else{
-          if(!isGene){
-            Gene.transform.position = transform.position;
-            Atk.transform.position = transform.position;
-            EffekseerEmitter ee = Gene.GetComponent<EffekseerEmitter>();
-            EffekseerEffectAsset ea = ee.effectAsset;
-            ee.Play(ea);
-            isGene = true;
-          }
 
-          time += Time.deltaTime;
-          
-
-          if(time >= atkInterval){
-            Debug.Log("attack!!!");
-            Atk.GetComponent<AttackManager>().Attack();
-            time = 0;
-            Attack();
-          }
         }
 
     }
 
     public void Attack(){
       for(int i=0;i<enemylist.Count;i++){
+        if(enemylist[i] == null){
+          continue;
+        }
         GameObject obj = enemylist[i];
         float distance = Vector3.Distance(obj.transform.position,transform.position);
         //敵キャラとの距離が範囲内だったら攻撃
@@ -102,7 +121,6 @@ public class FacilityManager : MonoBehaviour
       fInfo = f;
       deletetime = 0;
 
-
       if(gp == null){
         gp = GameObject.FindWithTag("GameManager").GetComponent<GameProgress>();
       }
@@ -115,5 +133,17 @@ public class FacilityManager : MonoBehaviour
       if(obj.CompareTag(Constants.GOBLIN_TAG) && !enemylist.Contains(obj)){
         enemylist.Add(obj);
       }
+    }
+
+    public void setId(int id){
+      this.obj_num = id;
+    }
+
+    public void addHP(int hp){
+      gp.AddHP(obj_num,hp,isDebug);
+    }
+
+    public void Dead(){
+      Destroy(this.gameObject);
     }
 }
