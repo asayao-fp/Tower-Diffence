@@ -23,6 +23,7 @@ public class FacilityManager : MonoBehaviour
     public Boolean isStatue;
     public Boolean isDebug;
     FacilitySetting fs;
+    public Image hpbar;
 
     void Start()
     {
@@ -37,6 +38,12 @@ public class FacilityManager : MonoBehaviour
         fInfo = fs.getFacility("gobrin_1");
 
       }
+
+     // hpbar = ((GameObject)Resources.Load("takuma/Prefabs/hpbar")).GetComponent<Image>();
+     if(hpbar != null){
+        hpbar.transform.position = new Vector3(this.transform.position.x ,this.transform.position.y + 0.3f,this.transform.position.z);
+       hpbar.fillAmount = 1;
+     }
     }
 
     // Update is called once per frame
@@ -51,9 +58,8 @@ public class FacilityManager : MonoBehaviour
 
         deletetime += Time.deltaTime;
 
-
-
         if(isStatue){
+
           if(deletetime > fInfo.time){
             gp.Dead(obj_num);
             Destroy(transform.root.gameObject);
@@ -69,15 +75,20 @@ public class FacilityManager : MonoBehaviour
 
             time += Time.deltaTime;
             
-
             if(time >= atkInterval){
               Atk.GetComponent<AttackManager>().Attack();
               time = 0;
               Attack();
             }
+
+            if(hpbar != null){
+              hpbar.fillAmount = (float)(fInfo.time - deletetime) / (float)fInfo.time;
+            }
           }
         }else{
-
+          if(hpbar != null){
+            hpbar.fillAmount = (float)fInfo.hp / (float)fInfo.maxhp;
+          }
         }
 
     }
