@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
-
+using System.IO;
+using System.Linq;
 
 public class GameProgress : MonoBehaviour
 {
@@ -140,7 +141,33 @@ public class GameProgress : MonoBehaviour
        fm = sg_objs[obj_id].GetComponent<FacilityManager>();
        fm.fInfo.hp += hp;
       }
-      Debug.Log("fm attack : " + fm.fInfo.hp + " " + fm.name);
+    //  Debug.Log("fm attack : " + fm.fInfo.hp + " " + fm.name);
+    }
+
+
+    public Stage setNowStage(Stage s){
+      s.enablelist = new List<float[]>();
+      GameObject stage = GameObject.FindWithTag("Stage");
+      foreach (Transform child in stage.transform)
+      {
+          if(child.gameObject.tag.StartsWith("Type_")){
+            int value = int.Parse(child.gameObject.tag.Substring(5));
+            Vector3 pos = child.position;
+            Vector3 scale = child.localScale;
+            float [] sinfo = new float[5];
+            sinfo[0] = pos.x - scale.x/2.0f;//xの開始座標
+            sinfo[1] = pos.x + scale.x/2.0f;//xの終了座標
+            sinfo[2] = pos.z - scale.z/2.0f;//zの開始座標
+            sinfo[3] = pos.z + scale.z/2.0f;//zの終了座標
+            sinfo[4] = value;               //座標の値
+            sinfo[0] = sinfo[0] < 0 ? 0 : sinfo[0];
+            sinfo[2] = sinfo[2] < 0 ? 0 : sinfo[2];
+            
+            Debug.Log("info : " + child.gameObject.name + " " + sinfo[0] + " " + sinfo[1] + " " + sinfo[2] + " " + sinfo[3] + " " + sinfo[4]);
+            s.enablelist.Add(sinfo);
+          }
+      }
+      return s;
     }
 
 }

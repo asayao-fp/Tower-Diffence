@@ -46,15 +46,15 @@ public class StageSetting : MonoBehaviour
               }
           }else if (line.Equals("setpositionstart"))
           {
-              String field = sr.ReadLine();
+            /* */  String field = sr.ReadLine();
               int l = field.IndexOf(",");
               int fieldx = int.Parse(field.Substring(9, l - 9)); //stageのxの数*100
               int fieldz = int.Parse(field.Substring(l + 1, field.Length - (l + 1))); //stageのzの数*10000
 
-              s.enablemap = new float[fieldx][];
+             //s.enablemap = new float[fieldx][];
               s.enablelist = new List<float[]>();
 
-              for(int i = 0; i < s.enablemap.Length; i++)
+            /*   for(int i = 0; i < s.enablemap.Length; i++)
               {
                   s.enablemap[i] = new float[fieldz]; //0.01指定できる
                   for(int j = 0; j < s.enablemap[i].Length; j++)
@@ -82,15 +82,16 @@ public class StageSetting : MonoBehaviour
                       for (int k = (int)(sz * 100); k < (int)(ez * 100); k++)
                       {
 
-                          s.enablemap[j][k] = value;
+                      //    s.enablemap[j][k] = value;
                       }
                   }
               }
+              */
           }
 
           if (add)
           {
-              if(isText){
+          /*    if(isText){
                 //テキスト出力
                 StreamWriter maptxt = new StreamWriter("./Assets/takuma/" + s.stagename + ".txt",false);
                 for(int i = s.enablemap.Length - 1; i > 0; i--)
@@ -103,7 +104,7 @@ public class StageSetting : MonoBehaviour
                 }
                 maptxt.Flush();
                 maptxt.Close();
-              }
+              }*/
               stagelist.Add(s);
           }
       }
@@ -119,6 +120,6 @@ public class StageSetting : MonoBehaviour
 public class Stage{
   public int stageid;
   public String stagename = "";
-  public float[][] enablemap; //施設を設置できる位置を格納
+ // public float[][] enablemap; //施設を設置できる位置を格納
   public List<float[]> enablelist; //施設を設置できる位置のリスト
 }

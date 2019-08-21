@@ -44,7 +44,6 @@ public class InputManager : MonoBehaviour
       stage = GameObject.FindWithTag("Stage");
       fs = GameObject.FindWithTag("StaticObjects").GetComponent<FacilitySetting>();
       ss = GameObject.FindWithTag("StaticObjects").GetComponent<StageSetting>();
-      nowStage = ss.getStageList(0);
       for(int i=0;i<tgls.Length;i++){
         tgls[i].isOn = false;
       }
@@ -54,6 +53,14 @@ public class InputManager : MonoBehaviour
       canSelect = true;
       gp = GameObject.FindWithTag("GameManager").GetComponent<GameProgress>();
       gcm = GameObject.FindWithTag("GenerateCost").GetComponent<GenerateCostManager>();
+
+      nowStage = gp.setNowStage(ss.getStageList(0));
+
+      for(int j=0;j<nowStage.enablelist.Count;j++){
+        float[] a = nowStage.enablelist[j];
+      //  Debug.Log("ssss : " + a[0] + " " + a[1] + " " + a[2] + " " + a[3] + " " + a[4]);
+      }
+
     }
 
     void Update()
