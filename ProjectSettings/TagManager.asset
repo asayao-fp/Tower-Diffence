@@ -22,6 +22,7 @@ TagManager:
   - StartTime
   - GenerateCost
   - GenerateIcon
+  - Type_6
   layers:
   - Default
   - TransparentFX

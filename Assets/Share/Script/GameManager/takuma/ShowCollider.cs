@@ -12,6 +12,6 @@ public class ShowCollider : MonoBehaviour
         var message    = "";
         var fontSize   = 36;
 
-      //  visualizer.Initialize( color, message, fontSize );
+        visualizer.Initialize( color, message, fontSize );
     }
 }

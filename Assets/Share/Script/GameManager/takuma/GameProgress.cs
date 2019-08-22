@@ -77,7 +77,7 @@ public class GameProgress : MonoBehaviour
 
     public void checkObjs(){
       if(Debug_obj != null){
-        if(Debug_obj.GetComponent<FacilityManager>().fInfo.hp <= 0){
+        if(Debug_obj.GetComponent<FacilityManager>().getFinfo().hp <= 0){
           Debug.Log("dead debug_obj");
           Destroy(Debug_obj);
         }
@@ -87,8 +87,9 @@ public class GameProgress : MonoBehaviour
           //Debug.Log("null : " + pair.Key);
         }else{
           //Debug.Log (pair.Key + " " + pair.Value.name);
-          if(pair.Value.GetComponent<FacilityManager>().fInfo.hp <= 0){
+          if(pair.Value.GetComponent<FacilityManager>().getFinfo().hp <= 0){
             Debug.Log("dead");
+            pair.Value.GetComponent<FacilityManager>().Dead();
             Dead(pair.Key);
           }
         }        
@@ -97,9 +98,9 @@ public class GameProgress : MonoBehaviour
 
     public Facility getFM(int obj_id,Boolean isDebug){
       if(isDebug){
-        return Debug_obj.GetComponent<FacilityManager>().fInfo;
+        return Debug_obj.GetComponent<FacilityManager>().getFinfo();
       }else{
-        return sg_objs[obj_id].GetComponent<FacilityManager>().fInfo;
+        return sg_objs[obj_id].GetComponent<FacilityManager>().getFinfo();
       }
     }
 
@@ -120,7 +121,7 @@ public class GameProgress : MonoBehaviour
         gcm = GameObject.FindWithTag("GenerateCost").GetComponent<GenerateCostManager>();
       }
 
-      gcm.generateCost(obj.GetComponent<FacilityManager>().fInfo.cost);
+      gcm.generateCost(obj.GetComponent<FacilityManager>().getFinfo().cost);
 
       {
         obj.GetComponent<FacilityManager>().setId(count);
@@ -135,13 +136,12 @@ public class GameProgress : MonoBehaviour
       FacilityManager fm = null;
 
       if(isDebug){
-        Debug_obj.GetComponent<FacilityManager>().fInfo.hp += hp;
+        Debug_obj.GetComponent<FacilityManager>().getFinfo().hp += hp;
         fm = Debug_obj.GetComponent<FacilityManager>();
       }else{
        fm = sg_objs[obj_id].GetComponent<FacilityManager>();
-       fm.fInfo.hp += hp;
+       fm.getFinfo().hp += hp;
       }
-    //  Debug.Log("fm attack : " + fm.fInfo.hp + " " + fm.name);
     }
 
 
@@ -163,7 +163,6 @@ public class GameProgress : MonoBehaviour
             sinfo[0] = sinfo[0] < 0 ? 0 : sinfo[0];
             sinfo[2] = sinfo[2] < 0 ? 0 : sinfo[2];
             
-            Debug.Log("info : " + child.gameObject.name + " " + sinfo[0] + " " + sinfo[1] + " " + sinfo[2] + " " + sinfo[3] + " " + sinfo[4]);
             s.enablelist.Add(sinfo);
           }
       }

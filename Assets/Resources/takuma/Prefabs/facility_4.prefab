@@ -122,7 +122,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2127461031322482551}
   - component: {fileID: 2257114554320039097}
-  - component: {fileID: -590550120705187174}
+  - component: {fileID: 799112807045742834}
   m_Layer: 2
   m_Name: facility_4
   m_TagString: Statue
@@ -178,7 +178,7 @@ LODGroup:
     renderers:
     - renderer: {fileID: 2151574492805352239}
   m_Enabled: 1
---- !u!114 &-590550120705187174
+--- !u!114 &799112807045742834
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -187,16 +187,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 2129403894839779945}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 09f142faca00c4fbb9db6ac085ec2d05, type: 3}
+  m_Script: {fileID: 11500000, guid: 3ca615d7f9307442fb9076751b7dd1bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   isGenerate: 0
-  atkInterval: 4
+  atkInterval: 5
   time: 0
   deletetime: 0
   atkObj: {fileID: 0}
   Atk: {fileID: 1761818082191611099}
-  isStatue: 1
   isDebug: 0
   hpbar: {fileID: 4679406679655590651}
 --- !u!1 &2129418726598507693
@@ -645,10 +644,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1787910957}
     m_Modifications:
-    - target: {fileID: 9001041196713499959, guid: 356279be1265a480aa7328f9ef69d4bc,
+    - target: {fileID: 4679406679386715346, guid: 356279be1265a480aa7328f9ef69d4bc,
         type: 3}
-      propertyPath: m_Name
-      value: hpbar
+      propertyPath: m_FillAmount
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8090664960648109104, guid: 356279be1265a480aa7328f9ef69d4bc,
         type: 3}
@@ -770,10 +769,10 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.73827356
       objectReference: {fileID: 0}
-    - target: {fileID: 4679406679386715346, guid: 356279be1265a480aa7328f9ef69d4bc,
+    - target: {fileID: 9001041196713499959, guid: 356279be1265a480aa7328f9ef69d4bc,
         type: 3}
-      propertyPath: m_FillAmount
-      value: 1
+      propertyPath: m_Name
+      value: hpbar
       objectReference: {fileID: 0}
     - target: {fileID: 1809164630578997093, guid: 356279be1265a480aa7328f9ef69d4bc,
         type: 3}
@@ -827,11 +826,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2127461031322482551}
     m_Modifications:
-    - target: {fileID: 7485989256316310171, guid: 82aa44cb8cd6341a69eb5c57671b2139,
-        type: 3}
-      propertyPath: m_Name
-      value: AtkPoison
-      objectReference: {fileID: 0}
     - target: {fileID: 8892285636624074663, guid: 82aa44cb8cd6341a69eb5c57671b2139,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -886,6 +880,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7485989256316310171, guid: 82aa44cb8cd6341a69eb5c57671b2139,
+        type: 3}
+      propertyPath: m_Name
+      value: AtkPoison
       objectReference: {fileID: 0}
     - target: {fileID: 2038795821, guid: 82aa44cb8cd6341a69eb5c57671b2139, type: 3}
       propertyPath: m_PlayAutomatically
