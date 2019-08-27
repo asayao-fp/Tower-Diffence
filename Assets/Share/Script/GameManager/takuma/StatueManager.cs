@@ -24,9 +24,15 @@ public class StatueManager : FacilityManager
     protected FacilitySetting fs;
     public Image hpbar;
 
+    private bool isAMM; //AttackMakeManagerか
 
     void Start()
     {
+        GameObject amm = GameObject.Find("AttackMakeManager");
+        if(amm != null){
+            isAMM = true;
+            return;
+        }
         time = 0.0f;
         atkObj = (GameObject)Resources.Load("takuma/Prefabs/AttackObj");
         Gene = (GameObject)Resources.Load("takuma/Prefabs/Generate");
@@ -43,6 +49,8 @@ public class StatueManager : FacilityManager
 
     void Update()
     {
+        if(isAMM)return;
+        
         if(gp.getStatus() != gp.NOW_GAME)return;
 
         if(!isGenerate)return;

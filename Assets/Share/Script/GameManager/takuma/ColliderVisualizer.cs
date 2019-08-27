@@ -113,7 +113,7 @@ namespace HC.Debug
 
         #region イベントメソッド
 
-        private void LateUpdate()
+        public void LateUpdate()
         {
             if (_visualizer == null || _label == null) return;
 
@@ -199,7 +199,7 @@ namespace HC.Debug
             // Colliderは不要なので削除する
             var visibleCollider = visualizer.GetComponent<Collider>();
             visibleCollider.enabled = false;
-            Destroy(visibleCollider);
+           // Destroy(visibleCollider);
 
             return visualizer;
         }
@@ -286,6 +286,10 @@ namespace HC.Debug
             var contentSizeFitter = label.AddComponent<ContentSizeFitter>();
             contentSizeFitter.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
             contentSizeFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+        }
+
+        public void setVisible(bool isshow){
+            _visualizer.SetActive(isshow);
         }
 
         #endregion

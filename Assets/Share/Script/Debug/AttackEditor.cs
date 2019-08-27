@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Effekseer;
+using Effekseer.Editor;
+using HC.Debug;
 #if UNITY_EDITOR
 using UnityEditor;
 
@@ -19,23 +21,88 @@ namespace tk_project
 
         private AttackEditor atkeditor;
         public static bool EnableUpdate = true;
-        public float posx,posy,posz;
-        public float efx,efy,efz;
+        private bool systemInitialized;
+   		private double lastTime;
+        public float posx,posy,posz,rotx,roty,rotz;
+        public float efx,efy,efz,efrotx,efroty,efrotz;
+		private bool loop;
+
         void OnEnable()
         {
             atkeditor = (AttackEditor)target;
+            
+
         }
 
         void OnDisable()
         {
+            TermSystem();
 
+        }
+
+        void TermSystem(){
+			if (EffekseerEditor.instance.inEditor) {
+				EditorApplication.update -= Update;
+				atkeditor.StopImmediate();
+				EffekseerEditor.instance.TermSystem();
+			}
+			systemInitialized = false;
+        }
+
+        void InitSystem(){
+
+            if(atkeditor != null){
+            //   atkeditor.effectAsset = atkeditor.AtkObj.GetComponent<EffekseerEmitter>().effectAsset;
+            }
+            if (EffekseerEditor.instance.inEditor) {
+				EffekseerEditor.instance.InitSystem();
+				EffekseerSystem.Instance.LoadEffect(atkeditor.effectAsset);
+				lastTime = EditorApplication.timeSinceStartup;
+				EditorApplication.update += Update;
+			}
+			systemInitialized = true;            
         }
 
         void Update()
         {
             if(!EnableUpdate)
                 return;
+
+	        double currentTime = EditorApplication.timeSinceStartup;
+			float deltaTime = (float)(currentTime - lastTime);
+			float deltaFrames = Utility.TimeToFrames(deltaTime);
+			lastTime = currentTime;
+			
+			if (atkeditor.exists) {
+				RepaintEffect();
+			} else if (loop) {
+				atkeditor.Play();
+			}
+
+			foreach (var handle in atkeditor.handles) {
+				handle.UpdateHandle(deltaFrames);
+			}
+			atkeditor.Update();
+
+
+            Animation animation = atkeditor.AtkCollider.GetComponent<Animation>();
+          //  Debug.Log("animation : " + animation["MagicCollider"].);
+             atkeditor.AtkCollider.GetComponent<ColliderVisualizer>().LateUpdate();
+
         }
+
+        void LateUpdate(){
+        }
+
+
+		void RepaintEffect()
+		{
+			SceneView.RepaintAll();
+			var assembly = typeof(EditorWindow).Assembly;
+			var type = assembly.GetType("UnityEditor.GameView");
+			var gameview = EditorWindow.GetWindow(type);
+			gameview.Repaint();
+		}
       
         void OnSceneGUI()
         {
@@ -63,6 +130,9 @@ namespace tk_project
             GUILayout.BeginHorizontal(); //横に表示？？
             
 			if (GUILayout.Button("Play")) {
+                if (systemInitialized == false) {
+					InitSystem();
+				}
                 atkeditor.Play();
             }
 
@@ -71,17 +141,24 @@ namespace tk_project
             }
 			GUILayout.EndHorizontal();
 
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Collider");
+            GUILayout.EndHorizontal();
 
 			GUILayout.BeginHorizontal();
-            posx = EditorGUILayout.FloatField("Collider X", posx);
+            posx = EditorGUILayout.FloatField("pos X", posx);
+            rotx = EditorGUILayout.FloatField("rot X",rotx);
 			GUILayout.EndHorizontal();
 
 			GUILayout.BeginHorizontal();
-            posy = EditorGUILayout.FloatField("Collider Y", posy);
+            posy = EditorGUILayout.FloatField("pos Y", posy);
+            rotx = EditorGUILayout.FloatField("rot Y",rotx);
 			GUILayout.EndHorizontal();
 
 			GUILayout.BeginHorizontal();
-            posz = EditorGUILayout.FloatField("Collider Z", posz);
+            posz = EditorGUILayout.FloatField("pos Z", posz);
+            rotx = EditorGUILayout.FloatField("rot Z",rotx);
+
 			GUILayout.EndHorizontal();
         
             GUILayout.BeginHorizontal(); //Collider 
@@ -90,16 +167,28 @@ namespace tk_project
             }
 			GUILayout.EndHorizontal();
 
+            
             GUILayout.BeginHorizontal();
-            efx = EditorGUILayout.FloatField("Effekseer X", efx);
+            GUILayout.Label("Effekseer");
+            GUILayout.EndHorizontal();
+
+
+            GUILayout.BeginHorizontal();
+            efx = EditorGUILayout.FloatField("pos X", efx);
+            efrotx = EditorGUILayout.FloatField("rot X",rotx);
+
 			GUILayout.EndHorizontal();
 
 			GUILayout.BeginHorizontal();
-            efy = EditorGUILayout.FloatField("Effekseer Y", efy);
+            efy = EditorGUILayout.FloatField("pos Y", efy);
+            efrotx = EditorGUILayout.FloatField("rot Y",rotx);
+
 			GUILayout.EndHorizontal();
 
 			GUILayout.BeginHorizontal();
-            efz = EditorGUILayout.FloatField("Effekseer Z", efz);
+            efz = EditorGUILayout.FloatField("pos Z", efz);
+            efrotx = EditorGUILayout.FloatField("rot Z",rotx);
+
 			GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal(); //Effekseer 
@@ -112,27 +201,40 @@ namespace tk_project
 
             Handles.EndGUI();
         }
+
+		public override void OnInspectorGUI()
+		{
+			base.OnInspectorGUI();
+		}
+
   
     }
 
 
-    public class AttackEditor : MonoBehaviour{
+
+
+    public class AttackEditor : EffekseerEmitter{
         public GameObject AtkCollider;
         public GameObject AtkObj;
+
         public void Play(){
-            Debug.Log("play");
+            AtkCollider.GetComponent<ShowCollider>().showCollider();
+            Animation animation = AtkCollider.GetComponent<Animation>();
+            animation.Play ();
+            
+            Play(effectAsset);
         }
 
         public void SetColliderScale(float x,float y,float z){
             Debug.Log("Collider " + x + " " + y + " " + z);
             Vector3 pos = new Vector3(x,y,z);
-            AtkCollider.transform.position = pos;
+            AtkCollider.transform.localPosition = pos;
         }
 
         public void SetEffekseerScale(float x,float y,float z){
             Debug.Log("Effekseer " + x + " " + y + " " + z);
             Vector3 pos = new Vector3(x,y,z);
-            AtkObj.transform.position = pos;
+            AtkObj.transform.localPosition = pos;
         }
 
     }
