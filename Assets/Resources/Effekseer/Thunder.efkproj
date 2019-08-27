@@ -7,7 +7,7 @@
         <LocationValues>
           <Fixed>
             <Location>
-              <Y>24</Y>
+              <Y>12</Y>
             </Location>
           </Fixed>
         </LocationValues>
@@ -656,6 +656,7 @@
         <DrawingValues>
           <Type>0</Type>
         </DrawingValues>
+        <IsRendered>False</IsRendered>
         <Name>Thunder</Name>
         <Children>
           <Node>
@@ -790,6 +791,7 @@
                 </Color_Random>
               </Model>
             </DrawingValues>
+            <IsRendered>False</IsRendered>
             <Name>thunder1</Name>
             <Children />
           </Node>
@@ -922,6 +924,7 @@
                 </Color_Random>
               </Model>
             </DrawingValues>
+            <IsRendered>False</IsRendered>
             <Name>thunder2</Name>
             <Children />
           </Node>
@@ -950,6 +953,7 @@
         <DrawingValues>
           <Type>0</Type>
         </DrawingValues>
+        <IsRendered>False</IsRendered>
         <Name>Thunder</Name>
         <Children>
           <Node>
@@ -1084,6 +1088,7 @@
                 </Color_Random>
               </Model>
             </DrawingValues>
+            <IsRendered>False</IsRendered>
             <Name>thunder1</Name>
             <Children />
           </Node>
@@ -1216,6 +1221,7 @@
                 </Color_Random>
               </Model>
             </DrawingValues>
+            <IsRendered>False</IsRendered>
             <Name>thunder2</Name>
             <Children />
           </Node>

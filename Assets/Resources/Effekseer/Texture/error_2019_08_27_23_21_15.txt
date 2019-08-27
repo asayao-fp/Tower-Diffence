@@ -1,0 +1,9 @@
+System.NullReferenceException: Object reference not set to an instance of an object
+  at (wrapper managed-to-native) Effekseer.swig.EffekseerNativePINVOKE.Native_RenderView(System.Runtime.InteropServices.HandleRef,int,int)
+  at Effekseer.swig.Native.RenderView (System.Int32 width, System.Int32 height) [0x00000] in <ac64d614a5ac48acb14e5ac4e7a32bc5>:0 
+  at Effekseer.GUI.Dock.EffectViwer.UpdateInternal () [0x0005c] in <ac64d614a5ac48acb14e5ac4e7a32bc5>:0 
+  at Effekseer.GUI.Dock.DockPanel.Update () [0x000b3] in <ac64d614a5ac48acb14e5ac4e7a32bc5>:0 
+  at Effekseer.GUI.Dock.DockManager.Update () [0x0005e] in <ac64d614a5ac48acb14e5ac4e7a32bc5>:0 
+  at Effekseer.GUI.Manager.Update () [0x001e6] in <ac64d614a5ac48acb14e5ac4e7a32bc5>:0 
+  at Effekseer.Program.Exec (System.Boolean gui, System.String input, System.String output, System.String export, System.Single magnification) [0x0017f] in <ac64d614a5ac48acb14e5ac4e7a32bc5>:0 
+  at Effekseer.Program.Main (System.String[] args) [0x00104] in <ac64d614a5ac48acb14e5ac4e7a32bc5>:0 
