@@ -16,7 +16,6 @@ namespace takuma_fp
         public GameObject colliderObj; //当たり判定用オブジェクト
         public GameObject saveObj; //保存する時に使用
         public GameObject parentobj;
-        private bool show;
         public InputField[] effectInput;
         public InputField[] colliderInput;
         public Text[] effectPosText;
@@ -31,6 +30,9 @@ namespace takuma_fp
         private float positionStep = 5.0f;
         private float mouseSensitive = 2.0f;
         private Boolean cameraMoveActive = true;
+        private Vector3 lastMousePosition;
+        private Vector3 newAngle = new Vector3(0, 0, 0);
+
 
         
 
@@ -74,9 +76,11 @@ namespace takuma_fp
             if(Input.GetMouseButtonDown(0)){
                 startMousePos = Input.mousePosition;
                 presentCamPos = camera.transform.position;
-            }
-
-            if(Input.GetMouseButton(0)){
+            }else if(Input.GetMouseButtonDown(1)){
+                // マウスクリック開始(マウスダウン)時にカメラの角度を保持(Z軸には回転させないため).
+                newAngle = camera.transform.localEulerAngles;
+                lastMousePosition = Input.mousePosition;
+            }else if(Input.GetMouseButton(0)){
                 //(移動開始座標 - マウスの現在座標) / 解像度 で正規化
                 float x = (startMousePos.x - Input.mousePosition.x) / Screen.width;
                 float y = (startMousePos.y - Input.mousePosition.y) / Screen.height;
@@ -94,23 +98,20 @@ namespace takuma_fp
                 }*/
 
                 camera.transform.position = velocity;
+            }else if (Input.GetMouseButton(1)){
+                // マウスの移動量分カメラを回転させる.
+                newAngle.y += (Input.mousePosition.x - lastMousePosition.x) * 0.1f;
+                newAngle.x -= (Input.mousePosition.y - lastMousePosition.y) * 0.1f;
+                camera.gameObject.transform.localEulerAngles = newAngle;
+
+                lastMousePosition = Input.mousePosition;
             }
-    }
+        }
 
-    public void CameraMove(){
-      Vector3 cpos = camera.transform.position;
-
-      /*if(cpos.x == Constants.CAMERA_MIN_X){
-        cpos.x = Constants.CAMERA_MAX_X;
-      }else if(cpos.x == Constants.CAMERA_MAX_X){
-        cpos.x = Constants.CAMERA_MIN_X;
-      }else{
-        cpos.x = Constants.CAMERA_MIN_X;
-      }*/
-
-      camera.transform.position = cpos;
-
-    }
+        public void CameraMove(){
+            Vector3 cpos = camera.transform.position;
+            camera.transform.position = cpos;
+        }
 
         public String getStatue(){
              foreach(Transform child in StatueList.transform){
@@ -162,22 +163,6 @@ namespace takuma_fp
         }
 
         public void PlayAttack(){
-            show = !show;
-            /*
-            if(effectObj == null || colliderObj == null){
-                GameObject[] objs = GameObject.FindGameObjectsWithTag("AttackMake");
-
-                if(objs != null){
-                    foreach(Transform child in objs[0].transform){
-                        GameObject obj = child.gameObject;
-                        if(obj.name.Equals("AtkCollider")){
-                            colliderObj = obj;
-                        }else{
-                            effectObj = obj;
-                        }
-                    }
-                }
-            }*/
             colliderObj.GetComponent<Animation>().Play();
             EffekseerEmitter ee = effectObj.GetComponent<EffekseerEmitter>();
             EffekseerEffectAsset ea = ee.effectAsset;
@@ -191,7 +176,7 @@ namespace takuma_fp
         }
 
         public void SetPosition(int type){
-            float px,py,pz,rx,ry,rz,s;
+            float px,py,pz,rx,ry,rz,sx,sy,sz;
             if(type == 1){
                 //Collider
                 px = float.Parse(colliderInput[0].text);
@@ -200,11 +185,13 @@ namespace takuma_fp
                 rx = float.Parse(colliderInput[3].text); 
                 ry = float.Parse(colliderInput[4].text); 
                 rz = float.Parse(colliderInput[5].text); 
-                s = float.Parse(colliderInput[6].text);
+                sx = float.Parse(colliderInput[6].text);
+                sy = float.Parse(colliderInput[7].text);
+                sz = float.Parse(colliderInput[8].text);
 
                 colliderObj.transform.position = new Vector3(px,py,pz);
                 colliderObj.transform.localEulerAngles = new Vector3(rx,ry,rz);
-                colliderObj.transform.localScale = new Vector3(s,s,s);
+                colliderObj.transform.localScale = new Vector3(sx,sy,sz);
             }else if(type == 2){
                 //Effekseer
                 px = float.Parse(effectInput[0].text);
@@ -213,11 +200,13 @@ namespace takuma_fp
                 rx = float.Parse(effectInput[3].text);
                 ry = float.Parse(effectInput[4].text);
                 rz = float.Parse(effectInput[5].text);
-                s = float.Parse(effectInput[6].text);
+                sx = float.Parse(effectInput[6].text);
+                sy = float.Parse(effectInput[7].text);
+                sz = float.Parse(effectInput[8].text);
 
                 effectObj.transform.position = new Vector3(px,py,pz);
                 effectObj.transform.localEulerAngles = new Vector3(rx,ry,rz);
-                effectObj.transform.localScale = new Vector3(s,s,s);
+                effectObj.transform.localScale = new Vector3(sx,sy,sz);
             }
         }
         
@@ -240,6 +229,9 @@ namespace takuma_fp
             colliderInput[4].text = "" + cr.y;
             colliderInput[5].text = "" + cr.z;
             colliderInput[6].text = "" + cs.x;
+            colliderInput[7].text = "" + cs.y;
+            colliderInput[8].text = "" + cs.z;
+            
 
             colliderPosText[0].text = "" + cp.x;
             colliderPosText[1].text = "" + cp.y;
@@ -248,6 +240,8 @@ namespace takuma_fp
             colliderPosText[4].text = "" + cr.y;
             colliderPosText[5].text = "" + cr.z;
             colliderPosText[6].text = "" + cs.x;
+            colliderPosText[7].text = "" + cs.y;
+            colliderPosText[8].text = "" + cs.z;
 
 
             // Effekseer
@@ -261,6 +255,8 @@ namespace takuma_fp
             effectInput[4].text = "" + er.y;
             effectInput[5].text = "" + er.z;
             effectInput[6].text = "" + es.x;
+            effectInput[7].text = "" + es.y;
+            effectInput[8].text = "" + es.z;
 
             effectPosText[0].text = "" + ep.x;
             effectPosText[1].text = "" + ep.y;
@@ -269,6 +265,8 @@ namespace takuma_fp
             effectPosText[4].text = "" + er.y;
             effectPosText[5].text = "" + er.z;
             effectPosText[6].text = "" + es.x;
+            effectPosText[7].text = "" + es.y;
+            effectPosText[8].text = "" + es.z;
 
         }
     }

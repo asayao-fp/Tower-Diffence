@@ -16,8 +16,12 @@ public class ShowCollider : MonoBehaviour
     public void showCollider(){
 
       //  if(!isShow) return;
-
-        var visualizer = gameObject.AddComponent<ColliderVisualizer>();
+        ColliderVisualizer visualizer;
+        if(gameObject.GetComponent<ColliderVisualizer>() != null){
+            visualizer = gameObject.GetComponent<ColliderVisualizer>();
+        }else{
+            visualizer = gameObject.AddComponent<ColliderVisualizer>();
+        }
         var color      = ColliderVisualizer.VisualizerColorType.Blue;
         var message    = "";
         var fontSize   = 36;
