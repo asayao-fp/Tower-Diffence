@@ -169,4 +169,8 @@ public class GameProgress : MonoBehaviour
       return s;
     }
 
+    public bool getStatueType(){
+      return gs.getStatueType();
+    }
+
 }

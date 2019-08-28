@@ -48,7 +48,8 @@ public class InputManager : MonoBehaviour
         tgls[i].isOn = false;
       }
       showSetPositionMat = new Material (Shader.Find ("Unlit/TestShader"));
-      atkPrefab = Instantiate ((GameObject)Resources.Load ("takuma/Prefabs/AtkPosSphere"), new Vector3(0,0,0), Quaternion.identity) as GameObject ;
+      //atkPrefab = Instantiate ((GameObject)Resources.Load ("takuma/Prefabs/AtkPosSphere"), new Vector3(0,0,0), Quaternion.identity) as GameObject ;
+      atkPrefab = Instantiate (ResourceManager.getObject("takuma/Prefabs/AtkPosSphere"), new Vector3(0,0,0), Quaternion.identity) as GameObject ;
       atkPrefab.SetActive(false);
       canSelect = true;
       gp = GameObject.FindWithTag("GameManager").GetComponent<GameProgress>();
@@ -137,7 +138,9 @@ public class InputManager : MonoBehaviour
            //コストが足りなかったら召喚できない
            if(gcm.getCost() >= nowFacility.cost){
             spos = getSetPosition(nowFacility,setpos);
-            prefab = (GameObject)Resources.Load ("takuma/Prefabs/" + FacilityName);
+            //prefab = (GameObject)Resources.Load ("takuma/Prefabs/" + FacilityName);
+            prefab = ResourceManager.getObject("Statue/" + FacilityName,gp.getStatueType());
+            //(GameObject)Resources.Load ("takuma/Prefabs/" + FacilityName);
             generatePrefab = Instantiate (prefab, setpos, Quaternion.identity) as GameObject;
             stage.GetComponent<ShowStagePosition>().showSetPosition(setType);
             if(checkPosition()){

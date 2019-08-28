@@ -13,6 +13,9 @@ public class GameSettings : MonoBehaviour
     [SerializeField]
     private int maxcost;
 
+    [SerializeField]
+    private bool isLight;
+
     void Start()
     {
         DontDestroyOnLoad(this);
@@ -30,6 +33,10 @@ public class GameSettings : MonoBehaviour
 
     public int getMaxCost(){
         return maxcost;
+    }
+
+    public bool getStatueType(){
+        return isLight;
     }
 }
 
