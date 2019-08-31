@@ -23,8 +23,9 @@ public class AttackObjManager : MonoBehaviour
   public void OnTriggerEnter(Collider other){
    if(other.gameObject.tag.Equals(Constants.GOBLIN_TAG)){
      if(!objs.ContainsKey(other.gameObject.GetInstanceID())){
-      objs.Add(other.gameObject.GetInstanceID(),other.gameObject);
-      other.gameObject.GetComponent<FacilityManager>().addHP(AttackDamage);
+       
+      //objs.Add(other.gameObject.GetInstanceID(),other.gameObject);
+      //other.gameObject.GetComponent<FacilityManager>().addHP(AttackDamage);
      }
    }
   }

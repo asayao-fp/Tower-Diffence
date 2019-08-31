@@ -15,7 +15,7 @@ public class ShowCollider : MonoBehaviour
 
     public void showCollider(){
 
-      //  if(!isShow) return;
+        if(!isShow) return;
         ColliderVisualizer visualizer;
         if(gameObject.GetComponent<ColliderVisualizer>() != null){
             visualizer = gameObject.GetComponent<ColliderVisualizer>();

@@ -8,6 +8,8 @@ public class HPUI : MonoBehaviour
         GameObject amm = GameObject.Find("AttackMakeManager");
         if(amm != null){
             this.gameObject.SetActive(false);
+        }else{
+            this.gameObject.SetActive(true);
         }
     }
     void LateUpdate() {

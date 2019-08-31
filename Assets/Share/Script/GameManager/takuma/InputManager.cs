@@ -12,7 +12,7 @@ public class InputManager : MonoBehaviour
     private FacilitySetting fs; //施設セッティング
     private StageSetting ss; //ステージセッティング
     private Stage nowStage; //現在のステージ情報
-    private Facility nowFacility; //現在の施設情報
+    private StatueData nowStatue; //現在の施設情報
 
     private Vector3 setpos; //マウス座標
     private GameObject generatePrefab; //ドラッグ中に使用する施設用オブジェクト
@@ -34,9 +34,12 @@ public class InputManager : MonoBehaviour
     private Boolean canSelect; //施設を選択できるか
     private Boolean isdrawAttack = false; //攻撃可能範囲を表示するか
 
-    GameProgress gp; 
-    GenerateCostManager gcm;
 
+    private int select_num;
+
+    GameProgress gp; 
+
+    public static bool generating = false;
 
     void Start()
     {
@@ -49,18 +52,12 @@ public class InputManager : MonoBehaviour
       }
       showSetPositionMat = new Material (Shader.Find ("Unlit/TestShader"));
       //atkPrefab = Instantiate ((GameObject)Resources.Load ("takuma/Prefabs/AtkPosSphere"), new Vector3(0,0,0), Quaternion.identity) as GameObject ;
-      atkPrefab = Instantiate (ResourceManager.getObject("takuma/Prefabs/AtkPosSphere"), new Vector3(0,0,0), Quaternion.identity) as GameObject ;
+      atkPrefab = Instantiate (ResourceManager.getObject("takuma/Master/Character/AtkPosSphere"), new Vector3(0,0,0), Quaternion.identity) as GameObject ;
       atkPrefab.SetActive(false);
       canSelect = true;
       gp = GameObject.FindWithTag("GameManager").GetComponent<GameProgress>();
-      gcm = GameObject.FindWithTag("GenerateCost").GetComponent<GenerateCostManager>();
 
       nowStage = gp.setNowStage(ss.getStageList(0));
-
-      for(int j=0;j<nowStage.enablelist.Count;j++){
-        float[] a = nowStage.enablelist[j];
-      //  Debug.Log("ssss : " + a[0] + " " + a[1] + " " + a[2] + " " + a[3] + " " + a[4]);
-      }
 
     }
 
@@ -73,12 +70,13 @@ public class InputManager : MonoBehaviour
         
         if(tgls[i].name.Equals(FacilityName)){
           tgls[i].isOn = true;
+          select_num = i;
         
         }else{
           tgls[i].isOn = false;
         }
         //召喚コストが足りなければ黒画像
-        if(gcm.getCost() >= fs.getFacility(tgls[i].name).cost){
+        if(gp.hasCost(fs.getFacility(tgls[i].name).cost)){
             tglobj[i].GetComponent<GenerateBarManager>().blackImage.enabled = false;
         }else{
             tglobj[i].GetComponent<GenerateBarManager>().blackImage.enabled = tglobj[i].GetComponent<GenerateBarManager>().getGenerate();
@@ -95,6 +93,7 @@ public class InputManager : MonoBehaviour
                if(tgls[i].name.Equals(current.name)){ //タッチしているアイコンの名前とアイコンが一致した時
                  if(tgls[i].GetComponent<GenerateBarManager>().getGenerate()){
                    tgls[i].isOn = true;
+                   select_num = i;
                    FacilityName = tgls[i].name;
                    setType = fs.getFacilityList(i).settype;
                    isShow = true;
@@ -105,6 +104,7 @@ public class InputManager : MonoBehaviour
                  }    
                }else{
                  tgls[i].isOn = false;
+                 //select_num = -1;
                }
              }
            }else{
@@ -133,15 +133,16 @@ public class InputManager : MonoBehaviour
 
          if(isSelect &&  canSelect && (!FacilityName.Equals(""))){
            //設置可能範囲内なら置ける
-           nowFacility = fs.getFacility(FacilityName);
-           
+           nowStatue = tgls[select_num].GetComponent<GenerateBarManager>().getStatus();
+
            //コストが足りなかったら召喚できない
-           if(gcm.getCost() >= nowFacility.cost){
-            spos = getSetPosition(nowFacility,setpos);
-            //prefab = (GameObject)Resources.Load ("takuma/Prefabs/" + FacilityName);
+            if(gp.hasCost(nowStatue.cost)){
+            spos = getSetPosition(nowStatue,setpos);
             prefab = ResourceManager.getObject("Statue/" + FacilityName,gp.getStatueType());
-            //(GameObject)Resources.Load ("takuma/Prefabs/" + FacilityName);
             generatePrefab = Instantiate (prefab, setpos, Quaternion.identity) as GameObject;
+            //召喚中！！
+            generating = true;
+
             stage.GetComponent<ShowStagePosition>().showSetPosition(setType);
             if(checkPosition()){
               generatePrefab.gameObject.SetActive(true);
@@ -159,7 +160,7 @@ public class InputManager : MonoBehaviour
          }
       }
       else if (Input.GetMouseButtonUp(0)) {
-
+        generating = false;
         if (Physics.Raycast(ray,out hit,10.0f))
         {
           setpos = hit.point;
@@ -169,16 +170,14 @@ public class InputManager : MonoBehaviour
            if(checkPosition() && (generatePrefab != null)){
            //|| isMoving){
 
+             //gobrinとstatueで分ける
+             gp.Generate(FacilityName,atkPrefab.transform.position);
 
-             GameObject generate = Instantiate (prefab, generatePrefab.transform.position, Quaternion.identity) as GameObject;
-             generate.GetComponent<FacilityManager>().Generate(atkPrefab.transform.position,atkPrefab.transform.localScale,nowFacility);
-             
-             //召喚
-             gcm.generateCost(nowFacility.cost);
 
              isShow = false;
              FacilityName = "";
-             nowFacility = null;
+             select_num = -1;
+             nowStatue = null;
              for(int i=0;i<tgls.Length;i++){
                if(tgls[i].isOn){
                  tgls[i].GetComponent<GenerateBarManager>().setGenerate();
@@ -215,18 +214,19 @@ public class InputManager : MonoBehaviour
         stage.GetComponent<ShowStagePosition>().hideSetPosition();
       }
       else if (Input.GetMouseButton(0)) {
+       // Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask);
+        //if(Physics.Raycast(ray,out hit,Mathf.Infinity,layerMask))
         if (Physics.Raycast(ray,out hit,100.0f))
         {
           setpos = hit.point;
           setpos.y = 0.1f;
         }
-        if(isSelect && (nowFacility != null) && canSelect){
-          spos = getSetPosition(nowFacility,setpos);
+        if(isSelect && (nowStatue != null) && canSelect){
+          spos = getSetPosition(nowStatue,setpos);
           stage.GetComponent<ShowStagePosition>().showSetPosition(setType);
           //ドラッグ中に設置可能範囲内に置いたら常に表示しておく
           if(checkPosition()){
             isdrawAttack = true;
-          //|| isMoving){
             isMoving = true;
             generatePrefab.transform.position = setPosition(generatePrefab.transform.position,setpos);
             generatePrefab.gameObject.SetActive(true);
@@ -241,7 +241,7 @@ public class InputManager : MonoBehaviour
         }
       }
 
-      if(isdrawAttack && isMoving && (nowFacility != null) && canSelect){
+      if(isdrawAttack && isMoving && (nowStatue != null) && canSelect){
         drawAttackArea();
       }else if(atkPrefab != null){
         atkPrefab.SetActive(false);
@@ -252,15 +252,13 @@ public class InputManager : MonoBehaviour
       }else{
         stage.GetComponent<ShowStagePosition>().hideSetPosition();
       }
-     
-      
     }
 
     public void drawAttackArea(){
-      Vector4 fp = nowFacility.attackpos;
+      Vector4 fp = nowStatue.attackpos;
       Vector2 p = new Vector2(generatePrefab.transform.position.x + fp.x,generatePrefab.transform.position.z + fp.y); //攻撃範囲の中心座標
       atkPrefab.transform.position = new Vector3(p.x,0.05f,p.y);
-      atkPrefab.transform.localScale = new Vector3(fp.z,fp.z,fp.z);
+      atkPrefab.transform.localScale = new Vector3(fp.z,0.01f,fp.z);
       atkPrefab.SetActive(true);
     }
 
@@ -274,7 +272,7 @@ public class InputManager : MonoBehaviour
     }
 
     //マウス座標から、設置物の置ける範囲を取得
-    public Vector2[] getSetPosition(Facility f,Vector3 pos){
+    public Vector2[] getSetPosition(StatueData f,Vector3 pos){
       return new Vector2[]{
         new Vector2(pos.x-f.setpos.x/2,pos.z-f.setpos.y/2), //左下
         new Vector2(pos.x+f.setpos.x/2,pos.z-f.setpos.y/2), //右下
@@ -339,32 +337,4 @@ public class InputManager : MonoBehaviour
 
       return sp;
     }
-
-    //設置可能範囲、攻撃範囲描画
-    /*
-    void OnRenderObject () {
-      if(!isShow)return;
-
-      if(!showSetPositionMat){
-        Debug.Log("show set material is not Active");
-        return;
-      }
-
-      showSetPositionMat.SetPass (0);
-
-      GL.PushMatrix ();
-      for(int i=0;i<nowStage.enablelist.Count;i++){
-        if(nowStage.enablelist[i][4] > setType){
-          continue;
-        }
-        GL.Begin (GL.QUADS);
-        GL.Vertex3(nowStage.enablelist[i][0],0,nowStage.enablelist[i][2]); //左下
-        GL.Vertex3(nowStage.enablelist[i][0],0,nowStage.enablelist[i][3]); //左上
-        GL.Vertex3(nowStage.enablelist[i][1],0,nowStage.enablelist[i][3]); //右上
-        GL.Vertex3(nowStage.enablelist[i][1],0,nowStage.enablelist[i][2]); //右下
-        GL.End ();
-      }
-
-      GL.PopMatrix ();
-    }*/
 }

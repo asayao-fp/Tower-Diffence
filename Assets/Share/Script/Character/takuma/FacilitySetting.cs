@@ -14,6 +14,7 @@ public class FacilitySetting : MonoBehaviour
     void Awake(){
       DontDestroyOnLoad(this);
 
+
       setFacility();
     }
 
@@ -71,6 +72,8 @@ public class FacilitySetting : MonoBehaviour
           f.maxhp = f.hp;
         }else if(line.StartsWith("facilitytime")){
           f.time = int.Parse(line.Substring(13));
+        }else if(line.StartsWith("facilityinterval")){
+          f.atkInterval = int.Parse(line.Substring(17));
         }
         if(add){
           facilitylist.Add(f);
@@ -89,4 +92,5 @@ public class Facility{
     public int cost; //召喚コスト
     public int hp; //体力
     public int time; //消滅までの時間
+    public int atkInterval; //攻撃間隔
 }

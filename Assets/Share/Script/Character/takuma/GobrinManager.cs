@@ -17,43 +17,48 @@ public class GobrinManager : StatueManager
         }
 
         if(isDebug){
-          fs = GameObject.FindWithTag("StaticObjects").GetComponent<FacilitySetting>();
-          fInfo = fs.getFacility("gobrin_1");
+    //      fs = GameObject.FindWithTag("StaticObjects").GetComponent<FacilitySetting>();
+          //fInfo = fs.getFacility("gobrin_1");
         }
     }
 
     void Update()
     {
         if(gp.getStatus() != gp.NOW_GAME)return;
-        if(!isGenerate)return;
+       // if(!isGenerate)return;
 
-        fInfo = gp.getFM(obj_num,isDebug);
+       // fInfo = gp.getFM(obj_num,isDebug);
 
         if(hpbar != null){
-            hpbar.fillAmount = (float)fInfo.hp / (float)fInfo.maxhp;
+        //hpbar.fillAmount = (float)fInfo.hp / (float)fInfo.maxhp;
         }
     }
 
-    /**
-     * 召喚時に呼び出す
-     * isGenerateをtrueにすることでUpdate関数が実行される
-     */
-    public override void Generate(Vector3 pos,Vector3 scale,Facility f){
-        fInfo = f;
+    public override void Generate(Vector3 pos,Vector3 scale,StatueData f){
+       // fInfo = f;
 
         if(gp == null){
           gp = GameObject.FindWithTag("GameManager").GetComponent<GameProgress>();
         }
-        gp.Generate(this.gameObject);
+    //    gp.Generate(this.gameObject);
 
-        isGenerate = true;
+       // isGenerate = true;
     }
 
-    /**
-     * 死んだ時に呼ばれる
-     * アニメーションとか？
-     */
     public override void Dead(){
       Destroy(this.gameObject);
+    }
+
+
+    public override StatueData getSData(){
+      return null;
+    }
+
+    public override GobrinData getGData(){
+      return null;
+    }
+
+    public override void checkEnemy(){
+      //NOP
     }
 }

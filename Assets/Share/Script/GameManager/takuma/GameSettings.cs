@@ -16,6 +16,9 @@ public class GameSettings : MonoBehaviour
     [SerializeField]
     private bool isLight;
 
+    [SerializeField]
+    private byte battleType; //攻撃側か守備側か 0 : statue , 1 : gobrin
+
     void Start()
     {
         DontDestroyOnLoad(this);

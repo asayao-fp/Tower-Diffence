@@ -6,6 +6,12 @@ using System;
 
 public class GenerateBarManager : MonoBehaviour
 {
+    private StatueData sData;
+    private GobrinData gData;
+    public StatueManager sm;
+    public GobrinManager gm;
+
+
     public Image blackImage; //召喚不可能時に表示するテクスチャ
     public GameObject generatebar;
     private Boolean isGenerate; //設置しているか
@@ -24,6 +30,7 @@ public class GenerateBarManager : MonoBehaviour
       fill = 0;
       gp = GameObject.FindWithTag("GameManager").GetComponent<GameProgress>();
 
+      sData = sm.getSData();
     }
 
     void Update()
@@ -55,5 +62,9 @@ public class GenerateBarManager : MonoBehaviour
     public void setGenerate(){
       isGenerate = true;
       canGenerate = false;
+    }
+
+    public StatueData getStatus(){
+      return sData;
     }
 }

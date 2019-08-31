@@ -15,6 +15,7 @@ public class AttackManager : MonoBehaviour
     void Start()
     {
         time = 0.0f;
+        atkCollider.AddComponent<AttackObjManager>();
     }
 
     void Update()
@@ -28,10 +29,10 @@ public class AttackManager : MonoBehaviour
     }
 
     public void Attack(){
-            //EffekseerEmitter ee = atkObj.GetComponent<EffekseerEmitter>();
-            //EffekseerEffectAsset ea = ee.effectAsset;
-            //ee.Play(ea);
-            //atkCollider.GetComponent<Animation>().Play();
+            EffekseerEmitter ee = atkObj.GetComponent<EffekseerEmitter>();
+            EffekseerEffectAsset ea = ee.effectAsset;
+            ee.Play(ea);
+            atkCollider.GetComponent<Animation>().Play();
     }
 
     void OnDrawGizmos()

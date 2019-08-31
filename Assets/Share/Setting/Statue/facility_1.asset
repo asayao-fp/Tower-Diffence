@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f591e552e871841a29cc4ccd4afb2b7a, type: 3}
+  m_Name: facility_1
+  m_EditorClassIdentifier: 
+  id: 1
+  name: facility_
+  setpos: {x: 0, y: 0}
+  attackpos: {x: 0, y: 0, z: 5}
+  settype: 4
+  hp: 100
+  time: 10
+  atkInterval: 1
+  cost: 5
