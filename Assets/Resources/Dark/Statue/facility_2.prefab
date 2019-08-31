@@ -400,7 +400,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 751178850575536856}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
@@ -493,7 +493,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 751769662943286072}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
@@ -576,14 +576,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ca615d7f9307442fb9076751b7dd1bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isGenerate: 0
-  atkInterval: 5
-  time: 0
-  deletetime: 0
-  atkObj: {fileID: 0}
+  statue: {fileID: 11400000, guid: bb3a7675077ef49ab8e20f4acbff20d9, type: 2}
   Atk: {fileID: 170549977869487812}
   isDebug: 0
   hpbar: {fileID: 9080964824441589219}
+  AtkName: AtkThunder
 --- !u!1 &751955054816521342
 GameObject:
   m_ObjectHideFlags: 0
@@ -850,7 +847,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &4536962039988055868
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1032,9 +1029,7 @@ GameObject:
   - component: {fileID: 8979474532301891000}
   - component: {fileID: 8979474532301891003}
   - component: {fileID: 284127802519653552}
-  - component: {fileID: 7457172862574743352}
   - component: {fileID: 2853411264795349913}
-  - component: {fileID: 7058369405743551651}
   m_Layer: 2
   m_Name: AtkCollider
   m_TagString: Untagged
@@ -1104,19 +1099,6 @@ MonoBehaviour:
   speed: 10
   removetime: 0
   AttackDamage: -9
---- !u!114 &7457172862574743352
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5940693102865149621}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d182cd5ac2db64995bffd00a8388b579, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isShow: 0
 --- !u!54 &2853411264795349913
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1133,18 +1115,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
---- !u!114 &7058369405743551651
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5940693102865149621}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1cd58f4489929a4eb4c9ac9ab5a0982, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &6011247848267572317
 GameObject:
   m_ObjectHideFlags: 0
@@ -1209,7 +1179,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1666312540256826440
 Transform:
   m_ObjectHideFlags: 0

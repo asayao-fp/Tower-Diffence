@@ -236,14 +236,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ca615d7f9307442fb9076751b7dd1bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isGenerate: 0
-  atkInterval: 5
-  time: 0
-  deletetime: 0
-  atkObj: {fileID: 0}
+  statue: {fileID: 11400000, guid: 0d4878c3456a84cd19c0e51a2f479125, type: 2}
   Atk: {fileID: 436128993179560378}
   isDebug: 0
   hpbar: {fileID: 6813623671369062298}
+  AtkName: AtkPoison
 --- !u!1 &284705584968925644
 GameObject:
   m_ObjectHideFlags: 0
@@ -411,7 +408,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 284705920381459382}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
@@ -664,7 +661,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2197278555208033868
 RectTransform:
   m_ObjectHideFlags: 0
@@ -868,7 +865,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3320947827763417886
 Transform:
   m_ObjectHideFlags: 0
@@ -955,9 +952,7 @@ GameObject:
   - component: {fileID: 7056826785583674636}
   - component: {fileID: 7056826785583674638}
   - component: {fileID: 6238840451880475962}
-  - component: {fileID: 1308481982630766196}
   - component: {fileID: 7358145092258600416}
-  - component: {fileID: 8054101117728255002}
   m_Layer: 2
   m_Name: AtkCollider
   m_TagString: Untagged
@@ -1026,19 +1021,6 @@ MonoBehaviour:
   speed: 10
   removetime: 0
   AttackDamage: -1
---- !u!114 &1308481982630766196
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5366615711116055710}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d182cd5ac2db64995bffd00a8388b579, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isShow: 0
 --- !u!54 &7358145092258600416
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1055,18 +1037,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
---- !u!114 &8054101117728255002
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5366615711116055710}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1cd58f4489929a4eb4c9ac9ab5a0982, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &7103393168083254911
 GameObject:
   m_ObjectHideFlags: 0
@@ -1278,7 +1248,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8404010653378719896}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
