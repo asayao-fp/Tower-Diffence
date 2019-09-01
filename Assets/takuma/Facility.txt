@@ -7,7 +7,8 @@ facilityatk=0,0:5;
 facilitytype=4
 facilitycost=5
 facilityhp=5
-facilitytime=10
+facilitytime=100
+facilityinterval=1
 facilityendid=0
 
 facilityid=1
@@ -17,7 +18,8 @@ facilityatk=0,0:5;
 facilitytype=4
 facilitycost=5
 facilityhp=10
-facilitytime=10
+facilitytime=100
+facilityinterval=3
 facilityendid=1
 
 facilityid=2
@@ -27,7 +29,8 @@ facilityatk=0,0:10;
 facilitytype=4
 facilitycost=8
 facilityhp=20
-facilitytime=10
+facilitytime=100
+facilityinterval=2
 facilityendid=2
 
 facilityid=3
@@ -37,7 +40,8 @@ facilityatk=0,0:5;
 facilitytype=6
 facilitycost=10
 facilityhp=30
-facilitytime=10
+facilitytime=100
+facilityinterval=3
 facilityendid=3
 
 facilityid=6
@@ -47,7 +51,8 @@ facilityatk=0,0:5;
 facilitytype=4
 facilitycost=50
 facilityhp=90
-facilitytime=10
+facilitytime=100
+facilityinterval=3
 facilityendid=6
 
 

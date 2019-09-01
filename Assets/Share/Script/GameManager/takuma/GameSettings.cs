@@ -5,6 +5,13 @@ using UnityEngine;
 public class GameSettings : MonoBehaviour
 {
 
+    [SerializeField]
+    private Material Dark_material;
+    [SerializeField]
+    private Material Light_material;
+    [SerializeField]
+    private Material Generating_material;
+
     //制限時間
     [SerializeField]
     private  int limitTime;
@@ -40,6 +47,14 @@ public class GameSettings : MonoBehaviour
 
     public bool getStatueType(){
         return isLight;
+    }
+
+    public Material getMaterial(){
+        if(InputManager.generating){
+            return Generating_material;
+        }
+        return isLight ? Light_material : Dark_material;
+
     }
 }
 

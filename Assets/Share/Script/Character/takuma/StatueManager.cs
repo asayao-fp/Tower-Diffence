@@ -28,6 +28,12 @@ public class StatueManager : FacilityManager
     GameObject amm; //AttackManager check用
     GameObject obj;//敵
 
+    void Awake(){
+      Material material= GameObject.Find("StaticManager").GetComponent<GameSettings>().getMaterial();
+      for(int i=0;i<obj_materials.Length;i++){
+        obj_materials[i].material = material;
+      }
+    }
 
     void Update()
     {

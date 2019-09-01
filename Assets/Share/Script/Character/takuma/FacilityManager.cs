@@ -2,6 +2,8 @@ using UnityEngine;
 
 public abstract class FacilityManager : MonoBehaviour
 {
+    /* マテリアルの配列 */
+    public MeshRenderer[] obj_materials;
 
     /* ゲーム中に変化するパラメータ */
     public struct gameStatus{

@@ -138,10 +138,12 @@ public class InputManager : MonoBehaviour
            //コストが足りなかったら召喚できない
             if(gp.hasCost(nowStatue.cost)){
             spos = getSetPosition(nowStatue,setpos);
-            prefab = ResourceManager.getObject("Statue/" + FacilityName,gp.getStatueType());
-            generatePrefab = Instantiate (prefab, setpos, Quaternion.identity) as GameObject;
+
             //召喚中！！
             generating = true;
+//            prefab = ResourceManager.getObject("Statue/" + FacilityName,gp.getStatueType());
+            prefab = ResourceManager.getObject("Statue/" + FacilityName);
+            generatePrefab = Instantiate (prefab, setpos, Quaternion.identity) as GameObject;
 
             stage.GetComponent<ShowStagePosition>().showSetPosition(setType);
             if(checkPosition()){

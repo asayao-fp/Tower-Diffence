@@ -114,7 +114,8 @@ public class GameProgress : MonoBehaviour
 
     //召喚
     public void Generate(String name,Vector3 pos){
-        GameObject obj = Instantiate (ResourceManager.getObject("Statue/" + name,getStatueType()), pos, Quaternion.identity) as GameObject;
+//        GameObject obj = Instantiate (ResourceManager.getObject("Statue/" + name,getStatueType()), pos, Quaternion.identity) as GameObject;
+        GameObject obj = Instantiate (ResourceManager.getObject("Statue/" + name), pos, Quaternion.identity) as GameObject;
         gcm.generateCost(obj.GetComponent<FacilityManager>().getSData().cost);
         obj.GetComponent<FacilityManager>().Generate(pos,obj.transform.localScale,obj.GetComponent<FacilityManager>().getSData());
 
