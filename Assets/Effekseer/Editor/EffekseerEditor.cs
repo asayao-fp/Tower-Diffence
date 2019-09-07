@@ -36,6 +36,7 @@ namespace Effekseer.Editor
 			if (system == null) {
 				system = new EffekseerSystem();
 			}
+
 			if (!system.enabled) {
 				system.InitPlugin();
 				system.OnEnable();

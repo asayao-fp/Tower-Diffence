@@ -374,6 +374,7 @@ namespace Effekseer
 
 			ReloadEffects();
 
+
 			enabled = true;
 		}
 
