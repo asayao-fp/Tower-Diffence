@@ -17,32 +17,24 @@ public class GobrinManager : StatueManager
         }
 
         if(isDebug){
-    //      fs = GameObject.FindWithTag("StaticObjects").GetComponent<FacilitySetting>();
-          //fInfo = fs.getFacility("gobrin_1");
+          gstatus.hp = statue.hp;
         }
     }
 
     void Update()
     {
         if(gp.getStatus() != gp.NOW_GAME)return;
-       // if(!isGenerate)return;
 
-       // fInfo = gp.getFM(obj_num,isDebug);
 
         if(hpbar != null){
-        //hpbar.fillAmount = (float)fInfo.hp / (float)fInfo.maxhp;
+            hpbar.fillAmount = gstatus.hp / (float)statue.hp;
         }
     }
 
     public override void Generate(Vector3 pos,Vector3 scale,StatueData f){
-       // fInfo = f;
-
         if(gp == null){
           gp = GameObject.FindWithTag("GameManager").GetComponent<GameProgress>();
         }
-    //    gp.Generate(this.gameObject);
-
-       // isGenerate = true;
     }
 
     public override void Dead(){

@@ -9,7 +9,11 @@ public class charamove_test : MonoBehaviour
 
     void Start () {
        NavMeshAgent agent = GetComponent<NavMeshAgent>();
+
+       goal = GameObject.Find("Goal").transform;
        agent.destination = goal.position;
+
+      
     }
 
 

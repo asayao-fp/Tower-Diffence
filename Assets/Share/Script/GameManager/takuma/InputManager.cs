@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using Shapes;
+//using Shapes;
 
 public class InputManager : MonoBehaviour
 {
@@ -28,7 +28,7 @@ public class InputManager : MonoBehaviour
     Boolean isSelect; //施設のアイコンを選択しているか
     Boolean isMoving; //施設を移動中か
 
-    static Material showSetPositionMat; //設置可能範囲用マテリアル
+    public Material showSetPositionMat; //設置可能範囲用マテリアル
     public Boolean isShow; //設置可能範囲、攻撃範囲を表示するか
     public int setType = 100; //設置できるタイプ
     private Boolean canSelect; //施設を選択できるか
@@ -50,7 +50,7 @@ public class InputManager : MonoBehaviour
       for(int i=0;i<tgls.Length;i++){
         tgls[i].isOn = false;
       }
-      showSetPositionMat = new Material (Shader.Find ("Unlit/TestShader"));
+      //showSetPositionMat = new Material (Shader.Find ("Unlit/TestShader"));
       //atkPrefab = Instantiate ((GameObject)Resources.Load ("takuma/Prefabs/AtkPosSphere"), new Vector3(0,0,0), Quaternion.identity) as GameObject ;
       atkPrefab = Instantiate (ResourceManager.getObject("takuma/Master/Character/AtkPosSphere"), new Vector3(0,0,0), Quaternion.identity) as GameObject ;
       atkPrefab.SetActive(false);
@@ -136,6 +136,7 @@ public class InputManager : MonoBehaviour
            nowStatue = tgls[select_num].GetComponent<GenerateBarManager>().getStatus();
 
            //コストが足りなかったら召喚できない
+            Debug.Log("gpppp : " + (gp == null) + " " + (nowStatue == null));
             if(gp.hasCost(nowStatue.cost)){
             spos = getSetPosition(nowStatue,setpos);
 

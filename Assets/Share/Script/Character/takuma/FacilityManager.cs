@@ -47,7 +47,9 @@ public abstract class FacilityManager : MonoBehaviour
     public abstract float getHP();
 
     /* 敵が攻撃範囲内にいるか */
-    public abstract void checkEnemy();
+    public abstract void checkEnemy(); 
 
+    /* オブジェクトのユニークid */
+    public int obj_num; 
 
 }

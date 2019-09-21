@@ -9,8 +9,8 @@ using Effekseer;
 public class StatueManager : FacilityManager
 {
     [SerializeField]
-    private StatueData statue; //自分のパラメータ
-    private gameStatus gstatus; //ゲーム中に変化するパラメータ
+    protected StatueData statue; //自分のパラメータ
+    protected gameStatus gstatus; //ゲーム中に変化するパラメータ
     
     protected float time; //攻撃間隔用
     protected float deletetime; //召喚時間用
@@ -20,10 +20,10 @@ public class StatueManager : FacilityManager
     public GameObject Atk; //攻撃用のエフェクト
     protected Boolean isGene; //エフェクトを使用したかどうかのフラグ
     protected GameProgress gp;    
-    protected int obj_num; //オブジェクトのユニークid
     public Boolean isDebug;
     public Image hpbar;
     public String AtkName;
+    public String ColName;
 
     GameObject amm; //AttackManager check用
     GameObject obj;//敵
@@ -89,7 +89,15 @@ public class StatueManager : FacilityManager
       if(obj == null){
         return;
       }
-      Atk.GetComponent<AttackManager>().Attack();
+      GameObject atkpre = (GameObject)Resources.Load("Attack/" + AtkName);
+      GameObject atkobj = Instantiate(atkpre,transform.position,Quaternion.identity) as GameObject;
+      atkobj.transform.parent = this.transform;
+      atkobj.transform.localPosition = atkpre.transform.position;
+      atkobj.transform.localScale = atkpre.transform.localScale;
+      atkobj.transform.localRotation = atkpre.transform.localRotation;
+
+      Atk = atkobj;
+      Atk.GetComponent<AttackManager>().Attack(ColName);
     }
 
      // 召喚した時に初期化処理をやる
@@ -107,21 +115,16 @@ public class StatueManager : FacilityManager
       amm = GameObject.Find("AttackMakeManager");
 
       time = 0.0f;
-      Gene = (GameObject)Resources.Load("takuma/Prefabs/Generate");
+      Gene = (GameObject)Resources.Load("takuma/Prefabs/AtkPosSphere");
       enemylist = new List<GameObject>();
       gp = GameObject.FindWithTag("GameManager").GetComponent<GameProgress>();
 
 
-      foreach(Transform child in transform){
-        if(child.gameObject.name.StartsWith(AtkName)){
-          Atk = child.gameObject;
-        }
-      }
-    
+      
       Gene.transform.position = transform.position;
-      EffekseerEmitter ee = Gene.GetComponent<EffekseerEmitter>();
-      EffekseerEffectAsset ea = ee.effectAsset;
-      ee.Play(ea);
+     // EffekseerEmitter ee = Gene.GetComponent<EffekseerEmitter>();
+      //EffekseerEffectAsset ea = ee.effectAsset;
+     // ee.Play(ea);
 
       gstatus.hp = statue.hp;
       isEnd = false;

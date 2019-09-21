@@ -30,6 +30,14 @@ public class GameProgress : MonoBehaviour
 
     [SerializeField]
     private bool isDebug;
+    private GameObject debugObj;
+
+    /*** 攻撃の種類  ***/
+    public const int ATK_MAGICBALL = 1;
+    public const int ATK_LASER = 2;
+    public const int ATK_THUNDER = 3;
+    public const int ATK_POISON = 4;
+    public const int ATK_EXPLODE = 5;
 
     void Awake(){
       game_status = 0;
@@ -39,7 +47,10 @@ public class GameProgress : MonoBehaviour
     void Start()
     {
       fs = GameObject.FindWithTag("StaticObjects").GetComponent<FacilitySetting>();
-      sg_objs = new Dictionary<int,GameObject>();
+
+      if(sg_objs == null){
+        sg_objs = new Dictionary<int,GameObject>();
+      }
       count = 0;
       limittime = GameObject.FindWithTag("LimitTime").GetComponent<Text>();
       gs = GameObject.FindWithTag("StaticObjects").GetComponent<GameSettings>();
@@ -102,9 +113,21 @@ public class GameProgress : MonoBehaviour
         for(int i=0;i<isdelete.Length;i++){
           if(isdelete[i] != -1){
             sg_objs.Remove(isdelete[i]);
+            if(isdelete[i] == 1000000){
+              debugObj = null;
+            }
           }
         }
       }
+      
+      if(isDebug){
+        if(debugObj == null){
+          debugObj = ResourceManager.getObject("Statue/debugGobrin");
+          Generate("debugGobrin",debugObj.transform.position);
+        }
+      }
+
+      
     }
 
     //現在のステータスを取得
@@ -112,22 +135,72 @@ public class GameProgress : MonoBehaviour
       return game_status;
     }
 
+    //召喚 (デバッグ用)
+    public void Generate(GameObject obj){
+        obj.GetComponent<FacilityManager>().setId(1000000);
+        if(sg_objs == null){
+            sg_objs = new Dictionary<int,GameObject>();
+
+        }
+        sg_objs.Add(1000000,obj);
+    }
     //召喚
     public void Generate(String name,Vector3 pos){
 //        GameObject obj = Instantiate (ResourceManager.getObject("Statue/" + name,getStatueType()), pos, Quaternion.identity) as GameObject;
         GameObject obj = Instantiate (ResourceManager.getObject("Statue/" + name), pos, Quaternion.identity) as GameObject;
-        gcm.generateCost(obj.GetComponent<FacilityManager>().getSData().cost);
-        obj.GetComponent<FacilityManager>().Generate(pos,obj.transform.localScale,obj.GetComponent<FacilityManager>().getSData());
+        
+        if(!name.Equals("debugGobrin")){
+          gcm.generateCost(obj.GetComponent<FacilityManager>().getSData().cost);
+          obj.GetComponent<FacilityManager>().Generate(pos,obj.transform.localScale,obj.GetComponent<FacilityManager>().getSData());
 
-        obj.GetComponent<FacilityManager>().setId(count);
-        sg_objs.Add(count++,obj);
+          obj.GetComponent<FacilityManager>().setId(count);
+          sg_objs.Add(count++,obj);
+
+        }else{
+          obj.GetComponent<FacilityManager>().setId(1000000);
+          sg_objs.Add(1000000,obj); 
+        }
     }
 
+    //ダメージ計算
+    public void calcDamage(int obj_id,int type){
+       int hp = 0;
+       String debugstr = "";
+       //攻撃の種類
+       //攻撃を受けたキャラクターの状態
+       //パラメータとかで計算？（これはいずれ）
+       switch(type){
+         case ATK_MAGICBALL:
+           debugstr = "ATK_MAGICBALL";
+           hp = -1;
+           break;
+         case ATK_LASER:
+           debugstr = "ATK_LASER";           
+           hp = -2;
+           break;
+         case ATK_THUNDER:
+           debugstr = "ATK_THUNDER";
+           hp = -3;
+           break;
+         case ATK_POISON:
+           debugstr = "ATK_POISON";
+           hp = -4;
+           break;
+         case ATK_EXPLODE:
+           debugstr = "ATK_EXPLODE";
+           hp = -5;
+           break;
+       }
+       Debug.Log("[CALC DAMAGE] TYPE : " + debugstr);
+       
+       AddHP(obj_id,hp,false);
+    }
     //攻撃受けた
     public void AddHP(int obj_id,int hp,Boolean isDebug){
       FacilityManager fm = null;
 
       fm = sg_objs[obj_id].GetComponent<FacilityManager>();
+      Debug.Log("add hp " + obj_id + " " + hp);
       fm.addHP(hp);
     }
 
