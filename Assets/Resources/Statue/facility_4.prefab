@@ -266,12 +266,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   obj_materials: []
   isEnd: 0
+  obj_num: 0
   statue: {fileID: 11400000, guid: 0d4878c3456a84cd19c0e51a2f479125, type: 2}
   Atk: {fileID: 0}
   isDebug: 0
   hpbar: {fileID: 4679406679655590651}
   AtkName: poison
   ColName: poison
+  GenName: generate3
+  DeadName: dead3
+  viewModels:
+  - {fileID: 2129419438885889751}
+  - {fileID: 7700950980651634169}
+  - {fileID: 2129644277755114423}
+  - {fileID: 2129418726598507693}
+  - {fileID: 2129836068381400841}
+  - {fileID: 1787910956}
 --- !u!1 &2129418726598507693
 GameObject:
   m_ObjectHideFlags: 0

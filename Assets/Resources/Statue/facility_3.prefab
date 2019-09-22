@@ -610,12 +610,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   obj_materials: []
   isEnd: 0
+  obj_num: 0
   statue: {fileID: 11400000, guid: ea97aad9b340c4bac83049ec5f3811d2, type: 2}
   Atk: {fileID: 0}
   isDebug: 0
   hpbar: {fileID: 4679406679946939490}
   AtkName: laser
   ColName: laser
+  GenName: generate2
+  DeadName: dead2
+  viewModels:
+  - {fileID: 1287300592334775677}
+  - {fileID: 1287186548633339643}
+  - {fileID: 1287043925985678173}
+  - {fileID: 1287835644115273501}
+  - {fileID: 1287050245427232941}
+  - {fileID: 1199211469}
 --- !u!1 &1287835644115273501
 GameObject:
   m_ObjectHideFlags: 0

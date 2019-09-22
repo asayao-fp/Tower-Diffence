@@ -24,6 +24,10 @@ public class StatueManager : FacilityManager
     public Image hpbar;
     public String AtkName;
     public String ColName;
+    public String GenName;
+    public String DeadName;
+    [SerializeField]
+    private GameObject[] viewModels;
 
     GameObject amm; //AttackManager check用
     GameObject obj;//敵
@@ -115,17 +119,18 @@ public class StatueManager : FacilityManager
       amm = GameObject.Find("AttackMakeManager");
 
       time = 0.0f;
-      Gene = (GameObject)Resources.Load("takuma/Prefabs/AtkPosSphere");
       enemylist = new List<GameObject>();
       gp = GameObject.FindWithTag("GameManager").GetComponent<GameProgress>();
 
-
-      
-      Gene.transform.position = transform.position;
-     // EffekseerEmitter ee = Gene.GetComponent<EffekseerEmitter>();
-      //EffekseerEffectAsset ea = ee.effectAsset;
-     // ee.Play(ea);
-
+      Gene = ResourceManager.getObject("Other/" + GenName);
+      GameObject geneObj = Instantiate(Gene,transform.position,Quaternion.identity) as GameObject;
+      geneObj.transform.parent = this.transform;
+      geneObj.transform.localPosition = Gene.transform.position;
+      geneObj.transform.localScale = Gene.transform.localScale;
+      geneObj.transform.localRotation = Gene.transform.localRotation;
+      ParticleSystem p = geneObj.GetComponent<ParticleSystem>();
+      p.Play();
+    
       gstatus.hp = statue.hp;
       isEnd = false;
     }
@@ -146,8 +151,23 @@ public class StatueManager : FacilityManager
 
     public override void Dead(){
       //消滅エフェクト実行
-      
-      Destroy(this.gameObject);
+
+      for(int i=0;i<viewModels.Length;i++){
+        viewModels[i].gameObject.SetActive(false);
+      }
+
+      GameObject Gene = ResourceManager.getObject("Other/" + DeadName);
+      GameObject geneObj = Instantiate(Gene,transform.position,Quaternion.identity) as GameObject;
+      geneObj.transform.parent = this.transform;
+
+      geneObj.transform.localPosition = Gene.transform.position;
+      geneObj.transform.localScale = Gene.transform.localScale;
+      geneObj.transform.localRotation = Gene.transform.localRotation;
+      ParticleSystem p = geneObj.GetComponent<ParticleSystem>();
+      p.Play();
+
+      Destroy(this.gameObject,2);
+
     }
 
     public override StatueData getSData(){

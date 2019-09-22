@@ -359,12 +359,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   obj_materials: []
   isEnd: 0
+  obj_num: 0
   statue: {fileID: 11400000, guid: c9ef1e06329ef42ad95cf1d03b5accf7, type: 2}
   Atk: {fileID: 0}
   isDebug: 0
   hpbar: {fileID: 4679406679493034903}
   AtkName: shoot
   ColName: ball
+  GenName: generate0
+  DeadName: dead0
+  viewModels:
+  - {fileID: 1536550850926771524}
+  - {fileID: 1535810949436869176}
+  - {fileID: 1536561638122350632}
+  - {fileID: 1536533977342148620}
+  - {fileID: 1536355646541994744}
+  - {fileID: 848449873}
 --- !u!1 &1536355646541994744
 GameObject:
   m_ObjectHideFlags: 0

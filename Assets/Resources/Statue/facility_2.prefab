@@ -359,12 +359,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   obj_materials: []
   isEnd: 0
+  obj_num: 0
   statue: {fileID: 11400000, guid: bb3a7675077ef49ab8e20f4acbff20d9, type: 2}
   Atk: {fileID: 0}
   isDebug: 0
   hpbar: {fileID: 4679406680697725722}
   AtkName: thunder
   ColName: thunder
+  GenName: generate1
+  DeadName: dead1
+  viewModels:
+  - {fileID: 3789871956251983297}
+  - {fileID: 3790412264325790753}
+  - {fileID: 3791074486444212809}
+  - {fileID: 3790604995068972683}
+  - {fileID: 3790339644514534023}
+  - {fileID: 1892680132}
 --- !u!1 &3790339644514534023
 GameObject:
   m_ObjectHideFlags: 0
