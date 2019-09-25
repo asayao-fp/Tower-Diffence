@@ -136,7 +136,6 @@ public class InputManager : MonoBehaviour
            nowStatue = tgls[select_num].GetComponent<GenerateBarManager>().getStatus();
 
            //コストが足りなかったら召喚できない
-            Debug.Log("gpppp : " + (gp == null) + " " + (nowStatue == null));
             if(gp.hasCost(nowStatue.cost)){
             spos = getSetPosition(nowStatue,setpos);
 

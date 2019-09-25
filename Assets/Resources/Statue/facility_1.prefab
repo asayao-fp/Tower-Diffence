@@ -357,7 +357,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ca615d7f9307442fb9076751b7dd1bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  obj_materials: []
+  obj_materials:
+  - {fileID: 1515185739492550258}
+  - {fileID: 1514829523585520344}
+  - {fileID: 1514930227351727044}
   isEnd: 0
   obj_num: 0
   statue: {fileID: 11400000, guid: c9ef1e06329ef42ad95cf1d03b5accf7, type: 2}

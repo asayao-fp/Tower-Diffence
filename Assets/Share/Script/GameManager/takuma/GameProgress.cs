@@ -31,6 +31,8 @@ public class GameProgress : MonoBehaviour
     [SerializeField]
     private bool isDebug;
     private GameObject debugObj;
+    private GameObject crystalObj;
+    private bool crystaldead;
 
     /*** 攻撃の種類  ***/
     public const int ATK_MAGICBALL = 1;
@@ -60,6 +62,7 @@ public class GameProgress : MonoBehaviour
       starttime = GameObject.FindWithTag("StartTime").GetComponent<Text>();
       starttime.text = "" + (int)start;
       gcm = GameObject.FindWithTag("GenerateCost").GetComponent<GenerateCostManager>();
+      crystaldead = false;
     }
 
     void Update()
@@ -107,6 +110,15 @@ public class GameProgress : MonoBehaviour
           }
         }
         count++;
+        if(!crystaldead){
+          if(crystalObj == null){
+            crystalObj = GameObject.Find("crystal");
+          }
+          if(crystalObj.GetComponent<CrystalManager>().getHP() <= 0){
+            crystalObj.GetComponent<CrystalManager>().Dead();
+            crystaldead = true;
+          }
+        }
       }
       //削除フラグが立ってるオブジェクトをtableから削除
       if(delete){

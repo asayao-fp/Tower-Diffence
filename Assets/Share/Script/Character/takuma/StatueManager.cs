@@ -37,6 +37,11 @@ public class StatueManager : FacilityManager
       for(int i=0;i<obj_materials.Length;i++){
         obj_materials[i].material = material;
       }
+      for(int i=0;i<viewModels.Length;i++){
+        if(viewModels[i].gameObject.name.Equals("Canvas")){
+          viewModels[i].SetActive(false);
+        }
+      }
     }
 
     void Update()
@@ -107,6 +112,7 @@ public class StatueManager : FacilityManager
      // 召喚した時に初期化処理をやる
      public override　void Generate(Vector3 pos,Vector3 scale,StatueData s){
       isEnd = true; //念の為
+      setEnd(true);
       GameObject atkpre = (GameObject)Resources.Load("takuma/Prefabs/AtkCheck");
       GameObject atkcheck = Instantiate(atkpre,pos,Quaternion.identity) as GameObject;
       atkcheck.transform.position = pos;
@@ -115,6 +121,7 @@ public class StatueManager : FacilityManager
 
       hpbar.transform.position = new Vector3(this.transform.position.x ,this.transform.position.y + 0.3f,this.transform.position.z);
       hpbar.fillAmount = 1;
+      setView(false);
 
       amm = GameObject.Find("AttackMakeManager");
 
@@ -132,7 +139,10 @@ public class StatueManager : FacilityManager
       p.Play();
     
       gstatus.hp = statue.hp;
-      isEnd = false;
+
+      Invoke("setEnd", 1f);
+      Invoke("setView",0.5f);
+
     }
     
     public override　void EnemyOnArea(GameObject obj){
@@ -151,10 +161,7 @@ public class StatueManager : FacilityManager
 
     public override void Dead(){
       //消滅エフェクト実行
-
-      for(int i=0;i<viewModels.Length;i++){
-        viewModels[i].gameObject.SetActive(false);
-      }
+      setView(false);
 
       GameObject Gene = ResourceManager.getObject("Other/" + DeadName);
       GameObject geneObj = Instantiate(Gene,transform.position,Quaternion.identity) as GameObject;
@@ -167,6 +174,23 @@ public class StatueManager : FacilityManager
       p.Play();
 
       Destroy(this.gameObject,2);
+
+    }
+
+    public void setEnd(){
+      setEnd(false);
+    }
+    public void setEnd(bool isend){
+      isEnd = isend;
+    }
+
+    public void setView(){
+      setView(true);
+    }
+    public void setView(bool isshow){
+      for(int i=0;i<viewModels.Length;i++){
+        viewModels[i].gameObject.SetActive(isshow);
+      }
 
     }
 
