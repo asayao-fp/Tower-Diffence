@@ -18,6 +18,9 @@ public class InputManager : MonoBehaviour
     private GameObject generatePrefab; //ドラッグ中に使用する施設用オブジェクト
     GameObject prefab; //生成用のプレハブ
     private GameObject atkPrefab; //攻撃範囲用のプレハブ
+    private GameObject setPrefab; //設置範囲用のプレハブ
+    private GameObject setObj; //設置用のオブジェクト
+    private GameObject[] setObjs; //設置されてるstatue用オブジェクト
 
     public GameObject[] tglobj;
     public Toggle[] tgls = new Toggle[4]; //施設選択用
@@ -52,8 +55,9 @@ public class InputManager : MonoBehaviour
       }
       //showSetPositionMat = new Material (Shader.Find ("Unlit/TestShader"));
       //atkPrefab = Instantiate ((GameObject)Resources.Load ("takuma/Prefabs/AtkPosSphere"), new Vector3(0,0,0), Quaternion.identity) as GameObject ;
-      atkPrefab = Instantiate (ResourceManager.getObject("takuma/Master/Character/AtkPosSphere"), new Vector3(0,0,0), Quaternion.identity) as GameObject ;
+      atkPrefab = Instantiate (ResourceManager.getObject("takuma/Master/Character/AtkPosSphere"), new Vector3(0,0.1f,0), Quaternion.identity) as GameObject ;
       atkPrefab.SetActive(false);
+      setPrefab = ResourceManager.getObject("Other/setpos");
       canSelect = true;
       gp = GameObject.FindWithTag("GameManager").GetComponent<GameProgress>();
 
@@ -145,6 +149,21 @@ public class InputManager : MonoBehaviour
             prefab = ResourceManager.getObject("Statue/" + FacilityName);
             generatePrefab = Instantiate (prefab, setpos, Quaternion.identity) as GameObject;
 
+
+            //選択したオブジェクトの設置範囲を表示
+            setObj = Instantiate(setPrefab,setpos,Quaternion.identity) as GameObject;
+            Vector2 Spos = generatePrefab.GetComponent<FacilityManager>().getSData().setpos;
+            setObj.transform.localScale = new Vector3(0.1f * Spos.x,0.1f,0.1f*Spos.y);
+
+            //設置されてるオブジェクト全ての設置範囲を表示
+            GameObject[] objs = gp.getObjs();
+            setObjs = new GameObject[objs.Length];
+            for(int i=0;i<objs.Length;i++){
+                Vector2 sp = objs[i].GetComponent<FacilityManager>().getSData().setpos;
+                setObjs[i] = Instantiate(setPrefab,objs[i].transform.position,Quaternion.identity) as GameObject;
+                setObjs[i].transform.localScale = new Vector3(0.1f * sp.x,0.1f,0.1f * sp.y);
+            }
+
             stage.GetComponent<ShowStagePosition>().showSetPosition(setType);
             if(checkPosition()){
               generatePrefab.gameObject.SetActive(true);
@@ -211,6 +230,21 @@ public class InputManager : MonoBehaviour
           generatePrefab.SetActive(false);
           Destroy(generatePrefab);
         }
+
+        if(setObj != null){
+          setObj.SetActive(false);
+          Destroy(setObj);
+        }
+
+        if(setObjs != null){
+          for(int i=0;i<setObjs.Length;i++){
+            if(setObjs[i] != null){
+              setObjs[i].SetActive(false);
+              Destroy(setObjs[i]);
+            }
+          }
+        }
+
         isMoving = false;
         canSelect = true;
         stage.GetComponent<ShowStagePosition>().hideSetPosition();
@@ -233,9 +267,11 @@ public class InputManager : MonoBehaviour
             generatePrefab.transform.position = setPosition(generatePrefab.transform.position,setpos);
             generatePrefab.gameObject.SetActive(true);
 
-
+            setObj.gameObject.SetActive(true);
+            setObj.transform.position = generatePrefab.transform.position;
           }else{
             generatePrefab.gameObject.SetActive(false);
+            setObj.gameObject.SetActive(false);
             isdrawAttack = false;
           }
         }else{
@@ -286,25 +322,46 @@ public class InputManager : MonoBehaviour
     //設置物を可能範囲内に置けるか
     public Boolean checkPosition(){
 
+
+     
       int incount = 0;//設置可能域にいるか
+      int setincount = 0;//設置されてるオブジェクトの中にいないか
       for(int i=0;i<spos.Length;i++){
         Boolean isin = false;
+        Boolean issetin = false;
         for(int j=0;j<nowStage.enablelist.Count;j++){
 
           if(nowStage.enablelist[j][4] > setType){
             continue;
           }
 
+           //設置されてるオブジェクトの範囲内にいたら置けない
+       /*   GameObject[] objs = gp.getObjs();
+           for(int k=0;k<objs.Length;k++){
+            if(!objs[k].gameObject.tag.Equals("Statue"))continue;
+            Vector2[] setpos = getSetPosition(objs[k].GetComponent<FacilityManager>().getSData(),objs[k].transform.position);
+            for(int l=0;l<setpos.Length;l++){
+             // if((setpos[l].x <= spos[i].x) && (spos[i].x <= setpos[1]) && (setpos[2] <= spos[i].y) && (spos[i].y <= setpos[3])){
+              //  issetin = true;
+              //  break;
+             // }
+            }
+           }*/
+
+
           float[] area = nowStage.enablelist[j];
           if((area[0] <= spos[i].x) && (spos[i].x <= area[1]) && (area[2] <= spos[i].y) && (spos[i].y <= area[3])){
-            isin = true;
+              isin = true;
               break;
           }
         }
         if(isin)incount++;
+        if(issetin)setincount++;
       }
 
-      return incount == spos.Length;
+      
+      Debug.Log("incount : " + incount + " ,setincount : " + setincount);
+      return (incount == spos.Length) && (setincount == 0);
     }
 
     public Vector3 setPosition(Vector3 nowpos,Vector3 setpos){

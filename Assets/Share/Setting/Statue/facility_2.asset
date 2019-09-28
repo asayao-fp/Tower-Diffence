@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 2
   name: facility_2
-  setpos: {x: 0, y: 0}
+  setpos: {x: 1, y: 1}
   attackpos: {x: 0, y: 0, z: 4}
   settype: 4
   hp: 10

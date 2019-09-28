@@ -142,6 +142,11 @@ public class GameProgress : MonoBehaviour
       
     }
 
+    public GameObject[] getObjs(){
+     // GameObject[] vals = new GameObject[sg_objs.Values.Count];
+     // return sg_objs.Values.CopyTo(vals, 0);
+      return null;
+    }
     //現在のステータスを取得
     public int getStatus(){
       return game_status;
