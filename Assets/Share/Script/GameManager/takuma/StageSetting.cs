@@ -122,4 +122,5 @@ public class Stage{
   public String stagename = "";
  // public float[][] enablemap; //施設を設置できる位置を格納
   public List<float[]> enablelist; //施設を設置できる位置のリスト
+  public List<Vector2[]> enablelistv; //施設設置用のリスト(Vector)
 }

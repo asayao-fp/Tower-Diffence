@@ -37,6 +37,12 @@ public class InputManager : MonoBehaviour
     private Boolean canSelect; //施設を選択できるか
     private Boolean isdrawAttack = false; //攻撃可能範囲を表示するか
 
+    [SerializeField]
+    private Text nameText;
+    private Vector3 textpos; //ドラッグ中の名前
+    [SerializeField]
+    private Text notsetText; //設置できないときに表示するオブジェクト
+
 
     private int select_num;
 
@@ -60,8 +66,12 @@ public class InputManager : MonoBehaviour
       setPrefab = ResourceManager.getObject("Other/setpos");
       canSelect = true;
       gp = GameObject.FindWithTag("GameManager").GetComponent<GameProgress>();
+      nameText.text = "";
+      notsetText.text = "NOT SET!";
+      notsetText.gameObject.SetActive(false);
 
       nowStage = gp.setNowStage(ss.getStageList(0));
+      textpos = new Vector3();
 
     }
 
@@ -87,8 +97,10 @@ public class InputManager : MonoBehaviour
         }
       }
 
+       Vector2 mousepos = Input.mousePosition;
+       textpos.Set(mousepos.x,mousepos.y+30,0);
        GameObject current = EventSystem.current.currentSelectedGameObject;
-       Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+       Ray ray = Camera.main.ScreenPointToRay(mousepos);
        RaycastHit hit;
        if (Input.GetMouseButtonDown(0)) {
            if(current){ //アイコンをタッチしていた場合
@@ -116,6 +128,8 @@ public class InputManager : MonoBehaviour
             if (Physics.Raycast(ray,out hit,10.0f))
             {
               setpos = hit.point;
+              nameText.gameObject.transform.position = textpos;
+              notsetText.gameObject.transform.position = textpos;
               int count = 0;
               for(int i=0;i<tgls.Length;i++){
                 //一つでもアイコンが選択されていた時
@@ -149,16 +163,19 @@ public class InputManager : MonoBehaviour
             prefab = ResourceManager.getObject("Statue/" + FacilityName);
             generatePrefab = Instantiate (prefab, setpos, Quaternion.identity) as GameObject;
 
+            StatueData sd = generatePrefab.GetComponent<FacilityManager>().getSData();
+            nameText.text = sd.name4Preview;
 
             //選択したオブジェクトの設置範囲を表示
             setObj = Instantiate(setPrefab,setpos,Quaternion.identity) as GameObject;
-            Vector2 Spos = generatePrefab.GetComponent<FacilityManager>().getSData().setpos;
+            Vector2 Spos = sd.setpos;
             setObj.transform.localScale = new Vector3(0.1f * Spos.x,0.1f,0.1f*Spos.y);
 
             //設置されてるオブジェクト全ての設置範囲を表示
             GameObject[] objs = gp.getObjs();
             setObjs = new GameObject[objs.Length];
             for(int i=0;i<objs.Length;i++){
+                if(!objs[i].gameObject.tag.Equals("Statue"))continue;
                 Vector2 sp = objs[i].GetComponent<FacilityManager>().getSData().setpos;
                 setObjs[i] = Instantiate(setPrefab,objs[i].transform.position,Quaternion.identity) as GameObject;
                 setObjs[i].transform.localScale = new Vector3(0.1f * sp.x,0.1f,0.1f * sp.y);
@@ -167,8 +184,12 @@ public class InputManager : MonoBehaviour
             stage.GetComponent<ShowStagePosition>().showSetPosition(setType);
             if(checkPosition()){
               generatePrefab.gameObject.SetActive(true);
+              nameText.gameObject.SetActive(true);
+              notsetText.gameObject.SetActive(false);
             }else{
               generatePrefab.gameObject.SetActive(false);
+              nameText.gameObject.SetActive(false);
+              notsetText.gameObject.SetActive(true);
             }
            }else{
             canSelect = false;
@@ -185,6 +206,8 @@ public class InputManager : MonoBehaviour
         if (Physics.Raycast(ray,out hit,10.0f))
         {
           setpos = hit.point;
+          nameText.gameObject.transform.position = textpos;
+          notsetText.gameObject.transform.position = textpos;
         }
         //マウスを離した時に設置可能位置に置けなかった場合か、toggleを洗濯していたら設置可能位置は表示したまま
          if(isSelect && canSelect){
@@ -231,6 +254,12 @@ public class InputManager : MonoBehaviour
           Destroy(generatePrefab);
         }
 
+        if(nameText != null){
+          nameText.gameObject.SetActive(false); 
+          nameText.text = "";
+          notsetText.gameObject.SetActive(false);
+        }
+
         if(setObj != null){
           setObj.SetActive(false);
           Destroy(setObj);
@@ -255,6 +284,8 @@ public class InputManager : MonoBehaviour
         if (Physics.Raycast(ray,out hit,100.0f))
         {
           setpos = hit.point;
+          nameText.gameObject.transform.position = textpos;
+          notsetText.gameObject.transform.position = textpos;
           setpos.y = 0.1f;
         }
         if(isSelect && (nowStatue != null) && canSelect){
@@ -266,6 +297,8 @@ public class InputManager : MonoBehaviour
             isMoving = true;
             generatePrefab.transform.position = setPosition(generatePrefab.transform.position,setpos);
             generatePrefab.gameObject.SetActive(true);
+            nameText.gameObject.SetActive(true);
+            notsetText.gameObject.SetActive(false);
 
             setObj.gameObject.SetActive(true);
             setObj.transform.position = generatePrefab.transform.position;
@@ -273,6 +306,8 @@ public class InputManager : MonoBehaviour
             generatePrefab.gameObject.SetActive(false);
             setObj.gameObject.SetActive(false);
             isdrawAttack = false;
+            nameText.gameObject.SetActive(false);
+            notsetText.gameObject.SetActive(true);
           }
         }else{
           stage.GetComponent<ShowStagePosition>().hideSetPosition();
@@ -312,55 +347,76 @@ public class InputManager : MonoBehaviour
     //マウス座標から、設置物の置ける範囲を取得
     public Vector2[] getSetPosition(StatueData f,Vector3 pos){
       return new Vector2[]{
-        new Vector2(pos.x-f.setpos.x/2,pos.z-f.setpos.y/2), //左下
-        new Vector2(pos.x+f.setpos.x/2,pos.z-f.setpos.y/2), //右下
         new Vector2(pos.x-f.setpos.x/2,pos.z+f.setpos.y/2), //左上
-        new Vector2(pos.x+f.setpos.x/2,pos.z+f.setpos.y/2) //右上
+        new Vector2(pos.x+f.setpos.x/2,pos.z+f.setpos.y/2), //右上
+        new Vector2(pos.x+f.setpos.x/2,pos.z-f.setpos.y/2), //右下
+        new Vector2(pos.x-f.setpos.x/2,pos.z-f.setpos.y/2) //左下
       };
+    }
+
+    //点と四角形の内外判定
+    public bool checkOutside(Vector2 target,Vector2[] rect){
+      var count = 0;
+      //rect 0 -> 左上 
+      //     1 -> 右上
+      //     2 -> 右下
+      //     3 -> 左下 
+      if(!((rect[0].x <= target.x) && (rect[0].y >= target.y))){
+          return false;
+      }
+      if(!((rect[1].x >= target.x) && (rect[1].y >= target.y))){
+          return false;
+      }
+      if(!((rect[2].x >= target.x) && (rect[2].y <= target.y))){
+          return false;
+      }
+      if(!((rect[3].x <= target.x) && (rect[3].y <= target.y))){
+          return false;
+      }
+          return true;
     }
 
     //設置物を可能範囲内に置けるか
     public Boolean checkPosition(){
-
-
-     
       int incount = 0;//設置可能域にいるか
-      int setincount = 0;//設置されてるオブジェクトの中にいないか
+      int setincount = 0;//設置されてるStatueの中に入っているか
+
       for(int i=0;i<spos.Length;i++){
-        Boolean isin = false;
-        Boolean issetin = false;
+        bool isin = false;
+        bool isinObj = false; 
         for(int j=0;j<nowStage.enablelist.Count;j++){
 
           if(nowStage.enablelist[j][4] > setType){
             continue;
           }
 
-           //設置されてるオブジェクトの範囲内にいたら置けない
-       /*   GameObject[] objs = gp.getObjs();
-           for(int k=0;k<objs.Length;k++){
-            if(!objs[k].gameObject.tag.Equals("Statue"))continue;
-            Vector2[] setpos = getSetPosition(objs[k].GetComponent<FacilityManager>().getSData(),objs[k].transform.position);
-            for(int l=0;l<setpos.Length;l++){
-             // if((setpos[l].x <= spos[i].x) && (spos[i].x <= setpos[1]) && (setpos[2] <= spos[i].y) && (spos[i].y <= setpos[3])){
-              //  issetin = true;
-              //  break;
-             // }
-            }
-           }*/
-
-
-          float[] area = nowStage.enablelist[j];
-          if((area[0] <= spos[i].x) && (spos[i].x <= area[1]) && (area[2] <= spos[i].y) && (spos[i].y <= area[3])){
+          //設置可能範囲にいるか
+          if(!isin){
+            if(checkOutside(spos[i],nowStage.enablelistv[j])){
               isin = true;
-              break;
+            }
+          }
+
+          //設置されてるObjectの範囲にいないか
+          if(!isinObj){
+            GameObject[] objs = gp.getObjs();
+            for(int k=0;k<objs.Length;k++){
+              if(!objs[k].gameObject.tag.Equals("Statue"))continue;
+              Vector2[] setposition = getSetPosition(objs[k].GetComponent<FacilityManager>().getSData(),objs[k].transform.position);
+              if(checkOutside(spos[i],setposition)){
+                isinObj = true;
+                break;
+              }            
+            }
           }
         }
-        if(isin)incount++;
-        if(issetin)setincount++;
-      }
 
-      
-      Debug.Log("incount : " + incount + " ,setincount : " + setincount);
+        if(isin)incount++;
+        if(isinObj){
+          setincount++;
+          break;
+        }
+      }
       return (incount == spos.Length) && (setincount == 0);
     }
 

@@ -1,7 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using System;
+using System.IO;
 public class GameSettings : MonoBehaviour
 {
 
@@ -11,6 +12,9 @@ public class GameSettings : MonoBehaviour
     private Material Light_material;
     [SerializeField]
     private Material Generating_material;
+
+    [SerializeField]
+    private static bool isLog; //ログを出力するか
 
     //制限時間
     [SerializeField]
@@ -55,6 +59,12 @@ public class GameSettings : MonoBehaviour
         }
         return isLight ? Light_material : Dark_material;
 
+    }
+
+    public static void printLog(String msg){
+        if(isLog){
+            Debug.Log(msg);
+        }
     }
 }
 

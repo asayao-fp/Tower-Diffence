@@ -15,5 +15,6 @@ public class StatueData : ScriptableObject
    public int time; //消滅までの時間
    public int atkInterval; //攻撃間隔
    public int cost; //召喚コスト
+   public String name4Preview; //表示用の名前
 
 }

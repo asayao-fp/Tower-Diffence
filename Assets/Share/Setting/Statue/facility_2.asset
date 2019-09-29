@@ -14,10 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 2
   name: facility_2
-  setpos: {x: 1, y: 1}
+  setpos: {x: 1.5, y: 1.5}
   attackpos: {x: 0, y: 0, z: 4}
   settype: 4
   hp: 10
   time: 10
   atkInterval: 1
   cost: 2
+  name4Preview: Statue2

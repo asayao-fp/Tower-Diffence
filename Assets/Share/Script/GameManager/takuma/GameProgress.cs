@@ -143,9 +143,9 @@ public class GameProgress : MonoBehaviour
     }
 
     public GameObject[] getObjs(){
-     // GameObject[] vals = new GameObject[sg_objs.Values.Count];
-     // return sg_objs.Values.CopyTo(vals, 0);
-      return null;
+      GameObject[] vals = new GameObject[sg_objs.Values.Count];
+      sg_objs.Values.CopyTo(vals,0);
+      return vals;
     }
     //現在のステータスを取得
     public int getStatus(){
@@ -208,7 +208,7 @@ public class GameProgress : MonoBehaviour
            hp = -5;
            break;
        }
-       Debug.Log("[CALC DAMAGE] TYPE : " + debugstr);
+       GameSettings.printLog("[CALC DAMAGE] TYPE : " + debugstr);
        
        AddHP(obj_id,hp,false);
     }
@@ -217,12 +217,13 @@ public class GameProgress : MonoBehaviour
       FacilityManager fm = null;
 
       fm = sg_objs[obj_id].GetComponent<FacilityManager>();
-      Debug.Log("add hp " + obj_id + " " + hp);
+      GameSettings.printLog("add hp " + obj_id + " " + hp);
       fm.addHP(hp);
     }
 
     public Stage setNowStage(Stage s){
       s.enablelist = new List<float[]>();
+      s.enablelistv = new List<Vector2[]>();
       GameObject stage = GameObject.FindWithTag("Stage");
       foreach (Transform child in stage.transform)
       {
@@ -240,6 +241,14 @@ public class GameProgress : MonoBehaviour
           sinfo[2] = sinfo[2] < 0 ? 0 : sinfo[2];
           
           s.enablelist.Add(sinfo);
+          
+          Vector2[] posv = new Vector2[4];
+          posv[0] = new Vector2(sinfo[0],sinfo[3]); //左上
+          posv[1] = new Vector2(sinfo[1],sinfo[3]); //右上
+          posv[2] = new Vector2(sinfo[1],sinfo[2]); //右下
+          posv[3] = new Vector2(sinfo[0],sinfo[2]); //左下
+
+          s.enablelistv.Add(posv);
         }
       }
       return s;
