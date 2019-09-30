@@ -61,6 +61,9 @@ public class GameSettings : MonoBehaviour
 
     }
 
+    public bool isStatue(){
+        return battleType == 0;
+    }
     public static void printLog(String msg){
         if(isLog){
             Debug.Log(msg);

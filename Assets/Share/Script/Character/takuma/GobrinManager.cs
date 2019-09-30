@@ -7,6 +7,8 @@ public class GobrinManager : StatueManager
 
     void Start()
     {
+        isStatue = false;
+
         time = 0.0f;
         enemylist = new List<GameObject>();
 

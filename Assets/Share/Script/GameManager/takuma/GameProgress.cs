@@ -41,6 +41,11 @@ public class GameProgress : MonoBehaviour
     public const int ATK_POISON = 4;
     public const int ATK_EXPLODE = 5;
 
+    [SerializeField]
+    private int MAX_SET_OBJ;
+    private int myobj_num;
+    private bool isStatue;
+
     void Awake(){
       game_status = 0;
       start = 5;
@@ -63,6 +68,8 @@ public class GameProgress : MonoBehaviour
       starttime.text = "" + (int)start;
       gcm = GameObject.FindWithTag("GenerateCost").GetComponent<GenerateCostManager>();
       crystaldead = false;
+      myobj_num = 0;
+      isStatue = gs.isStatue();
     }
 
     void Update()
@@ -97,14 +104,18 @@ public class GameProgress : MonoBehaviour
       int[] isdelete = new int[sg_objs.Count()];
       int count = 0;
       bool delete = false;
+      myobj_num = 0;
       foreach(KeyValuePair<int,GameObject> pair in sg_objs){
         isdelete[count] = -1;
         if(pair.Value == null){
-        }else{
-          if(pair.Value.GetComponent<FacilityManager>().getHP() <= 0){
-            FacilityManager f = pair.Value.GetComponent<FacilityManager>();
-            f.isEnd = true;
-            f.Dead();
+        }else{    
+          FacilityManager fm = pair.Value.GetComponent<FacilityManager>();
+          if((isStatue && fm.isStatue) || (!isStatue && !fm.isStatue)){
+              myobj_num++;
+          }
+          if(fm.getHP() <= 0){
+            fm.isEnd = true;
+            fm.Dead();
             isdelete[count] = pair.Key;
             delete = true;
           }
@@ -267,5 +278,11 @@ public class GameProgress : MonoBehaviour
     //召喚コストが足りてるか
     public bool hasCost(int cost){
       return gcm.getCost() >= cost;
+    }
+
+    //オブジェクトを設置可能か
+    public bool canObjSet(){
+      GameSettings.printLog("[GameProgress] MyObjNum :  " + myobj_num + "  MaxSetObj : " + MAX_SET_OBJ);
+      return myobj_num < MAX_SET_OBJ;
     }
 }

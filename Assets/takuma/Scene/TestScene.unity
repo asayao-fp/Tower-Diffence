@@ -680,6 +680,7 @@ MonoBehaviour:
   AFTER_GAME: 2
   Debug_obj: {fileID: 8260806482669201740}
   isDebug: 1
+  MAX_SET_OBJ: 5
 --- !u!1 &573027845
 GameObject:
   m_ObjectHideFlags: 0
@@ -2801,11 +2802,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 7588580199664556716, guid: ed2a2c1e264884e7197665c6f58937c6,
-        type: 3}
-      propertyPath: m_Name
-      value: Canvas
-      objectReference: {fileID: 0}
     - target: {fileID: 7588580199664556712, guid: ed2a2c1e264884e7197665c6f58937c6,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2910,6 +2906,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7588580199664556716, guid: ed2a2c1e264884e7197665c6f58937c6,
+        type: 3}
+      propertyPath: m_Name
+      value: Canvas
       objectReference: {fileID: 0}
     - target: {fileID: 7588580199984755528, guid: ed2a2c1e264884e7197665c6f58937c6,
         type: 3}

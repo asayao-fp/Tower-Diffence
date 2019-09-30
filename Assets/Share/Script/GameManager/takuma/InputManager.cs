@@ -149,7 +149,7 @@ public class InputManager : MonoBehaviour
          }
 
 
-         if(isSelect &&  canSelect && (!FacilityName.Equals(""))){
+         if(gp.canObjSet() &&  canSelect && (!FacilityName.Equals(""))){
            //設置可能範囲内なら置ける
            nowStatue = tgls[select_num].GetComponent<GenerateBarManager>().getStatus();
 

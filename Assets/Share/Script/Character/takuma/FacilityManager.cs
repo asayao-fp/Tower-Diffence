@@ -52,4 +52,5 @@ public abstract class FacilityManager : MonoBehaviour
     /* オブジェクトのユニークid */
     public int obj_num; 
 
+    public bool isStatue;
 }
