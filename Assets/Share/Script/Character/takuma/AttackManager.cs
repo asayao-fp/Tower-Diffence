@@ -42,6 +42,12 @@ public class AttackManager : MonoBehaviour
             atkCollider.GetComponent<Animator>().Play(name,-1,0);
     }
 
+
+    private void OnParticleSystemStopped(){
+      Destroy(this.gameObject);
+    }
+
+
     void OnDrawGizmos()
     {
         if(isDebug){    

@@ -176,6 +176,7 @@ MonoBehaviour:
   - {fileID: 3804649871154386397}
   isEnd: 0
   obj_num: 0
+  isStatue: 0
   statue: {fileID: 11400000, guid: bb3a7675077ef49ab8e20f4acbff20d9, type: 2}
   Atk: {fileID: 0}
   isDebug: 0
@@ -183,6 +184,7 @@ MonoBehaviour:
   AtkName: thunder
   ColName: thunder
   GenName: generate1
+  FieldName: magicfield1
   DeadName: dead1
   viewModels:
   - {fileID: 3789871956251983297}

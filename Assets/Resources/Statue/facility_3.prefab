@@ -427,6 +427,7 @@ MonoBehaviour:
   - {fileID: 1263377632038247145}
   isEnd: 0
   obj_num: 0
+  isStatue: 0
   statue: {fileID: 11400000, guid: ea97aad9b340c4bac83049ec5f3811d2, type: 2}
   Atk: {fileID: 0}
   isDebug: 0
@@ -434,6 +435,7 @@ MonoBehaviour:
   AtkName: laser
   ColName: laser
   GenName: generate2
+  FieldName: magicfield2
   DeadName: dead2
   viewModels:
   - {fileID: 1287300592334775677}

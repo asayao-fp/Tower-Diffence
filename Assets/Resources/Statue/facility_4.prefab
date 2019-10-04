@@ -83,6 +83,7 @@ MonoBehaviour:
   - {fileID: 2151508467974375733}
   isEnd: 0
   obj_num: 0
+  isStatue: 0
   statue: {fileID: 11400000, guid: 0d4878c3456a84cd19c0e51a2f479125, type: 2}
   Atk: {fileID: 0}
   isDebug: 0
@@ -90,6 +91,7 @@ MonoBehaviour:
   AtkName: poison
   ColName: poison
   GenName: generate3
+  FieldName: magicfield3
   DeadName: dead3
   viewModels:
   - {fileID: 2129419438885889751}

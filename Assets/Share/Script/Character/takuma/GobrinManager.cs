@@ -55,4 +55,10 @@ public class GobrinManager : StatueManager
     public override void checkEnemy(){
       //NOP
     }
+
+    public override　void addHP(int hp){
+      hiteffect.Play(true);
+      gstatus.hp += hp;
+    }
+
 }

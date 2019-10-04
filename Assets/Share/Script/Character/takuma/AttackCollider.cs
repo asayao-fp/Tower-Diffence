@@ -11,12 +11,6 @@ public class AttackCollider : MonoBehaviour
           rootobj = transform.root.gameObject;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     public void OnTriggerEnter(Collider other){
       rootobj.GetComponent<FacilityManager>().EnemyOnArea(other.gameObject);
     }

@@ -19,12 +19,15 @@ public class StatueManager : FacilityManager
     protected GameObject Gene; //召喚時のエフェクト用オブジェクト
     public GameObject Atk; //攻撃用のエフェクト
     protected Boolean isGene; //エフェクトを使用したかどうかのフラグ
+
+    public ParticleSystem hiteffect;
     protected GameProgress gp;    
     public Boolean isDebug;
     public Image hpbar;
     public String AtkName;
     public String ColName;
     public String GenName;
+    public String FieldName;
     public String DeadName;
     [SerializeField]
     private GameObject[] viewModels;
@@ -103,8 +106,10 @@ public class StatueManager : FacilityManager
       GameObject atkobj = Instantiate(atkpre,transform.position,Quaternion.identity) as GameObject;
       atkobj.transform.parent = this.transform;
       atkobj.transform.localPosition = atkpre.transform.position;
+  //    atkobj.transform.position = transform.position;
       atkobj.transform.localScale = atkpre.transform.localScale;
       atkobj.transform.localRotation = atkpre.transform.localRotation;
+//      atkobj.transform.localRotation = transform.localRotation;
 
       Atk = atkobj;
       Atk.GetComponent<AttackManager>().Attack(ColName);
@@ -137,6 +142,16 @@ public class StatueManager : FacilityManager
       geneObj.transform.localScale = Gene.transform.localScale;
       geneObj.transform.localRotation = Gene.transform.localRotation;
       ParticleSystem p = geneObj.GetComponent<ParticleSystem>();
+
+      GameObject obj = ResourceManager.getObject("Other/" + FieldName);
+      GameObject fieldobj = Instantiate(obj,transform.position,Quaternion.identity) as GameObject;
+      fieldobj.transform.parent = this.transform;
+      fieldobj.transform.localPosition = obj.transform.position;
+      fieldobj.transform.localScale = obj.transform.localScale;
+      fieldobj.transform.localRotation = obj.transform.localRotation;
+      ParticleSystem ps = fieldobj.GetComponent<ParticleSystem>();
+      
+      ps.Play();
       p.Play();
     
       gstatus.hp = statue.hp;
@@ -210,4 +225,5 @@ public class StatueManager : FacilityManager
     public override float getHP(){
       return hpbar.fillAmount;
     }
+
 }

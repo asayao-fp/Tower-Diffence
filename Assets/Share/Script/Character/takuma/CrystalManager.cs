@@ -18,6 +18,8 @@ public class CrystalManager : MonoBehaviour
     private GameObject canvas;
     [SerializeField]
     private String deadName;
+    [SerializeField]
+    private GameObject[] viewModels;
 
     private float time;
 
@@ -40,7 +42,10 @@ public class CrystalManager : MonoBehaviour
        // this.gameObject.GetComponent<MeshRenderer>().enabled = false;
         canvas.SetActive(false);
 
-        GameObject deadobj = ResourceManager.getObject("Crystal/" + deadName);
+        for(int i=0;i<viewModels.Length;i++){
+          viewModels[i].gameObject.SetActive(false);
+        }
+        GameObject deadobj = ResourceManager.getObject("Other/" + deadName);
         GameObject obj = Instantiate(deadobj,transform.position,Quaternion.identity) as GameObject;
 
         obj.transform.parent = this.transform;

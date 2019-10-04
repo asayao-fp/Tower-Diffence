@@ -364,6 +364,7 @@ MonoBehaviour:
   - {fileID: 1514930227351727044}
   isEnd: 0
   obj_num: 0
+  isStatue: 0
   statue: {fileID: 11400000, guid: c9ef1e06329ef42ad95cf1d03b5accf7, type: 2}
   Atk: {fileID: 0}
   isDebug: 0
@@ -371,6 +372,7 @@ MonoBehaviour:
   AtkName: shoot
   ColName: ball
   GenName: generate0
+  FieldName: magicfield0
   DeadName: dead0
   viewModels:
   - {fileID: 1536550850926771524}

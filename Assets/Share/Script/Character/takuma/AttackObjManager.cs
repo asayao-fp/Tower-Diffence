@@ -14,17 +14,25 @@ public class AttackObjManager : MonoBehaviour
   private int count = 0; //判定の回数
 
   private int attacktype; //攻撃の種類
+  private GameObject obj;//親のオブジェクト
 
   void Start ()
   {
     GetComponent<Rigidbody>().velocity = new Vector3(transform.forward.normalized.x * speed,0,transform.forward.normalized.z * speed);
     objs = new Dictionary<int,GameObject>();
     gp = GameObject.FindWithTag("GameManager").GetComponent<GameProgress>();
+    obj = transform.root.gameObject;
   }
 
 
   public void Update(){
   }
+
+
+ private void OnParticleCollision(GameObject other){
+    Debug.Log("objct : " + other.name);
+  }
+
 
   public void OnTriggerEnter(Collider other){
    if(other.gameObject.tag.Equals(Constants.GOBLIN_TAG)){

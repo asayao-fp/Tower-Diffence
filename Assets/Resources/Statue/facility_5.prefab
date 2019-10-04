@@ -2291,13 +2291,16 @@ MonoBehaviour:
   - {fileID: 2279557643419175277}
   isEnd: 0
   obj_num: 0
+  isStatue: 0
   statue: {fileID: 11400000, guid: 79ba6a0a568e146a4b62f66d311b1de6, type: 2}
   Atk: {fileID: 0}
+  hiteffect: {fileID: 0}
   isDebug: 0
   hpbar: {fileID: 6755108332120023990}
-  AtkName: explode
+  AtkName: meteo
   ColName: explode
   GenName: generate4
+  FieldName: magicfield4
   DeadName: dead4
   viewModels:
   - {fileID: 4105517129586448770}
@@ -4361,11 +4364,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2303995612285633671}
     m_Modifications:
-    - target: {fileID: 3385929178388265878, guid: fa59377b2621f4e949704ba87fb759d8,
-        type: 3}
-      propertyPath: m_Name
-      value: Canvas
-      objectReference: {fileID: 0}
     - target: {fileID: 5537399754808101120, guid: fa59377b2621f4e949704ba87fb759d8,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4470,6 +4468,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3385929178388265878, guid: fa59377b2621f4e949704ba87fb759d8,
+        type: 3}
+      propertyPath: m_Name
+      value: Canvas
       objectReference: {fileID: 0}
     - target: {fileID: 6546035547199782417, guid: fa59377b2621f4e949704ba87fb759d8,
         type: 3}
