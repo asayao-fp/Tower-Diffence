@@ -19,6 +19,8 @@ MonoBehaviour:
   settype: 4
   hp: 100
   time: 10
-  atkInterval: 1
+  atkInterval: 4
   cost: 3
   name4Preview: Statue3
+  maxsetNum: 2
+  generateInterval: 3

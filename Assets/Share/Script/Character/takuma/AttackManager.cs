@@ -44,6 +44,8 @@ public class AttackManager : MonoBehaviour
 
 
     private void OnParticleSystemStopped(){
+      transform.parent.gameObject.GetComponent<FacilityManager>().attackEnd();
+
       Destroy(this.gameObject);
     }
 

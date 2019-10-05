@@ -5,6 +5,8 @@ using UnityEngine.UI;
 using System;
 using System.IO;
 using System.Linq;
+using TMPro;
+
 
 public class GameProgress : MonoBehaviour
 {
@@ -23,8 +25,8 @@ public class GameProgress : MonoBehaviour
     private int limit;
     private float start;
 
-    private Text limittime;
-    private Text starttime;
+    private TextMeshProUGUI limittime;
+    private TextMeshProUGUI starttime;
     private GenerateCostManager gcm;
     public GameObject Debug_obj;//デバッグ用のgobrin
 
@@ -59,12 +61,12 @@ public class GameProgress : MonoBehaviour
         sg_objs = new Dictionary<int,GameObject>();
       }
       count = 0;
-      limittime = GameObject.FindWithTag("LimitTime").GetComponent<Text>();
+      limittime = GameObject.FindWithTag("LimitTime").GetComponent<TextMeshProUGUI>();
       gs = GameObject.FindWithTag("StaticObjects").GetComponent<GameSettings>();
       limit = gs.getLimitTime();
       game_time = limit;
       limittime.text = "" + (int)game_time;
-      starttime = GameObject.FindWithTag("StartTime").GetComponent<Text>();
+      starttime = GameObject.FindWithTag("StartTime").GetComponent<TextMeshProUGUI>();
       starttime.text = "" + (int)start;
       gcm = GameObject.FindWithTag("GenerateCost").GetComponent<GenerateCostManager>();
       crystaldead = false;
@@ -115,6 +117,7 @@ public class GameProgress : MonoBehaviour
           }
           if(fm.getHP() <= 0){
             fm.isEnd = true;
+            fm.setNum(false);
             fm.Dead();
             isdelete[count] = pair.Key;
             delete = true;
@@ -176,18 +179,22 @@ public class GameProgress : MonoBehaviour
     public void Generate(String name,Vector3 pos){
 //        GameObject obj = Instantiate (ResourceManager.getObject("Statue/" + name,getStatueType()), pos, Quaternion.identity) as GameObject;
         GameObject obj = Instantiate (ResourceManager.getObject("Statue/" + name), pos, Quaternion.identity) as GameObject;
+        obj.name = name;
+        FacilityManager fm = obj.GetComponent<FacilityManager>();
+        fm.init();
         
         if(!name.Equals("debugGobrin")){
-          gcm.generateCost(obj.GetComponent<FacilityManager>().getSData().cost);
-          obj.GetComponent<FacilityManager>().Generate(pos,obj.transform.localScale,obj.GetComponent<FacilityManager>().getSData());
+          gcm.generateCost(fm.getSData().cost);
+          fm.Generate(pos,obj.transform.localScale,fm.getSData());
 
-          obj.GetComponent<FacilityManager>().setId(count);
+          fm.setId(count);
           sg_objs.Add(count++,obj);
 
         }else{
-          obj.GetComponent<FacilityManager>().setId(1000000);
+          fm.setId(1000000);
           sg_objs.Add(1000000,obj); 
         }
+        fm.setNum(true);
     }
 
     //ダメージ計算

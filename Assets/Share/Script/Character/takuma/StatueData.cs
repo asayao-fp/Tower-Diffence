@@ -16,5 +16,6 @@ public class StatueData : ScriptableObject
    public int atkInterval; //攻撃間隔
    public int cost; //召喚コスト
    public String name4Preview; //表示用の名前
-
+   public int maxsetNum; //最大設置可能数
+   public int generateInterval; //次に召喚できるまでの時間
 }

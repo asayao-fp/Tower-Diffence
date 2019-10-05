@@ -32,8 +32,13 @@ public class StatueManager : FacilityManager
     [SerializeField]
     private GameObject[] viewModels;
 
+    private bool isAttacking; //攻撃中
+
     GameObject amm; //AttackManager check用
     GameObject obj;//敵
+
+    GenerateBarManager gbm; //自分の召喚用ボタン
+    
 
     void Awake(){
       isStatue = true;
@@ -44,6 +49,15 @@ public class StatueManager : FacilityManager
       for(int i=0;i<viewModels.Length;i++){
         if(viewModels[i].gameObject.name.Equals("Canvas")){
           viewModels[i].SetActive(false);
+        }
+      }
+    }
+
+    public override void init(){
+      GameObject gameui = GameObject.Find("GameUI");
+      foreach(Transform child in gameui.transform){
+        if(child.gameObject.name.Equals(this.gameObject.name)){
+          gbm = child.gameObject.GetComponent<GenerateBarManager>();
         }
       }
     }
@@ -83,6 +97,7 @@ public class StatueManager : FacilityManager
   
         //攻撃範囲内にいなければその敵の方向には向かない
         if(distance <= statue.attackpos.z/2){
+          if(isAttacking)break; //攻撃中は方向を変えない
           Quaternion lockRotation = Quaternion.LookRotation(obj.transform.position - transform.position, Vector3.up);    
           lockRotation.z = 0;
           lockRotation.x = 0;
@@ -102,6 +117,7 @@ public class StatueManager : FacilityManager
       if(obj == null){
         return;
       }
+
       GameObject atkpre = (GameObject)Resources.Load("Attack/" + AtkName);
       GameObject atkobj = Instantiate(atkpre,transform.position,Quaternion.identity) as GameObject;
       atkobj.transform.parent = this.transform;
@@ -113,6 +129,8 @@ public class StatueManager : FacilityManager
 
       Atk = atkobj;
       Atk.GetComponent<AttackManager>().Attack(ColName);
+
+      isAttacking = true;
     }
 
      // 召喚した時に初期化処理をやる
@@ -224,6 +242,14 @@ public class StatueManager : FacilityManager
 
     public override float getHP(){
       return hpbar.fillAmount;
+    }
+
+    public override void attackEnd(){
+      isAttacking = false;
+    }
+
+    public override void setNum(bool isgenerate){
+      gbm.setNum(isgenerate);
     }
 
 }

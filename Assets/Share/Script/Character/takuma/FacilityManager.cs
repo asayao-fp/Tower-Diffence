@@ -10,6 +10,10 @@ public abstract class FacilityManager : MonoBehaviour
         public float hp;
     }
 
+
+    /* 初期化 */
+    public abstract void init();
+    
     /* 死んでる時のフラグ */
     public bool isEnd;
 
@@ -53,4 +57,9 @@ public abstract class FacilityManager : MonoBehaviour
     public int obj_num; 
 
     public bool isStatue;
+
+    /* 攻撃を終了する */
+    public abstract void attackEnd();
+
+    public abstract void setNum(bool isgenerate);
 }

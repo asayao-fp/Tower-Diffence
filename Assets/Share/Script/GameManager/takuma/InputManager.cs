@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-//using Shapes;
+using TMPro;
 
 public class InputManager : MonoBehaviour
 {
@@ -38,10 +38,10 @@ public class InputManager : MonoBehaviour
     private Boolean isdrawAttack = false; //攻撃可能範囲を表示するか
 
     [SerializeField]
-    private Text nameText;
+    private TextMeshProUGUI nameText;
     private Vector3 textpos; //ドラッグ中の名前
     [SerializeField]
-    private Text notsetText; //設置できないときに表示するオブジェクト
+    private TextMeshProUGUI notsetText; //設置できないときに表示するオブジェクト
 
 
     private int select_num;
@@ -90,10 +90,12 @@ public class InputManager : MonoBehaviour
           tgls[i].isOn = false;
         }
         //召喚コストが足りなければ黒画像
+        Image b = tglobj[i].GetComponent<GenerateBarManager>().getBlackImage();
+
         if(gp.hasCost(fs.getFacility(tgls[i].name).cost)){
-            tglobj[i].GetComponent<GenerateBarManager>().blackImage.enabled = false;
+            b.enabled = false;
         }else{
-            tglobj[i].GetComponent<GenerateBarManager>().blackImage.enabled = tglobj[i].GetComponent<GenerateBarManager>().getGenerate();
+            b.enabled = tglobj[i].GetComponent<GenerateBarManager>().getGenerate();
         }
       }
 
@@ -151,16 +153,25 @@ public class InputManager : MonoBehaviour
 
          if(gp.canObjSet() &&  canSelect && (!FacilityName.Equals(""))){
            //設置可能範囲内なら置ける
-           nowStatue = tgls[select_num].GetComponent<GenerateBarManager>().getStatus();
+           GenerateBarManager gbm = tgls[select_num].GetComponent<GenerateBarManager>();
+           nowStatue = gbm.getStatus();
 
-           //コストが足りなかったら召喚できない
-            if(gp.hasCost(nowStatue.cost)){
+           if(!gbm.checkSet()){
+            //設置可能数を超えたら設置できない
+            canSelect = false;
+            isShow = false;
+            stage.GetComponent<ShowStagePosition>().hideSetPosition();
+
+
+           }else if(gp.hasCost(nowStatue.cost)){
+            //コストが足りなかったら召喚できない
+
+            prefab = ResourceManager.getObject("Statue/" + FacilityName);
+
             spos = getSetPosition(nowStatue,setpos);
 
             //召喚中！！
             generating = true;
-//            prefab = ResourceManager.getObject("Statue/" + FacilityName,gp.getStatueType());
-            prefab = ResourceManager.getObject("Statue/" + FacilityName);
             generatePrefab = Instantiate (prefab, setpos, Quaternion.identity) as GameObject;
 
             StatueData sd = generatePrefab.GetComponent<FacilityManager>().getSData();

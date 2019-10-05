@@ -28,12 +28,6 @@ public class AttackObjManager : MonoBehaviour
   public void Update(){
   }
 
-
- private void OnParticleCollision(GameObject other){
-    Debug.Log("objct : " + other.name);
-  }
-
-
   public void OnTriggerEnter(Collider other){
    if(other.gameObject.tag.Equals(Constants.GOBLIN_TAG)){
       FacilityManager fm = other.gameObject.GetComponent<FacilityManager>();
