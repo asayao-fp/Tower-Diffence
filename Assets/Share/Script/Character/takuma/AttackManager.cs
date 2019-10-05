@@ -8,7 +8,6 @@ public class AttackManager : MonoBehaviour
 {
     public GameObject atkObj; //エフェクト
     public GameObject atkCollider; //当たり判定
-    public Boolean isDebug;
     float time;
     public Boolean notRotate; //親オブジェクトと一緒に回転させないか
 
@@ -52,10 +51,10 @@ public class AttackManager : MonoBehaviour
 
     void OnDrawGizmos()
     {
-        if(isDebug){    
+      //  if(isDebug){    
           //  Gizmos.color = Color.green;
           // Gizmos.DrawSphere( transform.position, 0.1f );
           // Gizmos.DrawWireSphere( transform.position, Radius );
-        }
+       // }
     }
 }

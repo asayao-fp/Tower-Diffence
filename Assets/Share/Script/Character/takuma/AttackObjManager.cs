@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using HC.Debug;
+
 
 public class AttackObjManager : MonoBehaviour
 {
@@ -22,6 +24,16 @@ public class AttackObjManager : MonoBehaviour
     objs = new Dictionary<int,GameObject>();
     gp = GameObject.FindWithTag("GameManager").GetComponent<GameProgress>();
     obj = transform.root.gameObject;
+
+
+    //var color      = ColliderVisualizer.VisualizerColorType.Red;
+    //var message    = "ピカチュウ";
+    //var fontSize   = 36;
+
+    if(gp.getDebug()){
+     // this.gameObject.AddComponent<ColliderVisualizer>().Initialize(color, message, fontSize);
+    }
+
   }
 
 
@@ -30,16 +42,13 @@ public class AttackObjManager : MonoBehaviour
 
   public void OnTriggerEnter(Collider other){
    if(other.gameObject.tag.Equals(Constants.GOBLIN_TAG)){
+    if(!objs.ContainsKey(other.gameObject.GetInstanceID())){
       FacilityManager fm = other.gameObject.GetComponent<FacilityManager>();
       if(fm != null){
         gp.calcDamage(fm.obj_num,attacktype);
-      }
-
-     //if(!objs.ContainsKey(other.gameObject.GetInstanceID())){
-       
-      //objs.Add(other.gameObject.GetInstanceID(),other.gameObject);
-      //other.gameObject.GetComponent<FacilityManager>().addHP(AttackDamage);
-     //}
+      }       
+      objs.Add(other.gameObject.GetInstanceID(),other.gameObject);
+    }
    }
   }
 

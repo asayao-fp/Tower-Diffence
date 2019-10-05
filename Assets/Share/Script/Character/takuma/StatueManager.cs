@@ -122,10 +122,8 @@ public class StatueManager : FacilityManager
       GameObject atkobj = Instantiate(atkpre,transform.position,Quaternion.identity) as GameObject;
       atkobj.transform.parent = this.transform;
       atkobj.transform.localPosition = atkpre.transform.position;
-  //    atkobj.transform.position = transform.position;
       atkobj.transform.localScale = atkpre.transform.localScale;
       atkobj.transform.localRotation = atkpre.transform.localRotation;
-//      atkobj.transform.localRotation = transform.localRotation;
 
       Atk = atkobj;
       Atk.GetComponent<AttackManager>().Attack(ColName);
@@ -140,8 +138,10 @@ public class StatueManager : FacilityManager
       GameObject atkpre = (GameObject)Resources.Load("takuma/Prefabs/AtkCheck");
       GameObject atkcheck = Instantiate(atkpre,pos,Quaternion.identity) as GameObject;
       atkcheck.transform.position = pos;
-      atkcheck.transform.localScale = scale;
       atkcheck.transform.parent = this.gameObject.transform;
+      atkcheck.transform.localScale = atkpre.transform.localScale;
+      atkcheck.GetComponent<SphereCollider>().radius = s.attackpos.z;      
+      
 
       hpbar.transform.position = new Vector3(this.transform.position.x ,this.transform.position.y + 0.3f,this.transform.position.z);
       hpbar.fillAmount = 1;

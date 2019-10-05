@@ -261,6 +261,7 @@ public class InputManager : MonoBehaviour
         }
         //画面外にセット
         if(generatePrefab != null){
+          atkPrefab.transform.parent = stage.transform;
           generatePrefab.SetActive(false);
           Destroy(generatePrefab);
         }
@@ -341,8 +342,11 @@ public class InputManager : MonoBehaviour
     public void drawAttackArea(){
       Vector4 fp = nowStatue.attackpos;
       Vector2 p = new Vector2(generatePrefab.transform.position.x + fp.x,generatePrefab.transform.position.z + fp.y); //攻撃範囲の中心座標
-      atkPrefab.transform.position = new Vector3(p.x,0.05f,p.y);
-      atkPrefab.transform.localScale = new Vector3(fp.z,0.01f,fp.z);
+      atkPrefab.transform.parent = generatePrefab.transform;
+      //atkPrefab.transform.localPosition = new Vector3(p.x,0.05f,p.y);
+      atkPrefab.transform.localPosition = new Vector3(0,0.05f,0);
+      atkPrefab.transform.localScale = new Vector3(nowStatue.attackpos.z*2.0f,0.01f,nowStatue.attackpos.z*2.0f);
+      atkPrefab.GetComponent<CapsuleCollider>().radius = nowStatue.attackpos.z;
       atkPrefab.SetActive(true);
     }
 

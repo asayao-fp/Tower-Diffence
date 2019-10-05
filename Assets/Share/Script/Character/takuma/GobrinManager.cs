@@ -61,4 +61,8 @@ public class GobrinManager : StatueManager
       gstatus.hp += hp;
     }
 
+    public override void setNum(bool isgenerate){
+    }
+
+
 }
