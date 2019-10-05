@@ -80,7 +80,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 10
   removetime: 0
-  AttackDamage: -7
+  AttackDamage: 0
 --- !u!114 &122541032
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -413,6 +413,7 @@ GameObject:
   - component: {fileID: 1538855532052559290}
   - component: {fileID: 1697168293494611880}
   - component: {fileID: 1836846107187452782}
+  - component: {fileID: 345595705282520445}
   m_Layer: 2
   m_Name: facility_1
   m_TagString: Statue
@@ -480,14 +481,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ca615d7f9307442fb9076751b7dd1bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isGenerate: 0
-  atkInterval: 5
-  time: 0
-  deletetime: 0
-  atkObj: {fileID: 0}
+  obj_materials: []
+  isEnd: 0
+  statue: {fileID: 0}
   Atk: {fileID: 0}
   isDebug: 0
   hpbar: {fileID: 4679406679493034903}
+  AtkName: 
+--- !u!65 &345595705282520445
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1536010569313781398}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1536355646541994744
 GameObject:
   m_ObjectHideFlags: 0

@@ -542,7 +542,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 10
   removetime: 0
-  AttackDamage: -7
+  AttackDamage: 0
 --- !u!54 &7684214586788919548
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -900,6 +900,7 @@ GameObject:
   - component: {fileID: 9221345088049995439}
   - component: {fileID: 9020250346528519357}
   - component: {fileID: 8349139043125555323}
+  - component: {fileID: 5938320502414432631}
   m_Layer: 2
   m_Name: facility_1
   m_TagString: Statue
@@ -977,6 +978,19 @@ MonoBehaviour:
   isDebug: 0
   hpbar: {fileID: 3049860405072865410}
   AtkName: AtkLaser
+--- !u!65 &5938320502414432631
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9219661243949903235}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &9219883972907458861
 GameObject:
   m_ObjectHideFlags: 0
