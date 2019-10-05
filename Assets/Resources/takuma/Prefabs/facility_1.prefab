@@ -234,6 +234,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 473ccca7cba2e4d72bda9d425b944264, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pos: {x: 0, y: 0, z: 0}
 --- !u!1 &800753401335347706
 GameObject:
   m_ObjectHideFlags: 0
@@ -483,11 +484,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   obj_materials: []
   isEnd: 0
+  obj_num: 0
+  isStatue: 0
   statue: {fileID: 0}
   Atk: {fileID: 0}
+  hiteffect: {fileID: 0}
   isDebug: 0
   hpbar: {fileID: 4679406679493034903}
   AtkName: 
+  ColName: 
+  GenName: 
+  FieldName: 
+  DeadName: 
+  viewModels: []
 --- !u!65 &345595705282520445
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -496,7 +505,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1536010569313781398}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
@@ -874,7 +883,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35d396bcb8480c24eb784eebe6096a99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effectAsset: {fileID: 11400000, guid: 14a33e50f45444088b3579c0afc4dca8, type: 2}
+  effectAsset: {fileID: 0}
   playOnStart: 0
   isLooping: 0
 --- !u!1 &4978108924672057710
@@ -925,7 +934,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   atkObj: {fileID: 3610246511917271901}
   atkCollider: {fileID: 122541034}
-  isDebug: 0
+  notRotate: 0
+  attacktype: 0
 --- !u!114 &9133117990719103784
 MonoBehaviour:
   m_ObjectHideFlags: 0

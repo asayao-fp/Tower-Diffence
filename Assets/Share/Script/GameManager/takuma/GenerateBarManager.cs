@@ -26,77 +26,92 @@ public class GenerateBarManager : MonoBehaviour
 
     void Start()
     {
-      time = 0.0f;
-      gp = GameObject.FindWithTag("GameManager").GetComponent<GameProgress>();
+        time = 0.0f;
+        gp = GameObject.FindWithTag("GameManager").GetComponent<GameProgress>();
 
-      sData = sm.getSData();
+        sData = sm.getSData();
+        Debug.Log(sData);
+        foreach (Transform child in transform)
+        {
+            if (child.gameObject.name.Equals("Generate"))
+            {
+                generatebar = child.gameObject;
+            }
+            else if (child.gameObject.name.Equals("setnum"))
+            {
+                setnum = child.gameObject.GetComponent<TextMeshProUGUI>();
+            }
+            else if (child.gameObject.name.Equals("notset"))
+            {
+                blackImage = child.gameObject.GetComponent<Image>();
+            }
 
-      foreach (Transform child in transform){
-        if(child.gameObject.name.Equals("Generate")){
-          generatebar = child.gameObject;
-        }else if(child.gameObject.name.Equals("setnum")){
-          setnum = child.gameObject.GetComponent<TextMeshProUGUI>();
-        }else if(child.gameObject.name.Equals("notset")){
-          blackImage = child.gameObject.GetComponent<Image>();
         }
+        generatebar.GetComponent<Image>().fillAmount = 0;
+        canGenerate = true;
+        fill = generatebar.GetComponent<Image>().fillAmount;
+        fill = 0;
 
-      }
-      generatebar.GetComponent<Image>().fillAmount = 0;
-      canGenerate = true;
-      fill = generatebar.GetComponent<Image>().fillAmount;
-      fill = 0;
-
-      setnownum = 0;
-      setnum.text = sData.maxsetNum + "/" + setnownum;
-      generateTime = sData.generateInterval;
+        setnownum = 0;
+        setnum.text = sData.maxsetNum + "/" + setnownum;
+        generateTime = sData.generateInterval;
     }
 
     void Update()
     {
-      if(gp.getStatus() != gp.NOW_GAME)return;
-      if(!isGenerate)return;
+        if (gp.getStatus() != gp.NOW_GAME) return;
+        if (!isGenerate) return;
 
-      time += Time.deltaTime;
-      fill = time / generateTime;
+        time += Time.deltaTime;
+        fill = time / generateTime;
 
 
-      if(fill >= 1){
-        fill = 0;
-        time = 0.0f;
-        isGenerate = false;
-        canGenerate = true;
-      }else{
+        if (fill >= 1)
+        {
+            fill = 0;
+            time = 0.0f;
+            isGenerate = false;
+            canGenerate = true;
+        }
+        else
+        {
+            canGenerate = false;
+        }
+
+
+        generatebar.GetComponent<Image>().fillAmount = fill;
+    }
+
+    public Boolean getGenerate()
+    {
+        return canGenerate;
+    }
+
+    public void setGenerate()
+    {
+        isGenerate = true;
         canGenerate = false;
-      }
-
-
-      generatebar.GetComponent<Image>().fillAmount = fill;
     }
 
-    public Boolean getGenerate(){
-      return canGenerate;
+    public StatueData getStatus()
+    {
+        return sData;
     }
 
-    public void setGenerate(){
-      isGenerate = true;
-      canGenerate = false;
-    }
-
-    public StatueData getStatus(){
-      return sData;
-    }
-
-    public Image getBlackImage(){
-      return blackImage;
+    public Image getBlackImage()
+    {
+        return blackImage;
     }
 
     //今設置できるか
-    public bool checkSet(){
-      return sData.maxsetNum > setnownum;
+    public bool checkSet()
+    {
+        return sData.maxsetNum > setnownum;
     }
     //最大設置可能数と現在設置されてる数を更新
-    public void setNum(bool isgenerate){
-      setnownum += isgenerate ? 1 : -1;
-      setnum.text = sData.maxsetNum + "/" + setnownum;
+    public void setNum(bool isgenerate)
+    {
+        setnownum += isgenerate ? 1 : -1;
+        setnum.text = sData.maxsetNum + "/" + setnownum;
     }
 }
