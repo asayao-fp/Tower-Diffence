@@ -6,67 +6,70 @@ using UnityEditor;
 
 namespace Effekseer
 {
-	using Internal;
+    using Internal;
 
-	public class EffekseerRuntime : MonoBehaviour
-	{
-		[SerializeField]
-		private EffekseerSystem system;
-		[SerializeField]
-		private EffekseerSoundPlayer soundPlayer;
-		
-		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-		static void RuntimeInitializeOnLoad()
-		{
-			// Create singleton instance
-			var go = new GameObject("Effekseer");
-			go.AddComponent<EffekseerRuntime>();
-			DontDestroyOnLoad(go);
-		}
+    public class EffekseerRuntime : MonoBehaviour
+    {
+        [SerializeField]
+        private EffekseerSystem system;
+        [SerializeField]
+        private EffekseerSoundPlayer soundPlayer;
 
-		void Awake()
-		{
-			if (system == null) {
-				system = new EffekseerSystem();
-			}
-			system.InitPlugin();
-			soundPlayer = new EffekseerSoundPlayer();
-			soundPlayer.Init(gameObject);
-		}
-		
-		void OnDestroy()
-		{
-			soundPlayer.Dispose();
-			system.TermPlugin();
-		}
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+        static void RuntimeInitializeOnLoad()
+        {
+            // Create singleton instance
+            // var go = new GameObject("Effekseer");
+            // go.AddComponent<EffekseerRuntime>();
+            // DontDestroyOnLoad(go);
+        }
 
-		void OnEnable()
-		{
-			system.OnEnable();
-			soundPlayer.OnEnable();
+        void Awake()
+        {
+            if (system == null)
+            {
+                system = new EffekseerSystem();
+            }
+            system.InitPlugin();
+            soundPlayer = new EffekseerSoundPlayer();
+            soundPlayer.Init(gameObject);
+        }
 
-			foreach (var effectAsset in EffekseerEffectAsset.enabledAssets)
-			{
+        void OnDestroy()
+        {
+            soundPlayer.Dispose();
+            system.TermPlugin();
+        }
+
+        void OnEnable()
+        {
+            system.OnEnable();
+            soundPlayer.OnEnable();
+
+            foreach (var effectAsset in EffekseerEffectAsset.enabledAssets)
+            {
                 EffekseerEffectAsset target = effectAsset.Value.Target as EffekseerEffectAsset;
 
                 if (target != null)
-				{
-					EffekseerSystem.Instance.LoadEffect(target);
-				}
-			}
-		}
-		
-		void OnDisable()
-		{;
-			soundPlayer.OnDisable();
-			system.OnDisable();
-		}
-		
-		void LateUpdate() {
+                {
+                    EffekseerSystem.Instance.LoadEffect(target);
+                }
+            }
+        }
 
-			Plugin.UpdateNetwork();
+        void OnDisable()
+        {
+            ;
+            soundPlayer.OnDisable();
+            system.OnDisable();
+        }
 
-			system.Update(Time.deltaTime);
-		}
-	}
+        void LateUpdate()
+        {
+
+            Plugin.UpdateNetwork();
+
+            system.Update(Time.deltaTime);
+        }
+    }
 }
