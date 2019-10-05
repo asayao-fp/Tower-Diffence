@@ -97,7 +97,7 @@ public class StatueManager : FacilityManager
   
         //攻撃範囲内にいなければその敵の方向には向かない
         if(distance <= statue.attackpos.z/2){
-          if(isAttacking)break; //攻撃中は方向を変えない
+          //if(isAttacking)break; //攻撃中は方向を変えない
           Quaternion lockRotation = Quaternion.LookRotation(obj.transform.position - transform.position, Vector3.up);    
           lockRotation.z = 0;
           lockRotation.x = 0;
