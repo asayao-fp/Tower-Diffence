@@ -30,7 +30,7 @@ public class GenerateBarManager : MonoBehaviour
         gp = GameObject.FindWithTag("GameManager").GetComponent<GameProgress>();
 
         sData = sm.getSData();
-        Debug.Log(sData);
+
         foreach (Transform child in transform)
         {
             if (child.gameObject.name.Equals("Generate"))

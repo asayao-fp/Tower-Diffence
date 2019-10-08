@@ -6,6 +6,7 @@ using System;
 using System.IO;
 using System.Linq;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 
 public class GameProgress : MonoBehaviour
@@ -47,22 +48,32 @@ public class GameProgress : MonoBehaviour
     private int MAX_SET_OBJ;
     private int myobj_num;
     private bool isStatue;
+    private bool isStart;
+    private bool gameset; 
 
     void Awake(){
       game_status = 0;
       start = 5;
+      gameset = false;
     }
 
     void Start()
     {
-      fs = GameObject.FindWithTag("StaticObjects").GetComponent<FacilitySetting>();
+
+      GameObject stobj = GameObject.FindWithTag("StaticObjects");
+
+      if(stobj.GetComponent<ResultData>() != null){
+        Destroy(stobj.GetComponent<ResultData>());
+      }
+
+      fs = stobj.GetComponent<FacilitySetting>();
 
       if(sg_objs == null){
         sg_objs = new Dictionary<int,GameObject>();
       }
       count = 0;
       limittime = GameObject.FindWithTag("LimitTime").GetComponent<TextMeshProUGUI>();
-      gs = GameObject.FindWithTag("StaticObjects").GetComponent<GameSettings>();
+      gs = stobj.GetComponent<GameSettings>();
       limit = gs.getLimitTime();
       game_time = limit;
       limittime.text = "" + (int)game_time;
@@ -72,10 +83,29 @@ public class GameProgress : MonoBehaviour
       crystaldead = false;
       myobj_num = 0;
       isStatue = gs.isStatue();
+
+      isStart = false;
     }
+
 
     void Update()
     {
+
+      if(gameset){
+        return;
+      }
+      if(!isStart){
+        String name = PlayerPrefs.GetString(UserData.USERDATA_NAME,"");
+        String id = PlayerPrefs.GetString(UserData.USERDATA_ID,"");
+        int level = PlayerPrefs.GetInt(UserData.USERDATA_LEVEL,0);
+        int exp = PlayerPrefs.GetInt(UserData.USERDATA_EXP,0);
+
+        Debug.Log("gameprogress : " + name + " " + id + " " + level + " " + exp);
+
+        isStart = true;
+        return;
+      }
+
 
       if(start > -3){
         start -= Time.deltaTime;
@@ -95,11 +125,11 @@ public class GameProgress : MonoBehaviour
         limittime.text = "" + (int)game_time;
       }else{
         game_status = AFTER_GAME;
-        limittime.text = "GAME FINISH";
+        StartCoroutine("GameSet",1);
+
       }
 
       checkObjs();
-
     }
 
     public void checkObjs(){
@@ -124,6 +154,7 @@ public class GameProgress : MonoBehaviour
           }
         }
         count++;
+      }
         if(!crystaldead){
           if(crystalObj == null){
             crystalObj = GameObject.Find("crystal");
@@ -131,9 +162,10 @@ public class GameProgress : MonoBehaviour
           if(crystalObj.GetComponent<CrystalManager>().getHP() <= 0){
             crystalObj.GetComponent<CrystalManager>().Dead();
             crystaldead = true;
+            StartCoroutine("GameSet",2);
           }
         }
-      }
+
       //削除フラグが立ってるオブジェクトをtableから削除
       if(delete){
         for(int i=0;i<isdelete.Length;i++){
@@ -151,9 +183,22 @@ public class GameProgress : MonoBehaviour
           debugObj = ResourceManager.getObject("Statue/debugGobrin");
           Generate("debugGobrin",debugObj.transform.position);
         }
-      }
+      } 
+    }
 
-      
+    /*試合終了 1 -> 時間切れ　2 -> クリスタル破壊 */
+    public IEnumerator GameSet(int type){
+        gameset = true;
+        limittime.text = "GAME FINISH";
+        ResultData rd = GameObject.FindWithTag("StaticObjects").AddComponent<ResultData>();
+
+        bool result = false;
+        rd.SetResult(result,10);
+
+        
+        yield return new WaitForSeconds (1.0f); 
+
+        SceneManager.LoadScene("GameSetScene");        
     }
 
     public GameObject[] getObjs(){

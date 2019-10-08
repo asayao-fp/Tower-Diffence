@@ -20,7 +20,7 @@ MonoBehaviour:
   hp: 10
   time: 10
   atkInterval: 6
-  cost: 25
+  cost: 10
   name4Preview: Statue5
   maxsetNum: 1
   generateInterval: 5

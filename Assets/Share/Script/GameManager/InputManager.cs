@@ -59,8 +59,7 @@ public class InputManager : MonoBehaviour
       for(int i=0;i<tgls.Length;i++){
         tgls[i].isOn = false;
       }
-      //showSetPositionMat = new Material (Shader.Find ("Unlit/TestShader"));
-      //atkPrefab = Instantiate ((GameObject)Resources.Load ("takuma/Prefabs/AtkPosSphere"), new Vector3(0,0,0), Quaternion.identity) as GameObject ;
+
       atkPrefab = Instantiate (ResourceManager.getObject("takuma/Master/Character/AtkPosSphere"), new Vector3(0,0.1f,0), Quaternion.identity) as GameObject ;
       atkPrefab.SetActive(false);
       setPrefab = ResourceManager.getObject("Other/setpos");
@@ -77,7 +76,6 @@ public class InputManager : MonoBehaviour
 
     void Update()
     {
-
       if(gp.getStatus() != gp.NOW_GAME)return;
 
       for(int i=0;i<tgls.Length;i++){
@@ -101,14 +99,40 @@ public class InputManager : MonoBehaviour
 
        Vector2 mousepos = Input.mousePosition;
        textpos.Set(mousepos.x,mousepos.y+30,0);
-       GameObject current = EventSystem.current.currentSelectedGameObject;
-       Ray ray = Camera.main.ScreenPointToRay(mousepos);
+
+       touchType();
+
+      if(isdrawAttack && isMoving && (nowStatue != null) && canSelect){
+        drawAttackArea();
+      }else if(atkPrefab != null){
+        atkPrefab.SetActive(false);
+      }
+
+      if(isShow && canSelect && isSelect){
+        stage.GetComponent<ShowStagePosition>().showSetPosition(setType);
+      }else{
+        stage.GetComponent<ShowStagePosition>().hideSetPosition();
+      }
+    }
+
+    public void touchType(){
+      if(Input.GetMouseButtonDown(0)){
+        playEventDown();
+      }else if(Input.GetMouseButton(0)){
+        playEventDoing();
+      }else if(Input.GetMouseButtonUp(0)){
+        playEventUp();
+      }
+    }
+
+    public void playEventDown(){
+      Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
        RaycastHit hit;
-       if (Input.GetMouseButtonDown(0)) {
-           if(current){ //アイコンをタッチしていた場合
+
+      if(EventSystem.current.currentSelectedGameObject != null){ //アイコンをタッチしていた場合
              setpos.Set(-10,-10,-10);
              for(int i=0;i<tgls.Length;i++){
-               if(tgls[i].name.Equals(current.name)){ //タッチしているアイコンの名前とアイコンが一致した時
+               if(tgls[i].name.Equals(EventSystem.current.currentSelectedGameObject.name)){ //タッチしているアイコンの名前とアイコンが一致した時
                  if(tgls[i].GetComponent<GenerateBarManager>().getGenerate()){
                    tgls[i].isOn = true;
                    select_num = i;
@@ -211,8 +235,48 @@ public class InputManager : MonoBehaviour
          }else{
            stage.GetComponent<ShowStagePosition>().hideSetPosition();
          }
-      }
-      else if (Input.GetMouseButtonUp(0)) {
+
+    }
+    public void playEventDoing(){
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+       RaycastHit hit;
+        if (Physics.Raycast(ray,out hit,100.0f))
+        {
+          setpos = hit.point;
+          nameText.gameObject.transform.position = textpos;
+          notsetText.gameObject.transform.position = textpos;
+          setpos.y = 0.1f;
+        }
+        if(isSelect && (nowStatue != null) && canSelect){
+          spos = getSetPosition(nowStatue,setpos);
+          stage.GetComponent<ShowStagePosition>().showSetPosition(setType);
+          //ドラッグ中に設置可能範囲内に置いたら常に表示しておく
+          if(checkPosition()){
+            isdrawAttack = true;
+            isMoving = true;
+            generatePrefab.transform.position = setPosition(generatePrefab.transform.position,setpos);
+            generatePrefab.gameObject.SetActive(true);
+            nameText.gameObject.SetActive(true);
+            notsetText.gameObject.SetActive(false);
+
+            setObj.gameObject.SetActive(true);
+            setObj.transform.position = generatePrefab.transform.position;
+          }else{
+            generatePrefab.gameObject.SetActive(false);
+            setObj.gameObject.SetActive(false);
+            isdrawAttack = false;
+            nameText.gameObject.SetActive(false);
+            notsetText.gameObject.SetActive(true);
+          }
+        }else{
+          stage.GetComponent<ShowStagePosition>().hideSetPosition();
+        }
+
+    }
+    public void playEventUp(){
+         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+       RaycastHit hit;
+
         generating = false;
         if (Physics.Raycast(ray,out hit,10.0f))
         {
@@ -227,7 +291,6 @@ public class InputManager : MonoBehaviour
 
              //gobrinとstatueで分ける
              gp.Generate(FacilityName,atkPrefab.transform.position);
-
 
              isShow = false;
              FacilityName = "";
@@ -250,8 +313,7 @@ public class InputManager : MonoBehaviour
               }
             }
           }
-        }
-
+         }
 
         GameObject[] geneobjs = GameObject.FindGameObjectsWithTag("Statue");
         for(int i=0;i<geneobjs.Length;i++){
@@ -289,54 +351,7 @@ public class InputManager : MonoBehaviour
         isMoving = false;
         canSelect = true;
         stage.GetComponent<ShowStagePosition>().hideSetPosition();
-      }
-      else if (Input.GetMouseButton(0)) {
-       // Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask);
-        //if(Physics.Raycast(ray,out hit,Mathf.Infinity,layerMask))
-        if (Physics.Raycast(ray,out hit,100.0f))
-        {
-          setpos = hit.point;
-          nameText.gameObject.transform.position = textpos;
-          notsetText.gameObject.transform.position = textpos;
-          setpos.y = 0.1f;
-        }
-        if(isSelect && (nowStatue != null) && canSelect){
-          spos = getSetPosition(nowStatue,setpos);
-          stage.GetComponent<ShowStagePosition>().showSetPosition(setType);
-          //ドラッグ中に設置可能範囲内に置いたら常に表示しておく
-          if(checkPosition()){
-            isdrawAttack = true;
-            isMoving = true;
-            generatePrefab.transform.position = setPosition(generatePrefab.transform.position,setpos);
-            generatePrefab.gameObject.SetActive(true);
-            nameText.gameObject.SetActive(true);
-            notsetText.gameObject.SetActive(false);
 
-            setObj.gameObject.SetActive(true);
-            setObj.transform.position = generatePrefab.transform.position;
-          }else{
-            generatePrefab.gameObject.SetActive(false);
-            setObj.gameObject.SetActive(false);
-            isdrawAttack = false;
-            nameText.gameObject.SetActive(false);
-            notsetText.gameObject.SetActive(true);
-          }
-        }else{
-          stage.GetComponent<ShowStagePosition>().hideSetPosition();
-        }
-      }
-
-      if(isdrawAttack && isMoving && (nowStatue != null) && canSelect){
-        drawAttackArea();
-      }else if(atkPrefab != null){
-        atkPrefab.SetActive(false);
-      }
-
-      if(isShow && canSelect && isSelect){
-        stage.GetComponent<ShowStagePosition>().showSetPosition(setType);
-      }else{
-        stage.GetComponent<ShowStagePosition>().hideSetPosition();
-      }
     }
 
     public void drawAttackArea(){

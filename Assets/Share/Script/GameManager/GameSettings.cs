@@ -30,12 +30,15 @@ public class GameSettings : MonoBehaviour
     [SerializeField]
     private byte battleType; //攻撃側か守備側か 0 : statue , 1 : gobrin
 
+    AddStatus[] addStatuses;
+    int skillType;
     void Start()
     {
         DontDestroyOnLoad(this);
+        addStatuses = new AddStatus[5];
+        skillType = 0;
     }
 
-    // Update is called once per frame
     void Update()
     {
         
@@ -69,5 +72,22 @@ public class GameSettings : MonoBehaviour
             Debug.Log(msg);
         }
     }
+
+    public void setStatus(int num,AddStatus add){
+
+    }
+
+    public AddStatus getStatus(int num){
+        return addStatuses[num];
+    }
+
+}
+
+//スキル割り振りなどで追加されるステータス
+public class AddStatus{
+    public int hp;
+    public int attack;
+    public int speed;
+
 }
 
