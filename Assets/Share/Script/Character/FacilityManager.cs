@@ -13,6 +13,9 @@ public abstract class FacilityManager : MonoBehaviour
 
     /* 初期化 */
     public abstract void init();
+
+    /* スキル割り振りのステータスを追加 */
+    public abstract void setAddStatus(AddStatus s);
     
     /* 死んでる時のフラグ */
     public bool isEnd;

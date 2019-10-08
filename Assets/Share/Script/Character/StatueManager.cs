@@ -31,6 +31,8 @@ public class StatueManager : FacilityManager
     [SerializeField]
     private GameObject[] viewModels;
 
+    private int buttontype; //ボタンの位置
+
     private bool isAttacking; //攻撃中
 
     GameObject amm; //AttackManager check用
@@ -66,6 +68,15 @@ public class StatueManager : FacilityManager
                 gbm = child.gameObject.GetComponent<GenerateBarManager>();
             }
         }
+    }
+
+    public override void setAddStatus(AddStatus astatus){
+        if(astatus == null) return;
+        statue.hp += astatus.hp;
+        statue.attack += astatus.attack;
+        statue.atkInterval *= (int)(astatus.speed * 0.15f);
+
+        GameSettings.printLog("[StatueManager] name : " + astatus.name + " , hp : " + statue.hp + " , attack : " + statue.attack + " , speed : " + statue.atkInterval);
     }
 
     void Update()

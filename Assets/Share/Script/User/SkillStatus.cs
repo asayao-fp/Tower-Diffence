@@ -12,6 +12,9 @@ public class SkillStatus : MonoBehaviour
     private int speednum;
     private int level;
     private SkillNumManager snm;
+
+    public TextMeshProUGUI nametext;
+
     void Start()
     {
         hpnum = 0;
@@ -39,7 +42,6 @@ public class SkillStatus : MonoBehaviour
                 speednum ++;
             }
         }else{
-            Debug.Log("can't up skill");
         }
  
         updateLayout();
@@ -59,17 +61,26 @@ public class SkillStatus : MonoBehaviour
                 speednum --;
                 minus = true;
             }else {
-                Debug.Log("can't down skill");
             }
             if(minus){
                 snm.minusStatus();
             }
         }else{
-            Debug.Log("can't down skill");
         }
        
 
 
         updateLayout();
+    }
+
+    public AddStatus GetStatus(){
+        AddStatus a = new AddStatus();
+        a.name = nametext.text;
+        a.hp = hpnum;
+        a.attack = attacknum;
+        a.speed = speednum;
+
+        GameSettings.printLog("GetStatus : " + a.name + " " + a.hp + " " + a.attack + " " + a.speed);
+        return a;
     }
 }

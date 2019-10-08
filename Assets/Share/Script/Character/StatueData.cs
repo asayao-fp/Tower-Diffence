@@ -18,4 +18,5 @@ public class StatueData : ScriptableObject
    public String name4Preview; //表示用の名前
    public int maxsetNum; //最大設置可能数
    public int generateInterval; //次に召喚できるまでの時間
+   public int attack; //攻撃力
 }

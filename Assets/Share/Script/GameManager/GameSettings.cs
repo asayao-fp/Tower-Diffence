@@ -14,6 +14,7 @@ public class GameSettings : MonoBehaviour
     private Material Generating_material;
 
     [SerializeField]
+    private bool log;
     private static bool isLog; //ログを出力するか
 
     //制限時間
@@ -37,12 +38,9 @@ public class GameSettings : MonoBehaviour
         DontDestroyOnLoad(this);
         addStatuses = new AddStatus[5];
         skillType = 0;
+        isLog = log;
     }
 
-    void Update()
-    {
-        
-    }
 
     public int getLimitTime(){
         return limitTime;
@@ -73,12 +71,28 @@ public class GameSettings : MonoBehaviour
         }
     }
 
-    public void setStatus(int num,AddStatus add){
+    //ゲームシーンに遷移するときにAddStatusを設定
+    public void setStatus(AddStatus[] astatus){
+        addStatuses = astatus;
 
+        GameSettings.printLog("[GameSettings] set Status");
+        for(int i=0;i<addStatuses.Length;i++){
+            GameSettings.printLog("[" + i + "] name : " + addStatuses[i].name + " , hp : " + addStatuses[i].hp + " , attack : " + addStatuses[i].attack + " , speed : " + addStatuses[i].speed);
+        }        
     }
 
     public AddStatus getStatus(int num){
         return addStatuses[num];
+    }
+
+    public AddStatus getStatus(String name){
+        for(int i=0;i<addStatuses.Length;i++){
+            if(addStatuses[i].name.Equals(name)){
+                return addStatuses[i];
+            }
+        }
+
+        return null;
     }
 
 }
@@ -88,6 +102,7 @@ public class AddStatus{
     public int hp;
     public int attack;
     public int speed;
+    public String name;
 
 }
 

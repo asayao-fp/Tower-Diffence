@@ -12,6 +12,9 @@ public class SkillNumManager : MonoBehaviour
 
     public GameObject panel;
 
+    SkillStatus[] sstatus;
+    AddStatus[] astatus;
+
     void Start()
     {
         usenum = 0;
@@ -21,6 +24,14 @@ public class SkillNumManager : MonoBehaviour
         skilltext.text = "SKILL : " + skill;
         isshow = false;
         showPanel();
+
+        int count = 0;
+        sstatus = new SkillStatus[5];
+        foreach(Transform child in panel.transform){
+            if(child.gameObject.name.StartsWith("status_")){
+                sstatus[count++] = child.gameObject.GetComponent<SkillStatus>();
+            }
+        }
     }
 
     public void updateLayout(){
@@ -56,6 +67,14 @@ public class SkillNumManager : MonoBehaviour
         isshow = !isshow;
         panel.gameObject.SetActive(isshow);
 
+    }
+
+    public AddStatus[] getAllStatus(){
+        astatus = new AddStatus[5];
+        for(int i=0;i<astatus.Length;i++){
+            astatus[i] = sstatus[i].GetStatus();
+        }
+        return astatus;
     }
 
 }

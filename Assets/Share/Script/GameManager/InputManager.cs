@@ -22,8 +22,8 @@ public class InputManager : MonoBehaviour
     private GameObject setObj; //設置用のオブジェクト
     private GameObject[] setObjs; //設置されてるstatue用オブジェクト
 
-    public GameObject[] tglobj;
-    public Toggle[] tgls = new Toggle[4]; //施設選択用
+    private GameObject[] tglobj;
+    private Toggle[] tgls = new Toggle[5]; //施設選択用
     private Vector2[] spos = new Vector2[4]; //設置可能時の座標
 
     Boolean touchGui; //uGuiを選択しているか
@@ -50,12 +50,18 @@ public class InputManager : MonoBehaviour
 
     public static bool generating = false;
 
-    void Start()
+    public void init()
     {
       setpos = new Vector3();
       stage = GameObject.FindWithTag("Stage");
       fs = GameObject.FindWithTag("StaticObjects").GetComponent<FacilitySetting>();
       ss = GameObject.FindWithTag("StaticObjects").GetComponent<StageSetting>();
+
+      tglobj = GameObject.FindGameObjectsWithTag("GenerateIcon");
+      for(int i=0;i<tglobj.Length;i++){
+        tgls[i] = tglobj[i].GetComponent<Toggle>();
+      }
+
       for(int i=0;i<tgls.Length;i++){
         tgls[i].isOn = false;
       }

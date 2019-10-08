@@ -83,8 +83,13 @@ public class GameProgress : MonoBehaviour
       crystaldead = false;
       myobj_num = 0;
       isStatue = gs.isStatue();
-
       isStart = false;
+
+      GameObject[] icons = GameObject.FindGameObjectsWithTag("GenerateIcon");
+      for(int i=0;i<icons.Length;i++){
+        icons[i].name = gs.getStatus(i).name;
+      }
+      GetComponent<InputManager>().init();
     }
 
 
@@ -100,7 +105,9 @@ public class GameProgress : MonoBehaviour
         int level = PlayerPrefs.GetInt(UserData.USERDATA_LEVEL,0);
         int exp = PlayerPrefs.GetInt(UserData.USERDATA_EXP,0);
 
-        Debug.Log("gameprogress : " + name + " " + id + " " + level + " " + exp);
+        GameSettings.printLog("gameprogress : " + name + " " + id + " " + level + " " + exp);
+
+
 
         isStart = true;
         return;
@@ -226,6 +233,8 @@ public class GameProgress : MonoBehaviour
         GameObject obj = Instantiate (ResourceManager.getObject("Statue/" + name), pos, Quaternion.identity) as GameObject;
         obj.name = name;
         FacilityManager fm = obj.GetComponent<FacilityManager>();
+
+        fm.setAddStatus(gs.getStatus(name));
         fm.init();
         
         if(!name.Equals("debugGobrin")){
