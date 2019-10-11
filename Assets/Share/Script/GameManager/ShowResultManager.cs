@@ -41,7 +41,8 @@ public class ShowResultManager : MonoBehaviour
         result.text = "result : " + (rd.getResultType() ? "Win!!" : "Lose...");
         yield return new WaitForSeconds (1.0f); 
 
-        level.text = "level : " + PlayerPrefs.GetInt(UserData.USERDATA_LEVEL,0);
+        int l = PlayerPrefs.GetInt(UserData.USERDATA_LEVEL,1);
+        level.text = "level : " + l;
         yield return new WaitForSeconds (1.0f); 
 
         int esum = PlayerPrefs.GetInt(UserData.USERDATA_EXP,0);
@@ -50,8 +51,25 @@ public class ShowResultManager : MonoBehaviour
 
         int e = rd.getExp();
         exp.text = "exp : " + e;
-        PlayerPrefs.SetInt(UserData.USERDATA_EXP,e + esum);
+
         yield return new WaitForSeconds (1.0f); 
+
+
+        exp.text = "exp : " + 0;
+        esum = e + esum;
+        expsum.text = "expsum : " + esum;
+        PlayerPrefs.SetInt(UserData.USERDATA_EXP,esum);
+
+        yield return new WaitForSeconds(1.0f);
+
+
+        int afterl = GameObject.FindWithTag("StaticObjects").GetComponent<expData>().getLevel(esum);
+        if(l != afterl){
+            level.text = "levelUp! " + l + " -> " + afterl;
+            PlayerPrefs.SetInt(UserData.USERDATA_LEVEL,afterl);
+        }
+        FindObjectOfType<UserAuth>().saveData();
+
     }
 
     public void firstScene(){

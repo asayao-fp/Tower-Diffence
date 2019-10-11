@@ -15,7 +15,7 @@ MonoBehaviour:
   id: 4
   name: facility_4
   setpos: {x: 1.5, y: 1.9}
-  attackpos: {x: 0, y: 0, z: 5}
+  attackpos: {x: 0, y: 0, z: 10}
   settype: 4
   hp: 100
   time: 10
@@ -24,3 +24,4 @@ MonoBehaviour:
   name4Preview: Statue4
   maxsetNum: 2
   generateInterval: 4
+  attack: 0

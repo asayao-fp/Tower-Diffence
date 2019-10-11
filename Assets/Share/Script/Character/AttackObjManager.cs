@@ -18,6 +18,8 @@ public class AttackObjManager : MonoBehaviour
   private int attacktype; //攻撃の種類
   private GameObject obj;//親のオブジェクト
 
+  private int attack; //攻撃力
+
   void Start ()
   {
     GetComponent<Rigidbody>().velocity = new Vector3(transform.forward.normalized.x * speed,0,transform.forward.normalized.z * speed);
@@ -45,14 +47,15 @@ public class AttackObjManager : MonoBehaviour
     if(!objs.ContainsKey(other.gameObject.GetInstanceID())){
       FacilityManager fm = other.gameObject.GetComponent<FacilityManager>();
       if(fm != null){
-        gp.calcDamage(fm.obj_num,attacktype);
+        gp.calcDamage(fm.obj_num,attacktype,attack);
       }       
       objs.Add(other.gameObject.GetInstanceID(),other.gameObject);
     }
    }
   }
 
-  public void setType(int type){
+  public void setType(int type,int attack){
     attacktype = type;
+    this.attack = attack;
   }
 }

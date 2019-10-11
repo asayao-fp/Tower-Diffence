@@ -149,6 +149,7 @@ public class StatueManager : FacilityManager
 
         GameObject atkpre = (GameObject)Resources.Load("Attack/" + AtkName);
         GameObject atkobj = Instantiate(atkpre, transform.position, Quaternion.identity) as GameObject;
+        atkobj.GetComponent<AttackManager>().init(statue.attack);
         atkobj.transform.parent = this.transform;
         atkobj.transform.localPosition = atkpre.transform.position;
         atkobj.transform.localScale = atkpre.transform.localScale;

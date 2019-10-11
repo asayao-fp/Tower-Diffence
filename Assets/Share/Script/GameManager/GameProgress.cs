@@ -252,8 +252,8 @@ public class GameProgress : MonoBehaviour
     }
 
     //ダメージ計算
-    public void calcDamage(int obj_id,int type){
-       int hp = 0;
+    public void calcDamage(int obj_id,int type,int attack){
+       int hp = -attack;
        String debugstr = "";
        //攻撃の種類
        //攻撃を受けたキャラクターの状態
@@ -261,23 +261,18 @@ public class GameProgress : MonoBehaviour
        switch(type){
          case ATK_MAGICBALL:
            debugstr = "ATK_MAGICBALL";
-           hp = -1;
            break;
          case ATK_LASER:
            debugstr = "ATK_LASER";           
-           hp = -2;
            break;
          case ATK_THUNDER:
            debugstr = "ATK_THUNDER";
-           hp = -3;
            break;
          case ATK_POISON:
            debugstr = "ATK_POISON";
-           hp = -4;
            break;
          case ATK_EXPLODE:
            debugstr = "ATK_EXPLODE";
-           hp = -5;
            break;
        }
        GameSettings.printLog("[CALC DAMAGE] TYPE : " + debugstr);

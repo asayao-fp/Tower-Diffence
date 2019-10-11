@@ -11,15 +11,14 @@ public class InitUserData : MonoBehaviour
     public TextMeshProUGUI level;
     private SkillNumManager snm;
     private GameSettings gs;
+
+
     void Start(){
         GameObject obj = GameObject.FindWithTag("StaticObjects");
 
         gs = obj.GetComponent<GameSettings>();
 
-        PlayerPrefs.SetInt(UserData.USERDATA_LEVEL,levelnum);
-        PlayerPrefs.SetInt(UserData.USERDATA_EXP,obj.GetComponent<expData>().getExp(levelnum));
-
-        level.text = "LEVEL : " + levelnum;
+        level.text = "LEVEL : " + PlayerPrefs.GetInt(UserData.USERDATA_LEVEL);
 
     }
     public void nextScene(){

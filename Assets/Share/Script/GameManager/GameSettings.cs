@@ -32,7 +32,7 @@ public class GameSettings : MonoBehaviour
     private byte battleType; //攻撃側か守備側か 0 : statue , 1 : gobrin
 
     AddStatus[] addStatuses;
-    int skillType;
+    private int skillType; //必殺技のタイプ
     void Start()
     {
         DontDestroyOnLoad(this);
@@ -95,6 +95,11 @@ public class GameSettings : MonoBehaviour
         return null;
     }
 
+
+    public void setSkillType(int type){
+        skillType = type;
+        GameSettings.printLog("[GameSettings] setSkillType : " + type);
+    }
 }
 
 //スキル割り振りなどで追加されるステータス

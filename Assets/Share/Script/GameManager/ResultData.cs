@@ -13,8 +13,6 @@ public class ResultData : MonoBehaviour
     public void SetResult(bool result,int exp){
         resulttype = result;
         this.exp = exp;
-
-        Debug.Log("setresult : " + result + " " + exp);
     }
 
     public bool getResultType(){

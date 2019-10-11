@@ -13,15 +13,31 @@ public class AttackManager : MonoBehaviour
     [SerializeField]
     private int attacktype; //攻撃の種類
 
+    private int attack;
+
+    private bool isset;
+
     void Start()
     {
+        isset = false;
+    }
+
+    public void init(int attack){
+        this.attack = attack;
         time = 0.0f;
         atkCollider.AddComponent<AttackObjManager>();
-        atkCollider.GetComponent<AttackObjManager>().setType(attacktype);
+        atkCollider.GetComponent<AttackObjManager>().setType(attacktype,attack);
+        isset = true;
+
+        GameSettings.printLog("[AttackManager] attack : " + attack);
+  
     }
 
     void Update()
     {
+        if(!isset)return;
+
+
         time += Time.deltaTime;
 
         if (time > 5.0f)
