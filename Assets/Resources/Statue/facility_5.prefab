@@ -2305,6 +2305,7 @@ MonoBehaviour:
   viewModels:
   - {fileID: 4105517129586448770}
   - {fileID: 7086542508527339372}
+  notRotate: 1
 --- !u!1 &2302402945422632197
 GameObject:
   m_ObjectHideFlags: 0
@@ -4364,6 +4365,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2303995612285633671}
     m_Modifications:
+    - target: {fileID: 3385929178388265878, guid: fa59377b2621f4e949704ba87fb759d8,
+        type: 3}
+      propertyPath: m_Name
+      value: Canvas
+      objectReference: {fileID: 0}
     - target: {fileID: 5537399754808101120, guid: fa59377b2621f4e949704ba87fb759d8,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4468,11 +4474,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 3385929178388265878, guid: fa59377b2621f4e949704ba87fb759d8,
-        type: 3}
-      propertyPath: m_Name
-      value: Canvas
       objectReference: {fileID: 0}
     - target: {fileID: 6546035547199782417, guid: fa59377b2621f4e949704ba87fb759d8,
         type: 3}

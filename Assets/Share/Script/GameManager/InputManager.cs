@@ -42,13 +42,19 @@ public class InputManager : MonoBehaviour
     private Vector3 textpos; //ドラッグ中の名前
     [SerializeField]
     private TextMeshProUGUI notsetText; //設置できないときに表示するオブジェクト
-
-
+    private int num ;
     private int select_num;
 
     GameProgress gp; 
 
     public static bool generating = false;
+
+    //タッチ判定
+    int layerNo;
+    int layerMask;
+    Ray ray ;
+    RaycastHit hit;
+    bool isRay = false; //raycast が当たってるか
 
     public void init()
     {
@@ -78,255 +84,186 @@ public class InputManager : MonoBehaviour
       nowStage = gp.setNowStage(ss.getStageList(0));
       textpos = new Vector3();
 
+      layerNo = LayerMask.NameToLayer("SetPosition");
+      layerMask = 1 << layerNo;
+
     }
+
+
+
 
     void Update()
     {
+
       if(gp.getStatus() != gp.NOW_GAME)return;
 
+      Vector2 mousepos = Input.mousePosition;
+      ray = Camera.main.ScreenPointToRay(mousepos);
+      if (Physics.Raycast(ray,out hit,100.0f,layerMask)){
+        setpos = hit.point;
+        nameText.gameObject.transform.position = textpos;
+        notsetText.gameObject.transform.position = textpos;
+    　}
+
+      textpos.Set(mousepos.x,mousepos.y+30,0);
+
       for(int i=0;i<tgls.Length;i++){
-        
         if(tgls[i].name.Equals(FacilityName)){
           tgls[i].isOn = true;
           select_num = i;
-        
         }else{
           tgls[i].isOn = false;
         }
         //召喚コストが足りなければ黒画像
         Image b = tglobj[i].GetComponent<GenerateBarManager>().getBlackImage();
 
-        if(gp.hasCost(fs.getFacility(tgls[i].name).cost)){
+        int cost = ResourceManager.getObject("Statue/" + tgls[i].name).GetComponent<FacilityManager>().getSData().cost;
+        if(gp.hasCost(cost)){
             b.enabled = false;
         }else{
             b.enabled = tglobj[i].GetComponent<GenerateBarManager>().getGenerate();
         }
       }
 
-       Vector2 mousepos = Input.mousePosition;
-       textpos.Set(mousepos.x,mousepos.y+30,0);
-
-       touchType();
-
-      if(isdrawAttack && isMoving && (nowStatue != null) && canSelect){
-        drawAttackArea();
-      }else if(atkPrefab != null){
-        atkPrefab.SetActive(false);
+      int ttype = -1;
+      if(Input.GetMouseButtonDown(0)){
+        ttype = 0;
+      }else if(Input.GetMouseButton(0)){
+        ttype = 1;
+      }else if(Input.GetMouseButtonUp(0)){
+        ttype = 2;
       }
 
-      if(isShow && canSelect && isSelect){
-        stage.GetComponent<ShowStagePosition>().showSetPosition(setType);
-      }else{
-        stage.GetComponent<ShowStagePosition>().hideSetPosition();
+      touchType(ttype);
+      
+    }
+
+    public void touchType(int ttype){
+      switch(ttype){
+        case 0:
+          playEventDown();
+          break;
+        case 1:
+          playEventDoing();
+          break;
+        case 2:
+          playEventUp();
+          break;
       }
     }
 
-    public void touchType(){
-      if(Input.GetMouseButtonDown(0)){
-        playEventDown();
-      }else if(Input.GetMouseButton(0)){
-        playEventDoing();
-      }else if(Input.GetMouseButtonUp(0)){
-        playEventUp();
+    //選択しているトグルを取得
+    public void checkSelectToggles(){
+      for(int i=0;i<tgls.Length;i++){
+        if(tgls[i].name.Equals(EventSystem.current.currentSelectedGameObject.name)){ //タッチしているアイコンの名前とアイコンが一致した時
+          if(tgls[i].GetComponent<GenerateBarManager>().getGenerate()){
+            tgls[i].isOn = true;
+            select_num = i;
+            FacilityName = tgls[i].name;
+            setType = fs.getFacilityList(i).settype;
+            isShow = true;
+            isSelect = true;
+          }else{
+            //現在選択中の施設が設置中
+            canSelect = false;
+          }    
+        }else{
+          tgls[i].isOn = false;
+          //select_num = -1;
+        }
+      }
+    }
+
+    public void setSelectToggle(String name){
+      for(int i=0;i<tgls.Length;i++){
+        if(tgls[i].name.Equals(name)){
+          tgls[i].isOn = true;
+          FacilityName = tgls[i].name;
+          select_num = i;
+
+        }else {
+          tgls[i].isOn = false;
+        }
       }
     }
 
     public void playEventDown(){
-      Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-       RaycastHit hit;
+      if(EventSystem.current.currentSelectedGameObject != null && EventSystem.current.currentSelectedGameObject.tag.Equals("GenerateIcon")){ //アイコンをタッチしていた場合
+        setpos.Set(-10,-10,-10);
+        //checkSelectToggles();
+        setSelectToggle(EventSystem.current.currentSelectedGameObject.name);
+      }
+      GenerateBarManager gbm = null;
+      if(select_num > -1){
+        gbm = tgls[select_num].GetComponent<GenerateBarManager>();
+        nowStatue = gbm.getStatus(); //現在のfacilityのStatueDataを取得
+        if(!gbm.checkSet()) gbm = null; //単体の設置可能数が超えていないか
 
-      if(EventSystem.current.currentSelectedGameObject != null){ //アイコンをタッチしていた場合
-             setpos.Set(-10,-10,-10);
-             for(int i=0;i<tgls.Length;i++){
-               if(tgls[i].name.Equals(EventSystem.current.currentSelectedGameObject.name)){ //タッチしているアイコンの名前とアイコンが一致した時
-                 if(tgls[i].GetComponent<GenerateBarManager>().getGenerate()){
-                   tgls[i].isOn = true;
-                   select_num = i;
-                   FacilityName = tgls[i].name;
-                   setType = fs.getFacilityList(i).settype;
-                   isShow = true;
-                   isSelect = true;
-                 }else{
-                   //現在選択中の施設が設置中
-                   canSelect = false;
-                 }    
-               }else{
-                 tgls[i].isOn = false;
-                 //select_num = -1;
-               }
-             }
-           }else{
-            //アイコン以外をタッチしていた時
-            if (Physics.Raycast(ray,out hit,10.0f))
-            {
-              setpos = hit.point;
-              nameText.gameObject.transform.position = textpos;
-              notsetText.gameObject.transform.position = textpos;
-              int count = 0;
-              for(int i=0;i<tgls.Length;i++){
-                //一つでもアイコンが選択されていた時
-                if(tgls[i].isOn){
-                  FacilityName = tgls[i].name;
-                  count++;
-                }
-              }
-              if(count == 0){
-                isSelect = false;
-              }else{
-                isShow = true;
-              }
-            }else{
-              canSelect = false;
-            }
-         }
-
-
-         if(gp.canObjSet() &&  canSelect && (!FacilityName.Equals(""))){
-           //設置可能範囲内なら置ける
-           GenerateBarManager gbm = tgls[select_num].GetComponent<GenerateBarManager>();
-           nowStatue = gbm.getStatus();
-
-           if(!gbm.checkSet()){
-            //設置可能数を超えたら設置できない
-            canSelect = false;
-            isShow = false;
-            stage.GetComponent<ShowStagePosition>().hideSetPosition();
-
-
-           }else if(gp.hasCost(nowStatue.cost)){
-            //コストが足りなかったら召喚できない
-
-            prefab = ResourceManager.getObject("Statue/" + FacilityName);
-
-            spos = getSetPosition(nowStatue,setpos);
-
-            //召喚中！！
-            generating = true;
-            generatePrefab = Instantiate (prefab, setpos, Quaternion.identity) as GameObject;
-
-            StatueData sd = generatePrefab.GetComponent<FacilityManager>().getSData();
-            nameText.text = sd.name4Preview;
-
-            //選択したオブジェクトの設置範囲を表示
-            setObj = Instantiate(setPrefab,setpos,Quaternion.identity) as GameObject;
-            Vector2 Spos = sd.setpos;
-            setObj.transform.localScale = new Vector3(0.1f * Spos.x,0.1f,0.1f*Spos.y);
-
-            //設置されてるオブジェクト全ての設置範囲を表示
-            GameObject[] objs = gp.getObjs();
-            setObjs = new GameObject[objs.Length];
-            for(int i=0;i<objs.Length;i++){
-                if(!objs[i].gameObject.tag.Equals("Statue"))continue;
-                Vector2 sp = objs[i].GetComponent<FacilityManager>().getSData().setpos;
-                setObjs[i] = Instantiate(setPrefab,objs[i].transform.position,Quaternion.identity) as GameObject;
-                setObjs[i].transform.localScale = new Vector3(0.1f * sp.x,0.1f,0.1f * sp.y);
-            }
-
-            stage.GetComponent<ShowStagePosition>().showSetPosition(setType);
-            if(checkPosition()){
-              generatePrefab.gameObject.SetActive(true);
-              nameText.gameObject.SetActive(true);
-              notsetText.gameObject.SetActive(false);
-            }else{
-              generatePrefab.gameObject.SetActive(false);
-              nameText.gameObject.SetActive(false);
-              notsetText.gameObject.SetActive(true);
-            }
-           }else{
-            canSelect = false;
-            isShow = false;
-            stage.GetComponent<ShowStagePosition>().hideSetPosition();
-
-           }
-         }else{
-           stage.GetComponent<ShowStagePosition>().hideSetPosition();
-         }
+      }
+      //全体の設置可能数ok && Facility選択されてる && 選択したFacilityの設置可能数ok && コスト足りてる
+      if(gp.canObjSet() && (!FacilityName.Equals("")) && (gbm != null) && (gp.hasCost(nowStatue.cost))){
+        nameText.text = nowStatue.name4Preview;
+        prefab = ResourceManager.getObject("Statue/" + FacilityName); //選択したFacilityのリソースを読み込む
+        generating = true;
+        generatePrefab = Instantiate(prefab,setpos,Quaternion.identity) as GameObject; //ドラッグ中のFacilityprefab召喚
+        setObj = Instantiate(setPrefab,setpos,Quaternion.identity) as GameObject; //召喚範囲用Prefab
+        setObj.transform.localScale = new Vector3(0.1f * nowStatue.setpos.x,0.1f,0.1f*nowStatue.setpos.y); 
+        GameObject[] objs = gp.getObjs();//設置されてるオブジェクト全ての設置範囲を表示
+        setObjs = new GameObject[objs.Length];
+        for(int i=0;i<objs.Length;i++){
+            if(!objs[i].gameObject.tag.Equals("Statue"))continue;
+            Vector2 sp = objs[i].GetComponent<FacilityManager>().getSData().setpos;
+            setObjs[i] = Instantiate(setPrefab,objs[i].transform.position,Quaternion.identity) as GameObject;
+            setObjs[i].transform.localScale = new Vector3(0.1f * sp.x,0.1f,0.1f * sp.y);
+        }
+        canSelect = true;
+        isShow = true;
+        stage.GetComponent<ShowStagePosition>().showSetPosition(nowStatue.settype); //自分の設置できる箇所を表示する
+        drawAttackArea();
+      }else{
+        canSelect = false;
+        isShow = false;
+        stage.GetComponent<ShowStagePosition>().hideSetPosition();
+        atkPrefab.gameObject.SetActive(false);
+      }
 
     }
     public void playEventDoing(){
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-       RaycastHit hit;
-        if (Physics.Raycast(ray,out hit,100.0f))
-        {
-          setpos = hit.point;
-          nameText.gameObject.transform.position = textpos;
-          notsetText.gameObject.transform.position = textpos;
-          setpos.y = 0.1f;
-        }
-        if(isSelect && (nowStatue != null) && canSelect){
-          spos = getSetPosition(nowStatue,setpos);
-          stage.GetComponent<ShowStagePosition>().showSetPosition(setType);
-          //ドラッグ中に設置可能範囲内に置いたら常に表示しておく
-          if(checkPosition()){
-            isdrawAttack = true;
-            isMoving = true;
-            generatePrefab.transform.position = setPosition(generatePrefab.transform.position,setpos);
-            generatePrefab.gameObject.SetActive(true);
-            nameText.gameObject.SetActive(true);
-            notsetText.gameObject.SetActive(false);
+      if(canSelect && nowStatue != null){
+        spos = getSetPosition(nowStatue,setpos);
+        if(checkPosition()){
+          generatePrefab.transform.position = setPosition(generatePrefab.transform.position,setpos);
+          setObj.transform.position = generatePrefab.transform.position;
 
-            setObj.gameObject.SetActive(true);
-            setObj.transform.position = generatePrefab.transform.position;
-          }else{
-            generatePrefab.gameObject.SetActive(false);
-            setObj.gameObject.SetActive(false);
-            isdrawAttack = false;
-            nameText.gameObject.SetActive(false);
-            notsetText.gameObject.SetActive(true);
-          }
+          nameText.gameObject.SetActive(true);
+          notsetText.gameObject.SetActive(false);
+          setObj.gameObject.SetActive(true);
+          generatePrefab.gameObject.SetActive(true);
+          drawAttackArea();
         }else{
-          stage.GetComponent<ShowStagePosition>().hideSetPosition();
+          nameText.gameObject.SetActive(false);
+          notsetText.gameObject.SetActive(true);
+          setObj.gameObject.SetActive(false);
+          generatePrefab.gameObject.SetActive(false);
+          atkPrefab.SetActive(false);
         }
-
+      }
     }
     public void playEventUp(){
-         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-       RaycastHit hit;
-
         generating = false;
-        if (Physics.Raycast(ray,out hit,10.0f))
-        {
-          setpos = hit.point;
-          nameText.gameObject.transform.position = textpos;
-          notsetText.gameObject.transform.position = textpos;
-        }
-        //マウスを離した時に設置可能位置に置けなかった場合か、toggleを洗濯していたら設置可能位置は表示したまま
-         if(isSelect && canSelect){
-           if(checkPosition() && (generatePrefab != null)){
-           //|| isMoving){
-
-             //gobrinとstatueで分ける
-             gp.Generate(FacilityName,atkPrefab.transform.position);
-
-             isShow = false;
-             FacilityName = "";
-             select_num = -1;
-             nowStatue = null;
-             for(int i=0;i<tgls.Length;i++){
-               if(tgls[i].isOn){
-                 tgls[i].GetComponent<GenerateBarManager>().setGenerate();
-               }
-               tgls[i].isOn = false;
-             }
-           }
-         }else{
-           if(EventSystem.current.currentSelectedGameObject !=null){
-            for(int i=0;i<tgls.Length;i++){
-              if(tgls[i].name.Equals(FacilityName))continue;
-              if(tgls[i].name.Equals(EventSystem.current.currentSelectedGameObject.name)){
-                tgls[i].isOn = true;
-                isShow = true;
-              }
-            }
-          }
-         }
-
-        GameObject[] geneobjs = GameObject.FindGameObjectsWithTag("Statue");
-        for(int i=0;i<geneobjs.Length;i++){
-          if(!geneobjs[i].activeSelf){
-            Destroy(geneobjs[i]);
+        if(canSelect){
+          if(checkPosition()){
+            gp.Generate(FacilityName,atkPrefab.transform.position);
+             
+            FacilityName = "";
+            tgls[select_num].GetComponent<GenerateBarManager>().setGenerate();
+            tgls[select_num].isOn = false;
+            select_num = -1;
+            nowStatue = null;
+            atkPrefab.SetActive(false);
           }
         }
+
         //画面外にセット
         if(generatePrefab != null){
           atkPrefab.transform.parent = stage.transform;
@@ -354,18 +291,15 @@ public class InputManager : MonoBehaviour
           }
         }
 
-        isMoving = false;
         canSelect = true;
         stage.GetComponent<ShowStagePosition>().hideSetPosition();
-
     }
 
     public void drawAttackArea(){
       Vector4 fp = nowStatue.attackpos;
       Vector2 p = new Vector2(generatePrefab.transform.position.x + fp.x,generatePrefab.transform.position.z + fp.y); //攻撃範囲の中心座標
       atkPrefab.transform.parent = generatePrefab.transform;
-      //atkPrefab.transform.localPosition = new Vector3(p.x,0.05f,p.y);
-      atkPrefab.transform.localPosition = new Vector3(0,0.05f,0);
+      atkPrefab.transform.localPosition = new Vector3(0,0,0);
       atkPrefab.transform.localScale = new Vector3(nowStatue.attackpos.z*2.0f,0.01f,nowStatue.attackpos.z*2.0f);
       atkPrefab.GetComponent<CapsuleCollider>().radius = nowStatue.attackpos.z;
       atkPrefab.SetActive(true);
@@ -432,7 +366,6 @@ public class InputManager : MonoBehaviour
               isin = true;
             }
           }
-
           //設置されてるObjectの範囲にいないか
           if(!isinObj){
             GameObject[] objs = gp.getObjs();
@@ -446,7 +379,6 @@ public class InputManager : MonoBehaviour
             }
           }
         }
-
         if(isin)incount++;
         if(isinObj){
           setincount++;
@@ -459,7 +391,7 @@ public class InputManager : MonoBehaviour
     public Vector3 setPosition(Vector3 nowpos,Vector3 setpos){
 
       //setposがステージ外だったらダメだよ
-      Vector3 sp = new Vector3(0,0.01f,0);
+      Vector3 sp = new Vector3(0,setpos.y,0);
       float ssizex = stage.GetComponent<Renderer>().bounds.size.x;
       float ssizez = stage.GetComponent<Renderer>().bounds.size.z;
 

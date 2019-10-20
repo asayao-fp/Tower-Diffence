@@ -40,6 +40,9 @@ public class StatueManager : FacilityManager
 
     GenerateBarManager gbm; //自分の召喚用ボタン
 
+    [SerializeField]
+    private bool notRotate;
+
 
     void Awake()
     {
@@ -74,7 +77,7 @@ public class StatueManager : FacilityManager
         if(astatus == null) return;
         statue.hp += astatus.hp;
         statue.attack += astatus.attack;
-        statue.atkInterval *= (int)(astatus.speed * 0.15f);
+        statue.atkInterval += (int)(astatus.speed * 0.15f);
 
         GameSettings.printLog("[StatueManager] name : " + astatus.name + " , hp : " + statue.hp + " , attack : " + statue.attack + " , speed : " + statue.atkInterval);
     }
@@ -97,7 +100,7 @@ public class StatueManager : FacilityManager
         if (time >= statue.atkInterval)
         {
             time = 0;
-            Attack();
+            Attack(AtkName);
         }
 
         if (hpbar != null)
@@ -109,29 +112,20 @@ public class StatueManager : FacilityManager
     public override void checkEnemy()
     {
         obj = null;
-        for (int i = 0; i < enemylist.Count; i++)
-        {
-            if (enemylist[i] == null)
-            {
-                continue;
-            }
-            obj = enemylist[i];
-            float distance = Vector3.Distance(obj.transform.position, transform.position);
-
-            //攻撃範囲内にいなければその敵の方向には向かない
-            if (distance <= statue.attackpos.z / 2)
-            {
-                //if(isAttacking)break; //攻撃中は方向を変えない
-                Quaternion lockRotation = Quaternion.LookRotation(obj.transform.position - transform.position, Vector3.up);
-                lockRotation.z = 0;
-                lockRotation.x = 0;
-                transform.rotation = Quaternion.Lerp(transform.rotation, lockRotation, 10f);
-                break;
-            }
-            else
-            {
-                obj = null;
-                continue;
+        GameObject[] objs = gp.getObjs();
+        for(int i=0;i<objs.Length;i++){
+            if(!objs[i].tag.Equals("Statue")){
+                float distance = Vector3.Distance(objs[i].transform.position,transform.position);
+                if(distance <= (statue.attackpos.z * 0.2f)){
+                    if(!notRotate){
+                        Quaternion lockRotation = Quaternion.LookRotation(objs[i].transform.position - transform.position, Vector3.up);
+                        lockRotation.z = 0;
+                        lockRotation.x = 0;
+                        transform.rotation = Quaternion.Lerp(transform.rotation, lockRotation, 10f);
+                    }
+                    obj = objs[i];
+                    break;
+                }
             }
         }
     }
@@ -142,23 +136,41 @@ public class StatueManager : FacilityManager
     }
     public override void Attack()
     {
+
+    }
+
+    //攻撃の種類によって出現位置とかを変える
+    private void Attack(String aName){
         if (obj == null)
         {
             return;
         }
 
-        GameObject atkpre = (GameObject)Resources.Load("Attack/" + AtkName);
-        GameObject atkobj = Instantiate(atkpre, transform.position, Quaternion.identity) as GameObject;
-        atkobj.GetComponent<AttackManager>().init(statue.attack);
-        atkobj.transform.parent = this.transform;
-        atkobj.transform.localPosition = atkpre.transform.position;
-        atkobj.transform.localScale = atkpre.transform.localScale;
-        atkobj.transform.localRotation = atkpre.transform.localRotation;
-
-        Atk = atkobj;
-        Atk.GetComponent<AttackManager>().Attack(ColName);
-
         isAttacking = true;
+
+        GameObject atkpre = (GameObject)ResourceManager.getObject("Attack/" + aName);
+        GameObject atkobj = Instantiate(atkpre,transform.position,Quaternion.identity) as GameObject;
+        atkobj.GetComponent<AttackManager>().init(statue.attack);
+        Atk = atkobj;
+        
+        switch(aName){
+            case "shoot":
+            case "laser":
+            case "meteo":
+            case "poison":
+                Atk.transform.parent = this.transform;
+                Atk.transform.localPosition = atkpre.transform.position;
+                Atk.transform.localScale = atkpre.transform.localScale;
+                Atk.transform.localRotation = atkpre.transform.localRotation;
+                break;
+            case "thunder":
+                Atk.transform.position = obj.transform.position;
+                Atk.transform.localScale = atkpre.transform.localScale;
+                Atk.transform.localRotation = atkpre.transform.localRotation;
+                break;
+        }
+        Atk.GetComponent<AttackManager>().Attack(aName);
+
     }
 
     // 召喚した時に初期化処理をやる

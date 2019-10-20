@@ -33,9 +33,27 @@ public class GameSettings : MonoBehaviour
 
     AddStatus[] addStatuses;
     private int skillType; //必殺技のタイプ
+
+    private GameSettings instance = null;
+    void Awake(){
+        if(instance == null){
+            instance = this;
+            DontDestroyOnLoad(this);
+
+            string name = gameObject.name;
+            gameObject.name = name + "(Singleton)";
+            GameObject duplicater = GameObject.Find(name);
+            if(duplicater != null){
+                Destroy(gameObject);
+            }else{
+                gameObject.name = name;
+            }
+        }else{
+            Destroy(gameObject);
+        }
+    }
     void Start()
     {
-        DontDestroyOnLoad(this);
         addStatuses = new AddStatus[5];
         skillType = 0;
         isLog = log;

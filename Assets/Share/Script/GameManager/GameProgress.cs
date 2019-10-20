@@ -108,7 +108,6 @@ public class GameProgress : MonoBehaviour
         GameSettings.printLog("gameprogress : " + name + " " + id + " " + level + " " + exp);
 
 
-
         isStart = true;
         return;
       }
@@ -227,8 +226,12 @@ public class GameProgress : MonoBehaviour
         }
         sg_objs.Add(1000000,obj);
     }
-    //召喚
+    //Statue召喚用
     public void Generate(String name,Vector3 pos){
+      Generate(name,pos,false);
+    }
+    //召喚
+    public void Generate(String name,Vector3 pos,bool isGobrin){
 //        GameObject obj = Instantiate (ResourceManager.getObject("Statue/" + name,getStatueType()), pos, Quaternion.identity) as GameObject;
         GameObject obj = Instantiate (ResourceManager.getObject("Statue/" + name), pos, Quaternion.identity) as GameObject;
         obj.name = name;
@@ -238,7 +241,7 @@ public class GameProgress : MonoBehaviour
         fm.init();
         
         if(!name.Equals("debugGobrin")){
-          gcm.generateCost(fm.getSData().cost);
+          gcm.generateCost(isGobrin ? 0 : fm.getSData().cost);
           fm.Generate(pos,obj.transform.localScale,fm.getSData());
 
           fm.setId(count);

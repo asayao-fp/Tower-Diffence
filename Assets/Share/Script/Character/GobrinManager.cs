@@ -4,22 +4,20 @@ using UnityEngine;
 
 public class GobrinManager : StatueManager
 {
+    [SerializeField]
+    protected GobrinData gobrin; //自分のパラメータ
 
     void Start()
     {
         isStatue = false;
 
         time = 0.0f;
-        enemylist = new List<GameObject>();
+       // enemylist = new List<GameObject>();
 
         gp = GameObject.FindWithTag("GameManager").GetComponent<GameProgress>();
-        if(hpbar != null){
-            hpbar.transform.position = new Vector3(this.transform.position.x ,this.transform.position.y + 0.3f,this.transform.position.z);
-            hpbar.fillAmount = 1;
-        }
 
         if(isDebug){
-          gstatus.hp = statue.hp;
+      //    gstatus.hp = statue.hp;
         }
     }
 
@@ -29,7 +27,7 @@ public class GobrinManager : StatueManager
 
 
         if(hpbar != null){
-            hpbar.fillAmount = gstatus.hp / (float)statue.hp;
+             hpbar.fillAmount = gstatus.hp / (float)gobrin.hp;
         }
     }
 
@@ -37,6 +35,11 @@ public class GobrinManager : StatueManager
         if(gp == null){
           gp = GameObject.FindWithTag("GameManager").GetComponent<GameProgress>();
         }
+        hpbar.transform.position = new Vector3(this.transform.position.x, this.transform.position.y + 0.3f, this.transform.position.z);
+        hpbar.fillAmount = 1;
+
+        gstatus.hp = gobrin.hp;
+
     }
 
     public override void Dead(){
@@ -45,7 +48,7 @@ public class GobrinManager : StatueManager
 
 
     public override StatueData getSData(){
-      return null;
+      return gobrin;
     }
 
     public override GobrinData getGData(){
@@ -60,6 +63,7 @@ public class GobrinManager : StatueManager
       hiteffect.Play(true);
       gstatus.hp += hp;
     }
+
 
     public override void setNum(bool isgenerate){
     }

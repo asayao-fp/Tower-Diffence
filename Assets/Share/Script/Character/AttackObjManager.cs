@@ -22,25 +22,25 @@ public class AttackObjManager : MonoBehaviour
 
   void Start ()
   {
-    GetComponent<Rigidbody>().velocity = new Vector3(transform.forward.normalized.x * speed,0,transform.forward.normalized.z * speed);
+   // GetComponent<Rigidbody>().velocity = new Vector3(transform.forward.normalized.x * speed,0,transform.forward.normalized.z * speed);
     objs = new Dictionary<int,GameObject>();
     gp = GameObject.FindWithTag("GameManager").GetComponent<GameProgress>();
     obj = transform.root.gameObject;
 
+  }
 
-    //var color      = ColliderVisualizer.VisualizerColorType.Red;
-    //var message    = "ピカチュウ";
-    //var fontSize   = 36;
-
-    if(gp.getDebug()){
-     // this.gameObject.AddComponent<ColliderVisualizer>().Initialize(color, message, fontSize);
+/*   private void OnParticleCollision(GameObject other){
+    if(other.gameObject.tag.Equals(Constants.GOBLIN_TAG)){
+      if(!objs.ContainsKey(other.gameObject.GetInstanceID())){
+        FacilityManager fm = other.gameObject.GetComponent<FacilityManager>();
+        if(fm != null){
+          gp.calcDamage(fm.obj_num,attacktype,attack);
+        }       
+        objs.Add(other.gameObject.GetInstanceID(),other.gameObject);
     }
-
-  }
-
-
-  public void Update(){
-  }
+   }
+     
+   }*/
 
   public void OnTriggerEnter(Collider other){
    if(other.gameObject.tag.Equals(Constants.GOBLIN_TAG)){

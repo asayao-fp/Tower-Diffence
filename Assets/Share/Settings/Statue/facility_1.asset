@@ -15,13 +15,13 @@ MonoBehaviour:
   id: 1
   name: facility_1
   setpos: {x: 1.5, y: 1.5}
-  attackpos: {x: 0, y: 0, z: 10}
-  settype: 4
+  attackpos: {x: 0, y: 0, z: 20}
+  settype: 01000000
   hp: 100
   time: 10
-  atkInterval: 3
-  cost: 5
+  atkInterval: 2
+  cost: 3
   name4Preview: Statue1
   maxsetNum: 3
   generateInterval: 1
-  attack: 0
+  attack: 3

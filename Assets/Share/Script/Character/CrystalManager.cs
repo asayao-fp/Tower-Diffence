@@ -38,8 +38,6 @@ public class CrystalManager : MonoBehaviour
     }
 
     public void Dead(){
-        Debug.Log("dead crystal!");
-       // this.gameObject.GetComponent<MeshRenderer>().enabled = false;
         canvas.SetActive(false);
 
         for(int i=0;i<viewModels.Length;i++){
