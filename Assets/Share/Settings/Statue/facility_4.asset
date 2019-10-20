@@ -17,7 +17,7 @@ MonoBehaviour:
   setpos: {x: 1.5, y: 1.9}
   attackpos: {x: 0, y: 0, z: 20}
   settype: 02000000
-  hp: 100
+  hp: 20
   time: 10
   atkInterval: 2
   cost: 10

@@ -62,6 +62,11 @@ public class GobrinManager : StatueManager
     public override　void addHP(int hp){
       hiteffect.Play(true);
       gstatus.hp += hp;
+
+      if(gstatus.hp >= gobrin.hp){
+        gstatus.hp = gobrin.hp;
+      }
+
     }
 
 

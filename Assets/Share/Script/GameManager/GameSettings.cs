@@ -118,6 +118,27 @@ public class GameSettings : MonoBehaviour
         skillType = type;
         GameSettings.printLog("[GameSettings] setSkillType : " + type);
     }
+
+    public int getSkillType(){
+        return skillType;
+    }
+
+    //スキル毎の最大使用回数
+    public bool isUseSkill(int num)
+    {
+        int skillnum = 1;
+
+        switch(skillType){
+            case GameProgress.SKILL_RECOVERY:
+                skillnum = 1;
+                break;
+            case GameProgress.SKILL_ENEMY_DEAD:
+                skillnum = 2;
+                break;
+        }
+
+        return skillnum <= num;
+    }
 }
 
 //スキル割り振りなどで追加されるステータス

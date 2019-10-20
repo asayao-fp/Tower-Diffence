@@ -25,7 +25,8 @@ public class GameProgress : MonoBehaviour
     private float game_time;
     private int limit;
     private float start;
-
+    private float skillnum; //スキル用の数
+    private int useskillnum; //使用したスキルの回数
     private TextMeshProUGUI limittime;
     private TextMeshProUGUI starttime;
     private GenerateCostManager gcm;
@@ -43,6 +44,12 @@ public class GameProgress : MonoBehaviour
     public const int ATK_THUNDER = 3;
     public const int ATK_POISON = 4;
     public const int ATK_EXPLODE = 5;
+    /*** スキルの種類  ***/
+    public const int SKILL_RECOVERY = 0; 
+    public const int SKILL_ENEMY_DEAD = 1;
+
+    [SerializeField]
+    private int MAX_SKILL_NUM = 50;
 
     [SerializeField]
     private int MAX_SET_OBJ;
@@ -84,6 +91,8 @@ public class GameProgress : MonoBehaviour
       myobj_num = 0;
       isStatue = gs.isStatue();
       isStart = false;
+      skillnum = 0;
+      useskillnum = 0;
 
       GameObject[] icons = GameObject.FindGameObjectsWithTag("GenerateIcon");
       for(int i=0;i<icons.Length;i++){
@@ -207,11 +216,36 @@ public class GameProgress : MonoBehaviour
         SceneManager.LoadScene("GameSetScene");        
     }
 
+
+    //全てのFacilityを取得
     public GameObject[] getObjs(){
       GameObject[] vals = new GameObject[sg_objs.Values.Count];
       sg_objs.Values.CopyTo(vals,0);
       return vals;
     }
+
+    //自分、または相手のFacilityを取得
+    public GameObject[] getObjs(bool isown){
+      List<GameObject> vlist = new List<GameObject>();
+
+      GameObject[] objs = getObjs();
+      bool isStatue = gs.isStatue();
+      for(int i=0;i<objs.Length;i++){
+        if(objs[i].gameObject.tag.Equals("Statue")){
+          if((isown && isStatue) || (!isown && !isStatue)){
+            vlist.Add(objs[i]);
+          }
+        }else if(objs[i].gameObject.tag.Equals("Goblin")){
+          if((isown && !isStatue) || (!isown && isStatue)){
+            vlist.Add(objs[i]);
+          }
+        }
+      }
+
+      return vlist.ToArray();
+    }
+
+
     //現在のステータスを取得
     public int getStatus(){
       return game_status;
@@ -251,6 +285,8 @@ public class GameProgress : MonoBehaviour
           fm.setId(1000000);
           sg_objs.Add(1000000,obj); 
         }
+
+        GameSettings.printLog("[GameProgress] Generate obj : " + obj.name + " id : " + (count - 1));
         fm.setNum(true);
     }
 
@@ -287,6 +323,7 @@ public class GameProgress : MonoBehaviour
       FacilityManager fm = null;
 
       fm = sg_objs[obj_id].GetComponent<FacilityManager>();
+      
       GameSettings.printLog("add hp " + obj_id + " " + hp);
       fm.addHP(hp);
     }
@@ -341,7 +378,75 @@ public class GameProgress : MonoBehaviour
 
     //オブジェクトを設置可能か
     public bool canObjSet(){
-      GameSettings.printLog("[GameProgress] MyObjNum :  " + myobj_num + "  MaxSetObj : " + MAX_SET_OBJ);
+      //GameSettings.printLog("[GameProgress] MyObjNum :  " + myobj_num + "  MaxSetObj : " + MAX_SET_OBJ);
       return myobj_num < MAX_SET_OBJ;
     }
+
+    public void doSkill(){
+      if(getStatus() != NOW_GAME)return;
+
+      int skilltype = gs.getSkillType();
+
+      //スキル使用回数が最大を超えてたらできない
+      if(gs.isUseSkill(useskillnum)){
+        GameSettings.printLog("[GameProgress] doSkill UseSkill over!");
+        return;
+      }
+
+      //スキル用ゲージが溜まってなかったらできない
+      if(skillnum < MAX_SKILL_NUM){
+        GameSettings.printLog("[GameProgress] doSkill Skillgage not!");
+        return;
+      }
+
+
+      switch(skilltype){
+        case SKILL_RECOVERY:
+          skillRecover();
+          break;
+        case SKILL_ENEMY_DEAD:
+          skillEnemyDead();
+          break;
+      }
+      skillnum = 0;
+      //使用回数追加
+      useskillnum++;
+    }
+
+    //自分のFacility全回復
+    public void skillRecover(){
+      GameSettings.printLog("[GameProgress] SkillRecovery");
+      GameObject[] objs = getObjs(true);
+
+      for(int i=0;i<objs.Length;i++){
+        FacilityManager fm = objs[i].GetComponent<FacilityManager>();
+        fm.addHP(100000);
+      }
+    }
+
+    //敵全滅
+    public void skillEnemyDead(){
+      GameSettings.printLog("[GameProgress] SkillEnemyDead");
+      GameObject[] objs = getObjs(false);
+
+      for(int i=0;i<objs.Length;i++){
+        FacilityManager fm = objs[i].GetComponent<FacilityManager>();
+        fm.addHP(-100000);
+
+      }
+
+    }
+
+    public void addSkillCost(int num){
+
+      if(getStatus() != NOW_GAME)return;
+
+      skillnum += num;
+
+      if(skillnum >= MAX_SKILL_NUM){
+        skillnum = MAX_SKILL_NUM;
+      }
+      GameSettings.printLog("[GameProgress] addSkillCost num : " + num + " now : " + skillnum);
+    }
+
 }

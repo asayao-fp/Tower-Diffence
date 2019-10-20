@@ -2458,6 +2458,26 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 50
       objectReference: {fileID: 0}
+    - target: {fileID: 7588580198917222969, guid: ed2a2c1e264884e7197665c6f58937c6,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 403211752}
+    - target: {fileID: 7588580198917222969, guid: ed2a2c1e264884e7197665c6f58937c6,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: addSkillCost
+      objectReference: {fileID: 0}
+    - target: {fileID: 7588580198917222969, guid: ed2a2c1e264884e7197665c6f58937c6,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7588580198917222969, guid: ed2a2c1e264884e7197665c6f58937c6,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 7588580199500687596, guid: ed2a2c1e264884e7197665c6f58937c6,
         type: 3}
       propertyPath: m_Color.r
@@ -2498,6 +2518,36 @@ PrefabInstance:
       propertyPath: m_Color.b
       value: 0.58431375
       objectReference: {fileID: 0}
+    - target: {fileID: 7588580200275365265, guid: ed2a2c1e264884e7197665c6f58937c6,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7588580200275365265, guid: ed2a2c1e264884e7197665c6f58937c6,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7588580200275365265, guid: ed2a2c1e264884e7197665c6f58937c6,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7588580200275365265, guid: ed2a2c1e264884e7197665c6f58937c6,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 403211752}
+    - target: {fileID: 7588580200275365265, guid: ed2a2c1e264884e7197665c6f58937c6,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: doSkill
+      objectReference: {fileID: 0}
+    - target: {fileID: 7588580200275365265, guid: ed2a2c1e264884e7197665c6f58937c6,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 7588580198830699785, guid: ed2a2c1e264884e7197665c6f58937c6,
         type: 3}
       propertyPath: m_Text
@@ -2509,7 +2559,9 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 12800000, guid: e3265ab4bf004d28a9537516768c1c75,
         type: 3}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7588580198917222968, guid: ed2a2c1e264884e7197665c6f58937c6, type: 3}
+    - {fileID: 7588580200275365264, guid: ed2a2c1e264884e7197665c6f58937c6, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: ed2a2c1e264884e7197665c6f58937c6, type: 3}
 --- !u!224 &7588580199511664805 stripped
 RectTransform:

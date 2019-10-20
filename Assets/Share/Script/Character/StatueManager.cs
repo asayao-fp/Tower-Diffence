@@ -93,6 +93,8 @@ public class StatueManager : FacilityManager
 
         float t = Time.deltaTime;
         deletetime += t;
+        gstatus.hp -= t;
+
         time += t;
 
         checkEnemy();
@@ -105,7 +107,7 @@ public class StatueManager : FacilityManager
 
         if (hpbar != null)
         {
-            hpbar.fillAmount = (1 - (deletetime / (float)statue.time)) + (1 - (gstatus.hp / (float)statue.hp));
+          hpbar.fillAmount = gstatus.hp / (float)statue.hp;
         }
     }
 
@@ -215,6 +217,7 @@ public class StatueManager : FacilityManager
         ps.Play();
         p.Play();
 
+        deletetime = 0;
         gstatus.hp = statue.hp;
 
         Invoke("setEnd", 1f);
@@ -238,6 +241,11 @@ public class StatueManager : FacilityManager
     public override void addHP(int hp)
     {
         gstatus.hp += hp;
+
+        if(gstatus.hp >= statue.hp){
+            gstatus.hp = statue.hp;
+        }
+
     }
 
     public override void Dead()
