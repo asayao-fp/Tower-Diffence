@@ -91,33 +91,46 @@ public class SkillNumManager : MonoBehaviour
     }
 
     public void addStatus(){
+        SoundManager.SoundPlay("click1",this.gameObject.name);
+
         usenum++;
         updateLayout();
     }
 
     public void minusStatus(){
+        SoundManager.SoundPlay("click1",this.gameObject.name);
+
         usenum--;
         updateLayout();
 
     }
 
     public void showPanel(){
+        SoundManager.SoundPlay("click1",this.gameObject.name);
+
         isshow = !isshow;
         panel.gameObject.SetActive(isshow);
 
     }
 
     public void showPanel4op(){
+        SoundManager.SoundPlay("click1",this.gameObject.name);
+
         isshow4op = !isshow4op;
         optionpanel.gameObject.SetActive(isshow4op);
     }
 
     public void showPanel4dp(){
+        SoundManager.SoundPlay("click1",this.gameObject.name);
+
         isshow4dbpanel = !isshow4dbpanel;
         dppanel.gameObject.SetActive(isshow4dbpanel);
     }
 
     public void showPanel4os(){
+        SoundManager.SoundPlay("click1",this.gameObject.name);
+
+
         isshow4os = !isshow4os;
         ospanel.gameObject.SetActive(isshow4os);
     }

@@ -98,7 +98,7 @@ public class GameProgress : MonoBehaviour
       for(int i=0;i<icons.Length;i++){
         icons[i].name = gs.getStatus(i).name;
       }
-      GetComponent<InputManager>().init();
+      GetComponent<InputManager>().init(); //ビルドしたやつでやるとエラーが起きる
     }
 
 
@@ -116,6 +116,7 @@ public class GameProgress : MonoBehaviour
 
         GameSettings.printLog("gameprogress : " + name + " " + id + " " + level + " " + exp);
 
+        SoundManager.SoundPlay("bgm1",this.gameObject.name);
 
         isStart = true;
         return;
@@ -130,6 +131,7 @@ public class GameProgress : MonoBehaviour
           starttime.text = "START !!!!!!";
         }else{
           starttime.text = "";
+
         }
         return;
       }
@@ -329,6 +331,7 @@ public class GameProgress : MonoBehaviour
     }
 
     public Stage setNowStage(Stage s){
+      s = new Stage();
       s.enablelist = new List<float[]>();
       s.enablelistv = new List<Vector2[]>();
       GameObject stage = GameObject.FindWithTag("Stage");

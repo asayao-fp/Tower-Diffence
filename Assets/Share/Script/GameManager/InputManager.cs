@@ -81,7 +81,8 @@ public class InputManager : MonoBehaviour
       notsetText.text = "NOT SET!";
       notsetText.gameObject.SetActive(false);
 
-      nowStage = gp.setNowStage(ss.getStageList(0));
+     // nowStage = gp.setNowStage(ss.getStageList(0));//ここエラー
+      nowStage = gp.setNowStage(null);//ここエラー
       textpos = new Vector3();
 
       layerNo = LayerMask.NameToLayer("SetPosition");
@@ -211,6 +212,7 @@ public class InputManager : MonoBehaviour
         GameObject[] objs = gp.getObjs();//設置されてるオブジェクト全ての設置範囲を表示
         setObjs = new GameObject[objs.Length];
         for(int i=0;i<objs.Length;i++){
+            if(objs[i] == null) continue;
             if(!objs[i].gameObject.tag.Equals("Statue"))continue;
             Vector2 sp = objs[i].GetComponent<FacilityManager>().getSData().setpos;
             setObjs[i] = Instantiate(setPrefab,objs[i].transform.position,Quaternion.identity) as GameObject;
@@ -370,6 +372,7 @@ public class InputManager : MonoBehaviour
           if(!isinObj){
             GameObject[] objs = gp.getObjs();
             for(int k=0;k<objs.Length;k++){
+              if(objs[k] == null) continue;
               if(!objs[k].gameObject.tag.Equals("Statue"))continue;
               Vector2[] setposition = getSetPosition(objs[k].GetComponent<FacilityManager>().getSData(),objs[k].transform.position);
               if(checkOutside(spos[i],setposition)){

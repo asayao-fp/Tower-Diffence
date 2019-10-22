@@ -24,6 +24,7 @@ TagManager:
   - GenerateIcon
   - Type_6
   - AttackMake
+  - sound
   layers:
   - Default
   - TransparentFX
@@ -34,7 +35,7 @@ TagManager:
   - 
   - 
   - Attack
-  - 
+  - SetPosition
   - 
   - 
   - 

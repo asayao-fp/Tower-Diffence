@@ -29,19 +29,27 @@ public class LoginManager : MonoBehaviour
     }
 
     public void signUp(){
+        SoundManager.SoundPlay("click1",this.gameObject.name);
         instance.signUp(signnametext.text,signpasstext.text);
 
     }
 
     public void logIn(){
+        SoundManager.SoundPlay("click1",this.gameObject.name);
+
         instance.logIn(loginnametext.text,loginpasstext.text);
     }
 
     public void showloginPanel(){
+        SoundManager.SoundPlay("click1",this.gameObject.name);
+
+
         loginpanel.gameObject.SetActive(!loginpanel.gameObject.activeSelf);
     }
 
     public void showsignpanel(){
+        SoundManager.SoundPlay("click1",this.gameObject.name);
+
         sinuppanel.gameObject.SetActive(!sinuppanel.gameObject.activeSelf);
     }
 }

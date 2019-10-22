@@ -31,7 +31,7 @@ public class CrystalManager : MonoBehaviour
     void Update(){
       if(gp.getStatus() != gp.NOW_GAME)return;
 
-      time += Time.deltaTime;
+    //  time += Time.deltaTime;
     
       hpbar.fillAmount = 1 - (time /(float)hp);
 

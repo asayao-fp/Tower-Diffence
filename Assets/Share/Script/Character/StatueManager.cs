@@ -116,6 +116,7 @@ public class StatueManager : FacilityManager
         obj = null;
         GameObject[] objs = gp.getObjs();
         for(int i=0;i<objs.Length;i++){
+            if(objs[i] == null) continue;
             if(!objs[i].tag.Equals("Statue")){
                 float distance = Vector3.Distance(objs[i].transform.position,transform.position);
                 if(distance <= (statue.attackpos.z * 0.2f)){
@@ -216,6 +217,9 @@ public class StatueManager : FacilityManager
 
         ps.Play();
         p.Play();
+
+        SoundManager.SoundPlay("facility_generate",this.gameObject.name);
+
 
         deletetime = 0;
         gstatus.hp = statue.hp;

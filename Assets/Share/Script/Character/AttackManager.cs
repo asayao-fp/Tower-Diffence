@@ -28,26 +28,33 @@ public class AttackManager : MonoBehaviour
 
     public void Attack(String name)
     {
+        String soundname = "";
         switch(name){
             case "shoot":
                 atkCollider.transform.localScale = 3.0f * atkCollider.transform.localScale;
+                soundname = "shoot2";
                 break;
             case "laser":
                 atkCollider.transform.localScale = 5.0f * atkCollider.transform.localScale;
-
+                soundname = "beam1";
                 break;
             case "thunder":
+                soundname = "thunder1";
                 break;
             case "poison":
                 atkCollider.transform.localScale = 2.0f * atkCollider.transform.localScale;
+                soundname = "poison";
                 break;
             case "meteo":
                 atkCollider.transform.localScale = 3.0f * atkCollider.transform.localScale;
+                soundname = "meteo1";
                 break;
         }
         ParticleSystem p = atkObj.GetComponent<ParticleSystem>();
         p.Play();
         atkCollider.GetComponent<Animator>().Play(name, -1, 0);
+        SoundManager.SoundPlay(soundname,name);
+
     }
 
 
