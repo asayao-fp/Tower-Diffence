@@ -31,4 +31,13 @@ public class InitUserData : MonoBehaviour
 
     }
 
+    public void onlineScene(){
+        SoundManager.SoundPlay("click1",this.gameObject.name);
+        snm = GetComponent<SkillNumManager>();
+        gs.setStatus(snm.getAllStatus());
+
+        SceneManager.LoadScene("ConnectRoomScene");
+
+    }
+
 }

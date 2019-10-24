@@ -45,7 +45,7 @@ public abstract class CriAtomExVoicePool : CriDisposable
 		StandardMemory			= StandardMemoryAsrVoicePoolId,		/**< 機種標準のメモリ再生ボイスプールID */
 		StandardStreaming		= StandardStreamingAsrVoicePoolId,	/**< 機種標準のストリーミング再生ボイスプールID */
 #else
-		#error unsupported platform
+	//	#error unsupported platform
 #endif
 		HcaMxMemory				= 4,								/**< HCA-MXメモリ再生ボイスプールID */
 		HcaMxStreaming			= 5,								/**< HCA-MXストリーミング再生ボイスプールID */
@@ -56,7 +56,7 @@ public abstract class CriAtomExVoicePool : CriDisposable
 		LowLatencyMemory		= StandardMemoryNsrVoicePoolId,		/**< [Android] 低遅延メモリ再生ボイスプールID */
 		LowLatencyStreaming		= StandardStreamingNsrVoicePoolId,	/**< [Android] 低遅延ストリーミング再生ボイスプールID */
 #else
-#error unsupported platform
+//#error unsupported platform
 #endif
     }
 

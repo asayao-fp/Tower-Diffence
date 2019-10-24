@@ -5,8 +5,8 @@ using UnityEngine.Advertisements;
 public class AdvertManager : MonoBehaviour
 {
     public void advertisementShow(){
-        if(Advertisement.IsReady()){
-            Advertisement.Show();
-        }
+   //     if(Advertisement.IsReady()){
+    //        Advertisement.Show();
+    //    }
     }
 }

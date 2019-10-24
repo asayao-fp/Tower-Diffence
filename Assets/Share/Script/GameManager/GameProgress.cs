@@ -11,32 +11,32 @@ using UnityEngine.SceneManagement;
 
 public class GameProgress : MonoBehaviour
 {
-    private Dictionary<int,GameObject> sg_objs;
+    protected Dictionary<int,GameObject> sg_objs;
 
-    private int count;
-    FacilitySetting fs;
-    GameSettings gs;
+    protected int count;
+    protected FacilitySetting fs;
+    protected GameSettings gs;
 
     public int BEFORE_GAME = 0;
     public int NOW_GAME = 1;
     public int AFTER_GAME = 2;
 
-    private int game_status;
-    private float game_time;
-    private int limit;
-    private float start;
-    private float skillnum; //スキル用の数
-    private int useskillnum; //使用したスキルの回数
-    private TextMeshProUGUI limittime;
-    private TextMeshProUGUI starttime;
-    private GenerateCostManager gcm;
+    protected int game_status;
+    protected float game_time;
+    protected int limit;
+    protected float start;
+    protected float skillnum; //スキル用の数
+    protected int useskillnum; //使用したスキルの回数
+    protected TextMeshProUGUI limittime;
+    protected TextMeshProUGUI starttime;
+    protected GenerateCostManager gcm;
     public GameObject Debug_obj;//デバッグ用のgobrin
 
     [SerializeField]
-    private bool isDebug;
-    private GameObject debugObj;
-    private GameObject crystalObj;
-    private bool crystaldead;
+    protected bool isDebug;
+    protected GameObject debugObj;
+    protected GameObject crystalObj;
+    protected bool crystaldead;
 
     /*** 攻撃の種類  ***/
     public const int ATK_MAGICBALL = 1;
@@ -49,14 +49,14 @@ public class GameProgress : MonoBehaviour
     public const int SKILL_ENEMY_DEAD = 1;
 
     [SerializeField]
-    private int MAX_SKILL_NUM = 50;
+    protected int MAX_SKILL_NUM = 50;
 
     [SerializeField]
-    private int MAX_SET_OBJ;
-    private int myobj_num;
-    private bool isStatue;
-    private bool isStart;
-    private bool gameset; 
+    protected int MAX_SET_OBJ;
+    protected int myobj_num;
+    protected bool isStatue;
+    protected bool isStart;
+    protected bool gameset; 
 
     void Awake(){
       game_status = 0;

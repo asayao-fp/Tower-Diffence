@@ -35,10 +35,13 @@ public class GoblinAI : MonoBehaviour
 
     private StageCostManager scm;
 
+    private GameProgress gp;
     // Start is called before the first frame update
     void Start()
     {
         scm = this.GetComponent<StageCostManager>();
+        gp = GameObject.FindWithTag("GameManager").GetComponent<GameProgress>();
+
 
         //平均50、標準偏差10で、いわゆる偏差値
         IQ = Normal(50, 10);
@@ -183,7 +186,10 @@ public class GoblinAI : MonoBehaviour
         }
 
         goblins[(int)goblinType].GetComponent<GobMane>().setLine(generateLine);
-        Instantiate(goblins[(int)goblinType]);
+
+        //Instantiate(goblins[(int)goblinType]);
+        Vector3 pos = new Vector3(38.4f,1,5.54f);
+        gp.Generate("gobrin",pos,true);
         cost -= goblinCost[(int)favorite];
     }
 
