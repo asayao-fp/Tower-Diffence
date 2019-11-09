@@ -62,10 +62,6 @@ public class GameProgress : MonoBehaviour
       game_status = 0;
       start = 5;
       gameset = false;
-    }
-
-    void Start()
-    {
 
       GameObject stobj = GameObject.FindWithTag("StaticObjects");
 
@@ -75,12 +71,23 @@ public class GameProgress : MonoBehaviour
 
       fs = stobj.GetComponent<FacilitySetting>();
 
+      gs = stobj.GetComponent<GameSettings>();
+
+      GameObject gameui = null;
+      if(gs.isStatue()){
+        gameui = (GameObject)ResourceManager.getObject("UI/GameUI4statue");
+      }else{
+        gameui = (GameObject)ResourceManager.getObject("UI/GameUI4gobrin");
+      }
+      GameObject ui = Instantiate(gameui) as GameObject;
+      ui.name = "GameUI";
+
+
       if(sg_objs == null){
         sg_objs = new Dictionary<int,GameObject>();
       }
       count = 0;
       limittime = GameObject.FindWithTag("LimitTime").GetComponent<TextMeshProUGUI>();
-      gs = stobj.GetComponent<GameSettings>();
       limit = gs.getLimitTime();
       game_time = limit;
       limittime.text = "" + (int)game_time;
@@ -94,7 +101,7 @@ public class GameProgress : MonoBehaviour
       skillnum = 0;
       useskillnum = 0;
 
-      GameObject[] icons = GameObject.FindGameObjectsWithTag("GenerateIcon");
+      GameObject[] icons = ui.GetComponent<ObjectReference>().objects;
       for(int i=0;i<icons.Length;i++){
         icons[i].name = gs.getStatus(i).name;
       }
@@ -114,7 +121,7 @@ public class GameProgress : MonoBehaviour
         int level = PlayerPrefs.GetInt(UserData.USERDATA_LEVEL,0);
         int exp = PlayerPrefs.GetInt(UserData.USERDATA_EXP,0);
 
-        GameSettings.printLog("gameprogress : " + name + " " + id + " " + level + " " + exp);
+        //GameSettings.printLog("gameprogress : " + name + " " + id + " " + level + " " + exp);
 
         SoundManager.SoundPlay("bgm1",this.gameObject.name);
 
@@ -193,14 +200,7 @@ public class GameProgress : MonoBehaviour
             }
           }
         }
-      }
-      
-      if(isDebug){
-        if(debugObj == null){
-          debugObj = ResourceManager.getObject("Statue/debugGobrin");
-          Generate("debugGobrin",debugObj.transform.position);
-        }
-      } 
+      }      
     }
 
     /*試合終了 1 -> 時間切れ　2 -> クリスタル破壊 */
@@ -210,6 +210,9 @@ public class GameProgress : MonoBehaviour
         ResultData rd = GameObject.FindWithTag("StaticObjects").AddComponent<ResultData>();
 
         bool result = false;
+        if((gs.isStatue() && (type == 1)) || (!gs.isStatue() && (type == 2))){
+          result = true;
+        }
         rd.SetResult(result,10);
 
         
@@ -247,49 +250,38 @@ public class GameProgress : MonoBehaviour
       return vlist.ToArray();
     }
 
-
     //現在のステータスを取得
     public int getStatus(){
       return game_status;
     }
 
-    //召喚 (デバッグ用)
-    public void Generate(GameObject obj){
-        obj.GetComponent<FacilityManager>().setId(1000000);
-        if(sg_objs == null){
-            sg_objs = new Dictionary<int,GameObject>();
+    public void Generate(String name,Vector3 pos,bool isai,bool isstatue){
+      Generate(name,pos,isai,isstatue,-1);
+    }
 
-        }
-        sg_objs.Add(1000000,obj);
-    }
-    //Statue召喚用
-    public void Generate(String name,Vector3 pos){
-      Generate(name,pos,false);
-    }
     //召喚
-    public void Generate(String name,Vector3 pos,bool isGobrin){
-//        GameObject obj = Instantiate (ResourceManager.getObject("Statue/" + name,getStatueType()), pos, Quaternion.identity) as GameObject;
+    public void Generate(String name,Vector3 pos,bool isai,bool isstatue,int roottype){
         GameObject obj = Instantiate (ResourceManager.getObject("Statue/" + name), pos, Quaternion.identity) as GameObject;
         obj.name = name;
+
         FacilityManager fm = obj.GetComponent<FacilityManager>();
 
-        fm.setAddStatus(gs.getStatus(name));
-        fm.init();
-        
-        if(!name.Equals("debugGobrin")){
-          gcm.generateCost(isGobrin ? 0 : fm.getSData().cost);
-          fm.Generate(pos,obj.transform.localScale,fm.getSData());
-
-          fm.setId(count);
-          sg_objs.Add(count++,obj);
-
-        }else{
-          fm.setId(1000000);
-          sg_objs.Add(1000000,obj); 
+        if(!isstatue && !isai){
+          ((GobrinManager)fm).setRoot(GetComponent<InputManager>().roottype);
+        }else if(!isstatue && isai){
+          ((GobrinManager)fm).setRoot(roottype);
         }
 
-        GameSettings.printLog("[GameProgress] Generate obj : " + obj.name + " id : " + (count - 1));
+        fm.setAddStatus(gs.getStatus(name));        
+        fm.setId(count);
+        fm.Generate(pos,fm.getSData(),isai);
         fm.setNum(true);
+
+        sg_objs.Add(count++,obj);
+
+        gcm.generateCost(isai ? 0 : fm.getSData().cost);      
+
+        GameSettings.printLog("[GameProgress] Generate obj : " + obj.name + " id : " + (count - 1));
     }
 
     //ダメージ計算
@@ -322,12 +314,16 @@ public class GameProgress : MonoBehaviour
     }
     //攻撃受けた
     public void AddHP(int obj_id,int hp,Boolean isDebug){
-      FacilityManager fm = null;
+      if(obj_id == 1000000){
+        crystalObj.GetComponent<CrystalManager>().AddHP(hp);
+      }else{
+        FacilityManager fm = null;
 
-      fm = sg_objs[obj_id].GetComponent<FacilityManager>();
+        fm = sg_objs[obj_id].GetComponent<FacilityManager>();
       
-      GameSettings.printLog("add hp " + obj_id + " " + hp);
-      fm.addHP(hp);
+        GameSettings.printLog("add hp " + obj_id + " " + hp);
+        fm.addHP(hp);
+      }
     }
 
     public Stage setNowStage(Stage s){
@@ -335,13 +331,25 @@ public class GameProgress : MonoBehaviour
       s.enablelist = new List<float[]>();
       s.enablelistv = new List<Vector2[]>();
       GameObject stage = GameObject.FindWithTag("Stage");
+
+      string stagetype = GameObject.FindWithTag("StaticObjects").GetComponent<GameSettings>().isStatue() ? "statue" : "gobrin";
+
       foreach (Transform child in stage.transform)
       {
+
         if(child.gameObject.tag.StartsWith("Type_")){
+          
+          if(!child.gameObject.name.StartsWith(stagetype)){
+            Destroy(child.gameObject);
+            continue;
+          }
           int value = int.Parse(child.gameObject.tag.Substring(5));
+          int gv = int.Parse(child.gameObject.name.Substring(6)); //ゴブリンのルート結びつけるよう
+          
+
           Vector3 pos = child.position;
           Vector3 scale = child.localScale;
-          float [] sinfo = new float[5];
+          float [] sinfo = new float[6];
           sinfo[0] = pos.x - scale.x/2.0f;//xの開始座標
           sinfo[1] = pos.x + scale.x/2.0f;//xの終了座標
           sinfo[2] = pos.z - scale.z/2.0f;//zの開始座標
@@ -349,6 +357,7 @@ public class GameProgress : MonoBehaviour
           sinfo[4] = value;               //座標の値
           sinfo[0] = sinfo[0] < 0 ? 0 : sinfo[0];
           sinfo[2] = sinfo[2] < 0 ? 0 : sinfo[2];
+          sinfo[5] = gv;
           
           s.enablelist.Add(sinfo);
           
@@ -385,21 +394,21 @@ public class GameProgress : MonoBehaviour
       return myobj_num < MAX_SET_OBJ;
     }
 
-    public void doSkill(){
-      if(getStatus() != NOW_GAME)return;
+    public bool doSkill(){
+      if(getStatus() != NOW_GAME)return false;
 
       int skilltype = gs.getSkillType();
 
       //スキル使用回数が最大を超えてたらできない
       if(gs.isUseSkill(useskillnum)){
         GameSettings.printLog("[GameProgress] doSkill UseSkill over!");
-        return;
+        return false;
       }
 
       //スキル用ゲージが溜まってなかったらできない
       if(skillnum < MAX_SKILL_NUM){
         GameSettings.printLog("[GameProgress] doSkill Skillgage not!");
-        return;
+        return false;
       }
 
 
@@ -414,6 +423,8 @@ public class GameProgress : MonoBehaviour
       skillnum = 0;
       //使用回数追加
       useskillnum++;
+
+      return true;
     }
 
     //自分のFacility全回復
@@ -440,9 +451,9 @@ public class GameProgress : MonoBehaviour
 
     }
 
-    public void addSkillCost(int num){
+    public bool addSkillCost(int num){
 
-      if(getStatus() != NOW_GAME)return;
+      if(getStatus() != NOW_GAME)return false;
 
       skillnum += num;
 
@@ -450,6 +461,8 @@ public class GameProgress : MonoBehaviour
         skillnum = MAX_SKILL_NUM;
       }
       GameSettings.printLog("[GameProgress] addSkillCost num : " + num + " now : " + skillnum);
+
+      return skillnum >= MAX_SKILL_NUM;
     }
 
 }

@@ -73,6 +73,10 @@ public class SkillStatus : MonoBehaviour
         updateLayout();
     }
 
+    public void setName(string name){
+        nametext.text = name;
+    }
+
     public AddStatus GetStatus(){
         AddStatus a = new AddStatus();
         a.name = nametext.text;

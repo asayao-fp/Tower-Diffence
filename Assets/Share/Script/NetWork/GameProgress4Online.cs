@@ -147,14 +147,7 @@ public class GameProgress4Online : GameProgress
             }
           }
         }
-      }
-      
-      if(isDebug){
-        if(debugObj == null){
-          debugObj = ResourceManager.getObject("Statue/debugGobrin");
-          Generate("debugGobrin",debugObj.transform.position);
-        }
-      } 
+      }      
     }
 
     /*試合終了 1 -> 時間切れ　2 -> クリスタル破壊 */
@@ -207,43 +200,22 @@ public class GameProgress4Online : GameProgress
       return game_status;
     }
 
-    //召喚 (デバッグ用)
-    public void Generate(GameObject obj){
-        obj.GetComponent<FacilityManager>().setId(1000000);
-        if(sg_objs == null){
-            sg_objs = new Dictionary<int,GameObject>();
-
-        }
-        sg_objs.Add(1000000,obj);
-    }
-    //Statue召喚用
-    public void Generate(String name,Vector3 pos){
-      Generate(name,pos,false);
-    }
     //召喚
-    public void Generate(String name,Vector3 pos,bool isGobrin){
-//        GameObject obj = Instantiate (ResourceManager.getObject("Statue/" + name,getStatueType()), pos, Quaternion.identity) as GameObject;
+    public void Generate(String name,Vector3 pos,bool isai,bool isstatue){
         GameObject obj = Instantiate (ResourceManager.getObject("Statue/" + name), pos, Quaternion.identity) as GameObject;
         obj.name = name;
         FacilityManager fm = obj.GetComponent<FacilityManager>();
 
         fm.setAddStatus(gs.getStatus(name));
-        fm.init();
-        
-        if(!name.Equals("debugGobrin")){
-          gcm.generateCost(isGobrin ? 0 : fm.getSData().cost);
-          fm.Generate(pos,obj.transform.localScale,fm.getSData());
+        fm.setNum(true);
+        fm.setId(count);        
+        fm.Generate(pos,fm.getSData(),isai);
 
-          fm.setId(count);
-          sg_objs.Add(count++,obj);
 
-        }else{
-          fm.setId(1000000);
-          sg_objs.Add(1000000,obj); 
-        }
+        sg_objs.Add(count++,obj);
+        gcm.generateCost(isai ? 0 : fm.getSData().cost);
 
         GameSettings.printLog("[GameProgress] Generate obj : " + obj.name + " id : " + (count - 1));
-        fm.setNum(true);
     }
 
     //ダメージ計算

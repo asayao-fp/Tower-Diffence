@@ -26,12 +26,20 @@ public class CrystalManager : MonoBehaviour
     void Start(){
       gp = GameObject.FindWithTag("GameManager").GetComponent<GameProgress>();
       time = 0.0f;
+
+      GameObject obj = GameObject.Find("GameUI");
+      foreach(Transform child in obj.transform){
+        if(child.gameObject.name.Equals("progress")){
+          hpbar = child.GetComponent<ObjectReference>().objects[0].GetComponent<Image>();
+        }
+      }
+
     }
 
     void Update(){
       if(gp.getStatus() != gp.NOW_GAME)return;
 
-    //  time += Time.deltaTime;
+      time += Time.deltaTime;
     
       hpbar.fillAmount = 1 - (time /(float)hp);
 
@@ -58,7 +66,11 @@ public class CrystalManager : MonoBehaviour
 
     }
 
+    public void AddHP(int hp){
+      this.hp -= hp;
+    }
     public float getHP(){
-        return hpbar.fillAmount;
+      return 1;
+//      return hpbar.fillAmount;
     }
 }

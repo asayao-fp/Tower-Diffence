@@ -29,7 +29,7 @@ public class GameSettings : MonoBehaviour
     private bool isLight;
 
     [SerializeField]
-    private byte battleType; //攻撃側か守備側か 0 : statue , 1 : gobrin
+    private bool isstatue; //攻撃側か守備側か true : statue , false : gobrin
 
     AddStatus[] addStatuses;
     private int skillType; //必殺技のタイプ
@@ -80,8 +80,11 @@ public class GameSettings : MonoBehaviour
 
     }
 
+    public void setStatue(bool isstatue){
+        this.isstatue = isstatue;
+    }
     public bool isStatue(){
-        return battleType == 0;
+        return isstatue;
     }
     public static void printLog(String msg){
         if(isLog){

@@ -174,19 +174,10 @@ MonoBehaviour:
   - {fileID: 3804766113598562269}
   - {fileID: 3804936097178104457}
   - {fileID: 3804649871154386397}
+  statue: {fileID: 11400000, guid: bb3a7675077ef49ab8e20f4acbff20d9, type: 2}
   isEnd: 0
   obj_num: 0
   isStatue: 0
-  statue: {fileID: 11400000, guid: bb3a7675077ef49ab8e20f4acbff20d9, type: 2}
-  Atk: {fileID: 0}
-  hiteffect: {fileID: 0}
-  isDebug: 0
-  hpbar: {fileID: 8627631685019693219}
-  AtkName: thunder
-  ColName: thunder
-  GenName: generate1
-  FieldName: magicfield1
-  DeadName: dead1
   viewModels:
   - {fileID: 3789871956251983297}
   - {fileID: 3790412264325790753}
@@ -194,7 +185,13 @@ MonoBehaviour:
   - {fileID: 3790604995068972683}
   - {fileID: 3790339644514534023}
   - {fileID: 5214326894470698105}
-  notRotate: 0
+  isDebug: 0
+  hpbar: {fileID: 8627631685019693219}
+  atkName: thunder
+  generateName: generate1
+  FieldName: magicfield1
+  deadName: dead1
+  atkCheckName: AtkCheck
 --- !u!1 &3790339644514534023
 GameObject:
   m_ObjectHideFlags: 0

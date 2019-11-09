@@ -28,16 +28,24 @@ public class LoginManager : MonoBehaviour
 
     }
 
+    public void gotoMainPanel(){
+        if(PlayerPrefs.GetString(UserData.USERDATA_NAME,"").Equals("")){
+            showsignpanel();
+        }else{
+            instance.logIn(PlayerPrefs.GetString(UserData.USERDATA_NAME,""),"");
+        }
+    }
+
     public void signUp(){
         SoundManager.SoundPlay("click1",this.gameObject.name);
-        instance.signUp(signnametext.text,signpasstext.text);
+        instance.signUp(signnametext.text,"");
 
     }
 
     public void logIn(){
         SoundManager.SoundPlay("click1",this.gameObject.name);
 
-        instance.logIn(loginnametext.text,loginpasstext.text);
+        instance.logIn(loginnametext.text,"");
     }
 
     public void showloginPanel(){

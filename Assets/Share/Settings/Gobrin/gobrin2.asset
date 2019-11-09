@@ -13,15 +13,15 @@ MonoBehaviour:
   m_Name: gobrin2
   m_EditorClassIdentifier: 
   id: 4
-  name: 
+  name: gobrin_2
   setpos: {x: 0, y: 0}
   attackpos: {x: 0, y: 0, z: 0}
-  settype: 
+  settype: 01000000
   hp: 20
   time: 0
   atkInterval: 0
   cost: 0
   name4Preview: gobrin2
-  maxsetNum: 0
+  maxsetNum: 3
   generateInterval: 0
   attack: 0

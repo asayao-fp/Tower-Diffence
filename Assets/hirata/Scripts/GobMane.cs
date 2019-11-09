@@ -25,18 +25,30 @@ public class GobMane : MonoBehaviour
     }
 
     [SerializeField]
-    public List<lineList> line = new List<lineList>();
+    public List<StageCostManager.lineList> line = new List<StageCostManager.lineList>();
 
 
+    StageCostManager scm;
 
     // Start is called before the first frame update
     void Start()
     {
         animator = this.gameObject.GetComponent<Animator>();
         animator.SetInteger("state", 1);
+
+        GameObject obj = GameObject.FindWithTag("Stage");
+        foreach(Transform child in obj.transform){
+            if(child.gameObject.name.Equals("GoblinGenerator")){
+                scm = child.GetComponent<StageCostManager>();
+                line = scm.line;
+                break;
+            }
+        }
     }
 
     // Update is called once per frame
+
+
     void Update()
     {
         this.transform.LookAt(this.line[lineNum].List[nextPoint].transform);
@@ -61,5 +73,10 @@ public class GobMane : MonoBehaviour
     public void setLine(int lineNum)
     {
         this.lineNum = lineNum;
+    }
+
+    public void setRoot(int root){
+        lineNum = root;
+
     }
 }

@@ -412,19 +412,10 @@ MonoBehaviour:
   - {fileID: 9197710615690382695}
   - {fileID: 9198058088839952845}
   - {fileID: 9197983728665444561}
+  statue: {fileID: 11400000, guid: c9ef1e06329ef42ad95cf1d03b5accf7, type: 2}
   isEnd: 0
   obj_num: 0
   isStatue: 0
-  statue: {fileID: 11400000, guid: c9ef1e06329ef42ad95cf1d03b5accf7, type: 2}
-  Atk: {fileID: 0}
-  hiteffect: {fileID: 0}
-  isDebug: 0
-  hpbar: {fileID: 755310669005187108}
-  AtkName: shoot
-  ColName: ball
-  GenName: generate0
-  FieldName: magicfield0
-  DeadName: dead1
   viewModels:
   - {fileID: 9219216636952712785}
   - {fileID: 9219883972907458861}
@@ -432,7 +423,13 @@ MonoBehaviour:
   - {fileID: 9219165265653951257}
   - {fileID: 9219408461197832685}
   - {fileID: 3863495759096450302}
-  notRotate: 0
+  isDebug: 0
+  hpbar: {fileID: 755310669005187108}
+  atkName: shoot
+  generateName: generate0
+  FieldName: magicfield0
+  deadName: dead0
+  atkCheckName: AtkCheck
 --- !u!65 &5938320502414432631
 BoxCollider:
   m_ObjectHideFlags: 0

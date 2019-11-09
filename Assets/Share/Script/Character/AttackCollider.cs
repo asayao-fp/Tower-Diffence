@@ -12,6 +12,6 @@ public class AttackCollider : MonoBehaviour
     }
 
     public void OnTriggerEnter(Collider other){
-      rootobj.GetComponent<FacilityManager>().EnemyOnArea(other.gameObject);
+    //  rootobj.GetComponent<FacilityManager>().EnemyOnArea(other.gameObject);
     }
 }

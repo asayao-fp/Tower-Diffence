@@ -2289,23 +2289,20 @@ MonoBehaviour:
   - {fileID: 2280217792826833231}
   - {fileID: 2280831596295885735}
   - {fileID: 2279557643419175277}
+  statue: {fileID: 11400000, guid: 79ba6a0a568e146a4b62f66d311b1de6, type: 2}
   isEnd: 0
   obj_num: 0
   isStatue: 0
-  statue: {fileID: 11400000, guid: 79ba6a0a568e146a4b62f66d311b1de6, type: 2}
-  Atk: {fileID: 0}
-  hiteffect: {fileID: 0}
-  isDebug: 0
-  hpbar: {fileID: 6755108332120023990}
-  AtkName: meteo
-  ColName: explode
-  GenName: generate4
-  FieldName: magicfield4
-  DeadName: dead4
   viewModels:
   - {fileID: 4105517129586448770}
   - {fileID: 7086542508527339372}
-  notRotate: 1
+  isDebug: 0
+  hpbar: {fileID: 6755108332120023990}
+  atkName: meteo
+  generateName: generate4
+  FieldName: magicfield4
+  deadName: dead4
+  atkCheckName: AtkCheck
 --- !u!1 &2302402945422632197
 GameObject:
   m_ObjectHideFlags: 0

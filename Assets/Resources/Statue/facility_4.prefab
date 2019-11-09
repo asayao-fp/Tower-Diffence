@@ -81,18 +81,10 @@ MonoBehaviour:
   - {fileID: 2151780618420659019}
   - {fileID: 2151574492805352239}
   - {fileID: 2151508467974375733}
+  statue: {fileID: 11400000, guid: 0d4878c3456a84cd19c0e51a2f479125, type: 2}
   isEnd: 0
   obj_num: 0
   isStatue: 0
-  statue: {fileID: 11400000, guid: 0d4878c3456a84cd19c0e51a2f479125, type: 2}
-  Atk: {fileID: 0}
-  isDebug: 0
-  hpbar: {fileID: 9115782394454435350}
-  AtkName: poison
-  ColName: poison
-  GenName: generate3
-  FieldName: magicfield3
-  DeadName: dead3
   viewModels:
   - {fileID: 2129419438885889751}
   - {fileID: 7700950980651634169}
@@ -100,6 +92,13 @@ MonoBehaviour:
   - {fileID: 2129418726598507693}
   - {fileID: 2129836068381400841}
   - {fileID: 4712806089266463436}
+  isDebug: 0
+  hpbar: {fileID: 9115782394454435350}
+  atkName: poison
+  generateName: generate3
+  FieldName: magicfield3
+  deadName: dead3
+  atkCheckName: AtkCheck
 --- !u!1 &2129418726598507693
 GameObject:
   m_ObjectHideFlags: 0

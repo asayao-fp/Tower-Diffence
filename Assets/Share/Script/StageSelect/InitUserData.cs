@@ -11,7 +11,7 @@ public class InitUserData : MonoBehaviour
     public TextMeshProUGUI level;
     private SkillNumManager snm;
     private GameSettings gs;
-
+    
 
     void Start(){
         GameObject obj = GameObject.FindWithTag("StaticObjects");
@@ -22,22 +22,17 @@ public class InitUserData : MonoBehaviour
 
     }
     public void nextScene(){
-
         SoundManager.SoundPlay("click1",this.gameObject.name);
-
         snm = GetComponent<SkillNumManager>();
         gs.setStatus(snm.getAllStatus());
         SceneManager.LoadScene("TestScene");
-
     }
 
     public void onlineScene(){
         SoundManager.SoundPlay("click1",this.gameObject.name);
         snm = GetComponent<SkillNumManager>();
         gs.setStatus(snm.getAllStatus());
-
         SceneManager.LoadScene("ConnectRoomScene");
-
     }
 
 }

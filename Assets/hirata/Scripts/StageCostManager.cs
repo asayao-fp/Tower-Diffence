@@ -22,9 +22,8 @@ public class StageCostManager : MonoBehaviour
     public List<lineList> line = new List<lineList>();
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-
     }
 
     // Update is called once per frame

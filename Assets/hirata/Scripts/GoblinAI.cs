@@ -33,24 +33,40 @@ public class GoblinAI : MonoBehaviour
 
     public GameObject[] goblins = new GameObject[3];
 
+
+    /* ゴブリンが歩くルートの初期位置を設定（必ずGoblinGeneratorのlineと同じ数にすること！！ */
+    [SerializeField]
+    private GameObject[] rootlist;
+
     private StageCostManager scm;
 
     private GameProgress gp;
+
+    private bool isAi;
     // Start is called before the first frame update
     void Start()
     {
+
+        if(!GameObject.Find("StaticManager").GetComponent<GameSettings>().isStatue()){
+            isAi = true;
+        }else {
+            isAi = false;
+        }
         scm = this.GetComponent<StageCostManager>();
         gp = GameObject.FindWithTag("GameManager").GetComponent<GameProgress>();
 
 
         //平均50、標準偏差10で、いわゆる偏差値
         IQ = Normal(50, 10);
-        Debug.Log("IQ = " + IQ);
+        GameSettings.printLog("[GoblinAI] IQ = " + IQ);
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(isAi){
+            return;
+        }
         //大体1秒ごとにコスト増加とゴブリン生成判定
         timeleft -= Time.deltaTime;
         if (timeleft <= 0.0)
@@ -185,11 +201,9 @@ public class GoblinAI : MonoBehaviour
             }
         }
 
-        goblins[(int)goblinType].GetComponent<GobMane>().setLine(generateLine);
+        generateLine = Random.Range(0,3);
 
-        //Instantiate(goblins[(int)goblinType]);
-        Vector3 pos = new Vector3(38.4f,1,5.54f);
-        gp.Generate("gobrin",pos,true);
+        gp.Generate(goblins[(int)goblinType].name,rootlist[generateLine].transform.position,true,false,generateLine);
         cost -= goblinCost[(int)favorite];
     }
 

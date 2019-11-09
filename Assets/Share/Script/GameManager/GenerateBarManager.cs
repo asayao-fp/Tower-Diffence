@@ -9,9 +9,7 @@ public class GenerateBarManager : MonoBehaviour
 {
     private StatueData sData;
     private GobrinData gData;
-    public StatueManager sm;
-    public GobrinManager gm;
-
+    public FacilityManager sm;
 
     private Image blackImage; //召喚不可能時に表示するテクスチャ
     private GameObject generatebar;

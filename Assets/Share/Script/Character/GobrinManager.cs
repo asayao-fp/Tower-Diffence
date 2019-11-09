@@ -2,76 +2,95 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GobrinManager : StatueManager
+public class GobrinManager : FacilityManager
 {
+    //AI用
     [SerializeField]
-    protected GobrinData gobrin; //自分のパラメータ
+    private List<StageCostManager.lineList> line = new List<StageCostManager.lineList>();
+    StageCostManager scm;
+    Animator animator;
+    [SerializeField]
+    private int lineNum = 0;
+    Vector3 target;
+    public float speed = 2.0f;
+    [SerializeField]
+    private int nextPoint = 0;
 
-    void Start()
-    {
-        isStatue = false;
-
-        time = 0.0f;
-       // enemylist = new List<GameObject>();
-
-        gp = GameObject.FindWithTag("GameManager").GetComponent<GameProgress>();
-
-        if(isDebug){
-      //    gstatus.hp = statue.hp;
-        }
+    void Awake(){
+      isStatue = false;
+      base.initMaterial(GameObject.Find("StaticManager").GetComponent<GameSettings>().getMaterial());
+      isEnd = true;
     }
 
     void Update()
     {
-        if(gp.getStatus() != gp.NOW_GAME)return;
-
-
-        if(hpbar != null){
-             hpbar.fillAmount = gstatus.hp / (float)gobrin.hp;
+        if(base.check()){
+          return;
         }
+
+        goblinRoutine();
     }
 
-    public override void Generate(Vector3 pos,Vector3 scale,StatueData f){
-        if(gp == null){
-          gp = GameObject.FindWithTag("GameManager").GetComponent<GameProgress>();
+    private void goblinRoutine(){
+
+        Walk();
+
+        if(hpbar != null)
+        {
+             hpbar.fillAmount = gstatus.hp / (float)statue.hp;
         }
-        hpbar.transform.position = new Vector3(this.transform.position.x, this.transform.position.y + 0.3f, this.transform.position.z);
-        hpbar.fillAmount = 1;
+    }
+    public void Walk(){
+        this.transform.LookAt(this.line[lineNum].List[nextPoint].transform);
+        if (Vector3.Distance(transform.position, target) < 0.1)
+        {
+            if (this.line[lineNum].List.Count - 1 > nextPoint)
+            {
+                nextPoint++;
+            }
+            else
+            {
+                Destroy(this.gameObject);
+            }
+        }
+        target = this.line[lineNum].List[nextPoint].transform.position;
 
-        gstatus.hp = gobrin.hp;
+        float step = speed * Time.deltaTime;
+        transform.position = Vector3.MoveTowards(transform.position, target, step);
+    }
 
+    public void setRoot(int num){
+      //GetComponent<GobMane>().setRoot(num);
+      lineNum = num;
+    }   
+
+    public override void Generate(Vector3 pos,StatueData f,bool isai){
+        base.Generate(pos,f,isai);
+
+        animator = this.gameObject.GetComponent<Animator>();
+        animator.SetInteger("state", 1);
+        GameObject obj = GameObject.FindWithTag("Stage");
+        foreach(Transform child in obj.transform){
+            if(child.gameObject.name.Equals("GoblinGenerator")){
+                scm = child.GetComponent<StageCostManager>();
+                line = scm.line;
+                break;
+            }
+        }
+
+        setEnd(false);
+    }
+
+    public override void Attack(){
+      //とりあえずNOP
     }
 
     public override void Dead(){
+      //とりあえずDestroyだけ
       Destroy(this.gameObject);
-    }
-
-
-    public override StatueData getSData(){
-      return gobrin;
-    }
-
-    public override GobrinData getGData(){
-      return null;
     }
 
     public override void checkEnemy(){
       //NOP
     }
-
-    public override　void addHP(int hp){
-      hiteffect.Play(true);
-      gstatus.hp += hp;
-
-      if(gstatus.hp >= gobrin.hp){
-        gstatus.hp = gobrin.hp;
-      }
-
-    }
-
-
-    public override void setNum(bool isgenerate){
-    }
-
-
 }
