@@ -7,6 +7,9 @@ public class GenerateController : MonoBehaviour
     [SerializeField]
     private GameObject goblin;
 
+    [SerializeField]
+    private int lineNum = 0;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -18,6 +21,7 @@ public class GenerateController : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(2))
         {
+            goblin.GetComponent<GobMane>().setLine(lineNum);
             Instantiate(goblin);
         }
     }
