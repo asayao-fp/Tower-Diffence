@@ -10,6 +10,8 @@ public static class Constants
     public static readonly string STATUE_TAG = "Statue";
     public static readonly float CAMERA_MIN_X = 6.43f;
     public static readonly float CAMERA_MAX_X = 33.24f;
+    //スタチュー生成時のコスト
+    public static readonly int[] STATUE_COST = { 10, 20, 30, 40, 50 };
 
     //ゴブリンを出すAIの性格
     public enum GoblinPersonality
@@ -29,4 +31,17 @@ public static class Constants
         Lance,
         Num
     }
+
+    //スタチューのタイプ
+    public enum StatueType
+    {
+        zako,
+        futuu,
+        masi,
+        tuyoi,
+        saikyou,
+        Num
+    }
+
+
 }
