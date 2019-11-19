@@ -70,7 +70,7 @@ public class CrystalManager : MonoBehaviour
       this.hp -= hp;
     }
     public float getHP(){
-      return 1;
-//      return hpbar.fillAmount;
+//      return 1;
+      return hpbar.fillAmount;
     }
 }

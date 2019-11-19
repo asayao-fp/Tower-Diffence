@@ -10,6 +10,8 @@ public class UserAuth : MonoBehaviour
 {
 
     private UserAuth instance = null;
+
+    public UserBaggage userBaggage;
     void Awake(){
         if(instance == null){
             instance = this;
@@ -22,6 +24,7 @@ public class UserAuth : MonoBehaviour
                 Destroy(gameObject);
             }else{
                 gameObject.name = name;
+                instance.userBaggage = GetComponent<UserBaggage>();
             }
         }else{
             Destroy(gameObject);
@@ -46,9 +49,21 @@ public class UserAuth : MonoBehaviour
                         PlayerPrefs.SetInt(UserData.USERDATA_LEVEL,System.Convert.ToInt32(objList[0]["level"]));
                         PlayerPrefs.SetString(UserData.USERDATA_STATUE,(string)objList[0]["statue"]);
                         PlayerPrefs.SetString(UserData.USERDATA_GOBLIN,(string)objList[0]["goblin"]);
+
+                        userBaggage.addItem(0,System.Convert.ToInt32(objList[0]["expup_small"]));
+                        userBaggage.addItem(1,System.Convert.ToInt32(objList[0]["expup_midium"]));
+                        userBaggage.addItem(2,System.Convert.ToInt32(objList[0]["expup_big"]));
+                        userBaggage.addItem(3,System.Convert.ToInt32(objList[0]["expboost_small"]));
+                        userBaggage.addItem(4,System.Convert.ToInt32(objList[0]["expboost_midium"]));
+                        userBaggage.addItem(5,System.Convert.ToInt32(objList[0]["expboost_big"]));
+                        userBaggage.addItem(6,System.Convert.ToInt32(objList[0]["levelmax_up"]));
+                        userBaggage.addItem(7,System.Convert.ToInt32(objList[0]["gacha_item"]));
+
+                        for(int i=0;i<8;i++){
+                            GameSettings.printLog("[UserAuth] userbaggage " + i + " num -> " + userBaggage.getItem(i));
+                        }
                     }
                 });
-  
                 
             	SceneManager.LoadScene ("StageSelectScene");
             }
@@ -81,6 +96,15 @@ public class UserAuth : MonoBehaviour
                     obj["statue"] = "facility_1,facility_2,facility_3,facility_4,facility_5";
                     obj["goblin"] = "gobrin_1,gobrin_2,gobrin_3";
 
+                    obj["expup_small"] = 0;
+                    obj["expup_midium"] = 0;
+                    obj["expup_big"] = 0;
+                    obj["expboost_small"] = 0;
+                    obj["expboost_midium"] = 0;
+                    obj["expboost_big"] = 0;
+                    obj["levelmax_up"] = 0;
+                    obj["gacha_item"] = 0;
+
                     obj.SaveAsync();
 
                     PlayerPrefs.SetString(UserData.USERDATA_NAME,(string)obj["name"]);
@@ -89,11 +113,19 @@ public class UserAuth : MonoBehaviour
                     PlayerPrefs.SetString(UserData.USERDATA_STATUE,(string)obj["statue"]);
                     PlayerPrefs.SetString(UserData.USERDATA_GOBLIN,(string)obj["goblin"]);
                     
-                   // Debug.Log("signup : " + (string)obj["statue"] + " aa : " + (string)obj["goblin"]);
+                    /*
+                    PlayerPrefs.SetInt(UserBaggage.EXPUP_S,System.Convert.ToInt32(obj["expup_small"]));
+                    PlayerPrefs.SetInt(UserBaggage.EXPUP_M,System.Convert.ToInt32(obj["expup_midium"]));
+                    PlayerPrefs.SetInt(UserBaggage.EXPUP_B,System.Convert.ToInt32(obj["expup_big"]));
+                    PlayerPrefs.SetInt(UserBaggage.EXPBOOST_S,System.Convert.ToInt32(obj["expboost_small"]));
+                    PlayerPrefs.SetInt(UserBaggage.EXPBOOST_M,System.Convert.ToInt32(obj["expboost_midium"]));
+                    PlayerPrefs.SetInt(UserBaggage.EXPBOOST_B,System.Convert.ToInt32(obj["expboost_big"]));
+                    PlayerPrefs.SetInt(UserBaggage.LEVELMAX_U,System.Convert.ToInt32(obj["levelmax_up"]));
+                    PlayerPrefs.SetInt(UserBaggage.GACHA,System.Convert.ToInt32(obj["gacha_item"]));
+                    */
                 }
             }
         });
-                
         
     }
 
@@ -122,10 +154,21 @@ public class UserAuth : MonoBehaviour
                     objList[0]["setobj_" + i] = PlayerPrefs.GetString(UserData.USERDATA_SETOBJ + i,"facility_" + i);
                 }
                 */
+                objList[0]["expup_small"] = userBaggage.getItem(0);
+                objList[0]["expup_midium"] = userBaggage.getItem(1);
+                objList[0]["expup_big"] = userBaggage.getItem(2);
+                objList[0]["expboost_small"] = userBaggage.getItem(3);
+                objList[0]["expboost_midium"] = userBaggage.getItem(4);
+                objList[0]["expboost_big"] = userBaggage.getItem(5);
+                objList[0]["levelmax_up"] = userBaggage.getItem(6);
+                objList[0]["gacha_item"] = userBaggage.getItem(7);
+
 
                 objList[0].SaveAsync();
             }
         });
 
     }
+
+
 }
