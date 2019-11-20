@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class GobMane : MonoBehaviour
 {
+    [Tooltip("武器のヒットボックス")]
+    [SerializeField]
+    private GameObject hitBox;
+
     [SerializeField]
     private int lineNum = 0;
     Vector3 target;
@@ -11,7 +15,10 @@ public class GobMane : MonoBehaviour
     [SerializeField]
     private int nextPoint = 0;
 
+    private string animationStateName = "state";
     Animator animator;
+
+    private bool isInEnemy = false;
 
     [System.SerializableAttribute]
     public class lineList
@@ -34,11 +41,13 @@ public class GobMane : MonoBehaviour
     void Start()
     {
         animator = this.gameObject.GetComponent<Animator>();
-        animator.SetInteger("state", 1);
+        animator.SetInteger(animationStateName, 1);
 
         GameObject obj = GameObject.FindWithTag("Stage");
-        foreach(Transform child in obj.transform){
-            if(child.gameObject.name.Equals("GoblinGenerator")){
+        foreach (Transform child in obj.transform)
+        {
+            if (child.gameObject.name.Equals("GoblinGenerator"))
+            {
                 scm = child.GetComponent<StageCostManager>();
                 line = scm.line;
                 break;
@@ -51,6 +60,12 @@ public class GobMane : MonoBehaviour
 
     void Update()
     {
+        //敵が攻撃範囲に内にいる場合は移動しない
+        if (isInEnemy)
+        {
+            return;
+        }
+
         this.transform.LookAt(this.line[lineNum].List[nextPoint].transform);
         if (Vector3.Distance(transform.position, target) < 0.1)
         {
@@ -67,7 +82,9 @@ public class GobMane : MonoBehaviour
         target = this.line[lineNum].List[nextPoint].transform.position;
 
         float step = speed * Time.deltaTime;
+
         transform.position = Vector3.MoveTowards(transform.position, target, step);
+
     }
 
     public void setLine(int lineNum)
@@ -75,8 +92,47 @@ public class GobMane : MonoBehaviour
         this.lineNum = lineNum;
     }
 
-    public void setRoot(int root){
+    public void setRoot(int root)
+    {
         lineNum = root;
 
+    }
+
+
+    public void InAttackRange(Collider collider)
+    {
+        isInEnemy = true;
+        animator.SetInteger(animationStateName, 2);
+        //Debug.Log(collider.gameObject.name + "が攻撃範囲に入った。");
+    }
+
+    public void OutAttackRange()
+    {
+        isInEnemy = false;
+        animator.SetInteger(animationStateName, 1);
+        //Debug.Log("攻撃範囲からいなくなった。");
+    }
+
+    public GameObject HitBox
+    {
+        set
+        {
+            this.hitBox = value;
+        }
+
+        get
+        {
+            return this.hitBox;
+        }
+    }
+
+    public void AttackStart()
+    {
+        HitBox.GetComponent<BoxCollider>().enabled = true;
+    }
+
+    public void AttackEnd()
+    {
+        HitBox.GetComponent<BoxCollider>().enabled = false;
     }
 }

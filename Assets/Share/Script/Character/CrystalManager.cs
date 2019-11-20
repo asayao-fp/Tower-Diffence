@@ -23,36 +23,42 @@ public class CrystalManager : MonoBehaviour
 
     private float time;
 
-    void Start(){
-      gp = GameObject.FindWithTag("GameManager").GetComponent<GameProgress>();
-      time = 0.0f;
+    void Start()
+    {
+        gp = GameObject.FindWithTag("GameManager").GetComponent<GameProgress>();
+        time = 0.0f;
 
-      GameObject obj = GameObject.Find("GameUI");
-      foreach(Transform child in obj.transform){
-        if(child.gameObject.name.Equals("progress")){
-          hpbar = child.GetComponent<ObjectReference>().objects[0].GetComponent<Image>();
+        GameObject obj = GameObject.Find("GameUI");
+        foreach (Transform child in obj.transform)
+        {
+            if (child.gameObject.name.Equals("progress"))
+            {
+                hpbar = child.GetComponent<ObjectReference>().objects[0].GetComponent<Image>();
+            }
         }
-      }
 
     }
 
-    void Update(){
-      if(gp.getStatus() != gp.NOW_GAME)return;
+    void Update()
+    {
+        if (gp.getStatus() != gp.NOW_GAME) return;
 
-      time += Time.deltaTime;
-    
-      hpbar.fillAmount = 1 - (time /(float)hp);
+        time += Time.deltaTime;
+
+        hpbar.fillAmount = 1 - (time / (float)hp);
 
     }
 
-    public void Dead(){
+    public void Dead()
+    {
         canvas.SetActive(false);
 
-        for(int i=0;i<viewModels.Length;i++){
-          viewModels[i].gameObject.SetActive(false);
+        for (int i = 0; i < viewModels.Length; i++)
+        {
+            viewModels[i].gameObject.SetActive(false);
         }
         GameObject deadobj = ResourceManager.getObject("Other/" + deadName);
-        GameObject obj = Instantiate(deadobj,transform.position,Quaternion.identity) as GameObject;
+        GameObject obj = Instantiate(deadobj, transform.position, Quaternion.identity) as GameObject;
 
         obj.transform.parent = this.transform;
 
@@ -62,15 +68,28 @@ public class CrystalManager : MonoBehaviour
         ParticleSystem p = obj.GetComponent<ParticleSystem>();
         p.Play();
 
-        Destroy(this.gameObject,2);
+        Destroy(this.gameObject, 2);
 
     }
 
-    public void AddHP(int hp){
-      this.hp -= hp;
+    public void AddHP(int hp)
+    {
+        this.hp -= hp;
     }
-    public float getHP(){
-      return 1;
-//      return hpbar.fillAmount;
+    public float getHP()
+    {
+        //      return 1;
+        return hpbar.fillAmount;
+    }
+
+    void OnTriggerEnter(Collider collider)
+    {
+        if (collider.gameObject.GetComponent<Weapon>() != null)
+        {
+            int damage = collider.gameObject.GetComponent<Weapon>().Power;
+            this.AddHP(damage);
+        }
+
+
     }
 }

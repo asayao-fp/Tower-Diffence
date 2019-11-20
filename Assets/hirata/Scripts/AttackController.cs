@@ -18,7 +18,7 @@ public class AttackController : MonoBehaviour
     {
         if (myEnemy == null && myTrriger)
         {
-            gameObject.GetComponentInParent<GoblinController>().OutAttackRange();
+            gameObject.GetComponentInParent<GobMane>().OutAttackRange();
             myTrriger = false;
         }
     }
@@ -26,7 +26,7 @@ public class AttackController : MonoBehaviour
     void OnTriggerEnter(Collider collider)
     {
         myTrriger = true;
-        gameObject.GetComponentInParent<GoblinController>().InAttackRange(collider);
+        gameObject.GetComponentInParent<GobMane>().InAttackRange(collider);
         myEnemy = collider;
     }
 
@@ -35,6 +35,5 @@ public class AttackController : MonoBehaviour
         //オブジェクトがDestroyされて検知されなくなった場合は、colliderがなくなるため、OnTriggerExitが呼ばれない。
         //そのため、メンバ変数で管理する。
         myEnemy = null;
-        //gameObject.GetComponentInParent<GoblinController>().OutAttackRange();
     }
 }
