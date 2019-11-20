@@ -58,7 +58,7 @@ MeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 19ee4e8a30f97c042bfbdba9e8c909e6, type: 2}
+  - {fileID: 2100000, guid: ec301c5ef0bb94b1eb04768be009ac71, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -421,6 +421,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ca615d7f9307442fb9076751b7dd1bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isAI: 0
   obj_materials:
   - {fileID: 1264268490488362431}
   - {fileID: 1264335477731008265}
@@ -438,6 +439,7 @@ MonoBehaviour:
   - {fileID: 3482072750508717088}
   isDebug: 0
   hpbar: {fileID: 1131614440841695482}
+  hiteffect: {fileID: 0}
   atkName: laser
   generateName: generate2
   FieldName: magicfield2
