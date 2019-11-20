@@ -20,6 +20,8 @@ public class CameraController : MonoBehaviour
     private Vector3 presentCamPos;
 
     // Start is called before the first frame update
+    public float rightMaxPos;
+    public float leftMaxPos;
 
     InputManager inputmanager;
     void Start()
@@ -55,10 +57,10 @@ public class CameraController : MonoBehaviour
          Vector3 velocity = _camTransform.rotation * new Vector3(x, 0, 0);
          velocity = velocity + presentCamPos;
 
-         if(velocity.x >= Constants.CAMERA_MAX_X){
-          velocity.x = Constants.CAMERA_MAX_X;
-         }else if( velocity.x <= Constants.CAMERA_MIN_X){
-            velocity.x = Constants.CAMERA_MIN_X;
+         if(velocity.x >= rightMaxPos){
+          velocity.x = rightMaxPos;
+         }else if( velocity.x <= leftMaxPos){
+            velocity.x = leftMaxPos;
          }
 
          _camTransform.position = velocity;
@@ -71,12 +73,12 @@ public class CameraController : MonoBehaviour
     public void CameraMove(){
       Vector3 cpos = _camTransform.position;
 
-      if(cpos.x == Constants.CAMERA_MIN_X){
-        cpos.x = Constants.CAMERA_MAX_X;
-      }else if(cpos.x == Constants.CAMERA_MAX_X){
-        cpos.x = Constants.CAMERA_MIN_X;
+      if(cpos.x == leftMaxPos){
+        cpos.x = leftMaxPos;
+      }else if(cpos.x == rightMaxPos){
+        cpos.x = rightMaxPos;
       }else{
-        cpos.x = Constants.CAMERA_MIN_X;
+        cpos.x = leftMaxPos;
       }
 
       _camTransform.position = cpos;
