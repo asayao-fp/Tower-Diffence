@@ -31,6 +31,11 @@ public class SkillNumManager : MonoBehaviour
 
     private Toggle[] skillselect; //必殺技選択トグル
 
+    public GameObject baggagepanel;//所持品のパネル
+    bool isshowbp;
+    public Image goblinPanel;
+    public Image statuePanel;
+    public Image background;
     private GameSettings gs;
     void Start()
     {
@@ -42,6 +47,7 @@ public class SkillNumManager : MonoBehaviour
         isshow4op = false;
         isshow4dbpanel = false;
         isshow4os = false;
+        isshowbp = false;
 
 
 
@@ -63,6 +69,7 @@ public class SkillNumManager : MonoBehaviour
         skillselect[0].isOn = true;
 
         gs = GameObject.FindWithTag("StaticObjects").GetComponent<GameSettings>();
+
 
         
         //Statue
@@ -135,6 +142,10 @@ public class SkillNumManager : MonoBehaviour
 
         usenum = 0;
         updateLayout();
+
+        statuePanel.gameObject.SetActive(gs.isStatue());
+        goblinPanel.gameObject.SetActive(!gs.isStatue());
+
     }
 
     public void updateLayout(){
@@ -188,6 +199,17 @@ public class SkillNumManager : MonoBehaviour
             panel4statue.gameObject.SetActive(false);
             panel4gobrin.gameObject.SetActive(isshow);
 
+        }
+
+    }
+
+    public void showPanel4bp(){
+        SoundManager.SoundPlay("click1",this.gameObject.name);
+
+        isshowbp = !isshowbp;
+        baggagepanel.gameObject.SetActive(isshowbp);
+        if(isshowbp){
+            baggagepanel.GetComponent<UseItemManager>().setBaggage();
         }
 
     }

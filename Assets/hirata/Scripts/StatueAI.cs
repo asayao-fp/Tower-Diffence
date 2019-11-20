@@ -22,9 +22,29 @@ public class StatueAI : MonoBehaviour
 
     private StageCostManager scm;
 
+    private bool isAi;
+
+    private GameProgress gp;
+
+
+    void Start(){
+
+        //プレイヤーがStatueだったら動作しない
+        if(GameObject.Find("StaticManager").GetComponent<GameSettings>().isStatue()){
+            isAi = true;
+        }else {
+            isAi = false;
+        }
+        gp = GameObject.FindWithTag("GameManager").GetComponent<GameProgress>();
+
+    }
     // Update is called once per frame
     void Update()
     {
+        if(isAi){
+            return;
+        }
+        
         //大体1秒ごとにコスト増加
         timeleft -= Time.deltaTime;
         if (timeleft <= 0.0)
@@ -47,20 +67,24 @@ public class StatueAI : MonoBehaviour
 
     public void GenerateStatue(int goblinHP, Vector3 position, GameObject childObject)
     {
+
+        if(isAi){
+            return;
+        }
+
         goblinHP = tmpHP;
         StatueType st = DecideStatueType(goblinHP);
 
 
-        Debug.Log(position);
         //生成コストが足りていたら生成
         if (STATUE_COST[(int)st] <= this.cost)
         {
-            Debug.Log(st);
             this.cost -= STATUE_COST[(int)st];
 
             Quaternion q = new Quaternion();
             q = Quaternion.identity;
-            Instantiate(statues[(int)st], position, q);
+
+            gp.Generate(statues[(int)st].name,position,true,true);
             childObject.GetComponent<SearchGoblin>().setStatueExist(true);
         }
 

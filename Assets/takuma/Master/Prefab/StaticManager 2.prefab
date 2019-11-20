@@ -1,0 +1,93 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8357419401979139824
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8357419401979139825}
+  - component: {fileID: 8357419401979139827}
+  - component: {fileID: 8357419401979139826}
+  - component: {fileID: 8357419401979139724}
+  - component: {fileID: 1315234274710339844}
+  m_Layer: 0
+  m_Name: StaticManager
+  m_TagString: StaticObjects
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8357419401979139825
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8357419401979139824}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2.7448518, y: -4.2742114, z: 16.441345}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8357419401979139827
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8357419401979139824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0c62e8f0681f490c9f947987b444609, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isText: 0
+--- !u!114 &8357419401979139826
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8357419401979139824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 480d06907756d40d8b574a4711de6483, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8357419401979139724
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8357419401979139824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d69ba161a0a5744f094d6f154dc05ae3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Dark_material: {fileID: 2100000, guid: e19692aa28997422a8ac62fca1c70b38, type: 2}
+  Light_material: {fileID: 2100000, guid: 6b5883f941c7140b5816be2a96b0e825, type: 2}
+  Generating_material: {fileID: 2100000, guid: 0d7f269a7456b422c84e27e408d13d55, type: 2}
+  log: 1
+  limitTime: 30
+  maxcost: 25
+  isLight: 0
+  battleType: 0
+--- !u!114 &1315234274710339844
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8357419401979139824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25a68b64ec5394ebb9ec09e2420312f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

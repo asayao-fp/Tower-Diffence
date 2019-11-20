@@ -43,10 +43,10 @@ public class GoblinAI : MonoBehaviour
     private GameProgress gp;
 
     private bool isAi;
-    // Start is called before the first frame update
+
     void Start()
     {
-
+        //プレイヤーがゴブリンを選択してたら動作しない
         if(!GameObject.Find("StaticManager").GetComponent<GameSettings>().isStatue()){
             isAi = true;
         }else {
@@ -182,6 +182,11 @@ public class GoblinAI : MonoBehaviour
 
     void GeneratGoblin(GoblinType favorite)
     {
+
+        if(isAi){
+            return;
+        }
+
         GoblinType goblinType = DecideGoblinType(favorite);
         int lineSize = scm.line.Count;
         int minCost = 0;
