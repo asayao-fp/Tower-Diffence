@@ -21,6 +21,7 @@ public class Weapon : MonoBehaviour
         }
     }
 
+
     // Start is called before the first frame update
     void Start()
     {
@@ -35,11 +36,12 @@ public class Weapon : MonoBehaviour
 
     void OnTriggerEnter(Collider collider)
     {
-        if ((collider.gameObject.tag == Constants.STATUE_TAG))
+        if ((collider.gameObject.tag == Constants.CRYSTAL_TAG))
         {
-            //もし石像に当たった場合、2回当たらないように当たり判定を消す。
-            Debug.Log("attata");
+            //もし敵に当たった場合、2回当たらないように当たり判定を消す。
+            //Debug.Log("attata");
             this.gameObject.GetComponent<BoxCollider>().enabled = false;
         }
+
     }
 }

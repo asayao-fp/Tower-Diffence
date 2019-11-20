@@ -25,6 +25,7 @@ TagManager:
   - Type_6
   - AttackMake
   - sound
+  - Crystal
   layers:
   - Default
   - TransparentFX
