@@ -34,6 +34,8 @@ public class GameSettings : MonoBehaviour
     AddStatus[] addStatuses;
     private int skillType; //必殺技のタイプ
 
+    private bool isOnline; //オンライン対戦かどうか
+
     private GameSettings instance = null;
     void Awake(){
         if(instance == null){
@@ -141,6 +143,13 @@ public class GameSettings : MonoBehaviour
         }
 
         return skillnum <= num;
+    }
+
+    public void setOnlineType(bool isonline){
+        this.isOnline = isonline;
+    }
+    public bool getOnlineType(){
+        return this.isOnline;
     }
 }
 

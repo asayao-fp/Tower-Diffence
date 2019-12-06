@@ -236,6 +236,7 @@ public class GameProgress : MonoBehaviour
       GameObject[] objs = getObjs();
       bool isStatue = gs.isStatue();
       for(int i=0;i<objs.Length;i++){
+        if(objs[i] == null)continue;
         if(objs[i].gameObject.tag.Equals("Statue")){
           if((isown && isStatue) || (!isown && !isStatue)){
             vlist.Add(objs[i]);

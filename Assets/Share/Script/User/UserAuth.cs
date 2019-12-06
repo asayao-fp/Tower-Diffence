@@ -107,7 +107,7 @@ public class UserAuth : MonoBehaviour
 
                     obj.SaveAsync();
 
-                    PlayerPrefs.SetString(UserData.USERDATA_NAME,(string)obj["name"]);
+                    PlayerPrefs.SetString(UserData.USERDATA_NAME,currentPlayerName);
                     PlayerPrefs.SetInt(UserData.USERDATA_EXP,System.Convert.ToInt32(obj["exp"]));
                     PlayerPrefs.SetInt(UserData.USERDATA_LEVEL,System.Convert.ToInt32(obj["level"]));
                     PlayerPrefs.SetString(UserData.USERDATA_STATUE,(string)obj["statue"]);

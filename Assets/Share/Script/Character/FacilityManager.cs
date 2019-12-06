@@ -127,6 +127,11 @@ public abstract class FacilityManager : MonoBehaviour
         return hpbar.fillAmount;
     }
 
+    /* HPを設定(オンライン通信で使用)*/
+    public void setHP(float hp){
+        hpbar.fillAmount = hp;
+    }
+
     /* 敵が攻撃範囲内にいるか */
     public abstract void checkEnemy(); 
 

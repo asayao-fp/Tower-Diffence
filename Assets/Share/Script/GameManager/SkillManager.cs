@@ -20,22 +20,50 @@ public class SkillManager : MonoBehaviour
     [SerializeField]
     GameProgress gp;
 
+    GameProgress4Online gp4online;
+
+    GameSettings gs;
 
     void Start()
     {
-      gp = GameObject.FindWithTag("GameManager").GetComponent<GameProgress>();
+
+      GameObject stobj = GameObject.FindWithTag("StaticObjects");
+
+      gs = stobj.GetComponent<GameSettings>();
+
+      if(gs.getOnlineType()){
+         gp4online = GameObject.FindWithTag("GameManager").GetComponent<GameProgress4Online>();
+      }else{
+          gp = GameObject.FindWithTag("GameManager").GetComponent<GameProgress>();
+      }
     }
     public void TapSkill(){
-        if(gp.addSkillCost(1)){
-            backimage.enabled = false;;
-        }else{
-            backimage.enabled = true;
+
+        if(gs.getOnlineType()){
+            if(gp4online.addSkillCost(1)){
+                backimage.enabled = false;
+            }else{
+                backimage.enabled = true;
+            }
+        }
+        else{
+            if(gp.addSkillCost(1)){
+                backimage.enabled = false;;
+            }else{
+                backimage.enabled = true;
+            }
         }
     }
 
     public void StartSkill(){
-        if(gp.doSkill()){
-            backimage.enabled = true;
+        if(gs.getOnlineType()){
+            if(gp4online.doSkill()){
+                backimage.enabled =true;
+            }
+        }else{
+            if(gp.doSkill()){
+                backimage.enabled = true;
+            }
         }
     }
 }

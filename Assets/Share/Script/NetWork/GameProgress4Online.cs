@@ -10,12 +10,45 @@ using UnityEngine.SceneManagement;
 
 
 public class GameProgress4Online : GameProgress
-{
+{ 
+    
 
+
+    public GameObject photonView;
+
+    public GameObject synObj;
+
+    //親かどうか
+    public bool isParent;
     void Awake(){
+
       game_status = 0;
       start = 5;
       gameset = false;
+      photonView = GameObject.FindWithTag("NetObj");
+      isParent = photonView.GetComponent<ConnectPlayer>().getParent();
+      
+      synObj = PhotonNetwork.Instantiate("NetWork/synchronizeObj", Vector3.zero, Quaternion.identity, 0) ;
+
+      GameObject stobj = GameObject.FindWithTag("StaticObjects");
+      gs = stobj.GetComponent<GameSettings>();
+
+      //とりあえず親がスタチューで
+      if(isParent){
+        gs.setStatue(true);
+      }else{
+        gs.setStatue(false);
+      }
+
+      GameObject gameui = null;
+      if(gs.isStatue()){
+        gameui = (GameObject)ResourceManager.getObject("UI/GameUI4statue");
+      }else{
+        gameui = (GameObject)ResourceManager.getObject("UI/GameUI4gobrin");
+      }
+      GameObject ui = Instantiate(gameui) as GameObject;
+      ui.name = "GameUI";
+
     }
 
     void Start()
@@ -36,6 +69,9 @@ public class GameProgress4Online : GameProgress
       limittime = GameObject.FindWithTag("LimitTime").GetComponent<TextMeshProUGUI>();
       gs = stobj.GetComponent<GameSettings>();
       limit = gs.getLimitTime();
+      if(limit < 10){
+        limit = 50;
+      }
       game_time = limit;
       limittime.text = "" + (int)game_time;
       starttime = GameObject.FindWithTag("StartTime").GetComponent<TextMeshProUGUI>();
@@ -50,18 +86,52 @@ public class GameProgress4Online : GameProgress
 
       GameObject[] icons = GameObject.FindGameObjectsWithTag("GenerateIcon");
       for(int i=0;i<icons.Length;i++){
-        icons[i].name = gs.getStatus(i).name;
+     //   icons[i].name = gs.getStatus(i).name;
       }
-      GetComponent<InputManager>().init(); //ビルドしたやつでやるとエラーが起きる
+
+      GetComponent<InputManager4Online>().init(); //ビルドしたやつでやるとエラーが起きる
+      
+      Debug.Log("limit : " + limit + " : " + game_time);
     }
 
+    public void setCDown(string text){
+      if(isParent)return;
+      starttime.text = text;
+    }
+    public void setTime(float time){
+      if(isParent)return;
+      game_time = (int)time;
+      limittime.text = "" + (int)time;
 
+    }
+
+    public void setStatus(int type){
+      if(isParent)return;
+      game_status = type;
+     // synObj.GetComponent<SynchronizeManager>().SetGameStatus(game_status);
+    }
     void Update()
-    {
+    {      
+
+
+      if(game_status == AFTER_GAME && !gameset){
+          StartCoroutine("GameSet",1);
+          return;
+      }else if(crystaldead){
+          StartCoroutine("GameSet",2);
+      }
+
+      //子は無視
+      if(!isParent){
+
+        return;
+      }
 
       if(gameset){
         return;
       }
+
+
       if(!isStart){
         String name = PlayerPrefs.GetString(UserData.USERDATA_NAME,"");
         String id = PlayerPrefs.GetString(UserData.USERDATA_ID,"");
@@ -70,7 +140,7 @@ public class GameProgress4Online : GameProgress
 
         GameSettings.printLog("gameprogress : " + name + " " + id + " " + level + " " + exp);
 
-        SoundManager.SoundPlay("bgm1",this.gameObject.name);
+       // SoundManager.SoundPlay("bgm1",this.gameObject.name);
 
         isStart = true;
         return;
@@ -90,18 +160,25 @@ public class GameProgress4Online : GameProgress
         return;
       }
 
+
       if(game_time > 0){
         game_time -= Time.deltaTime;
         game_status = NOW_GAME;
         limittime.text = "" + (int)game_time;
       }else{
         game_status = AFTER_GAME;
-        StartCoroutine("GameSet",1);
 
       }
 
+      //親側でチェック
       checkObjs();
-    }
+
+      synObj.GetComponent<SynchronizeManager>().SetGameStatus(game_status);
+      synObj.GetComponent<SynchronizeManager>().SetGameTime(game_time);
+      synObj.GetComponent<SynchronizeManager>().SetCountDown(starttime.text);
+      synObj.GetComponent<SynchronizeManager>().setCrystalDead(crystaldead);
+
+   }
 
     public void checkObjs(){
       int[] isdelete = new int[sg_objs.Count()];
@@ -126,19 +203,25 @@ public class GameProgress4Online : GameProgress
         }
         count++;
       }
+    
+      synObj.GetComponent<SynchronizeManager>().Set4Manager(sg_objs);
+
         if(!crystaldead){
           if(crystalObj == null){
             crystalObj = GameObject.Find("crystal");
           }
+          synObj.GetComponent<SynchronizeManager>().Set4CrystalHP(crystalObj.GetComponent<CrystalManager>().getHP());
           if(crystalObj.GetComponent<CrystalManager>().getHP() <= 0){
             crystalObj.GetComponent<CrystalManager>().Dead();
             crystaldead = true;
-            StartCoroutine("GameSet",2);
           }
+          
+
         }
 
       //削除フラグが立ってるオブジェクトをtableから削除
       if(delete){
+        synObj.GetComponent<SynchronizeManager>().Set4DeadObj(isdelete);
         for(int i=0;i<isdelete.Length;i++){
           if(isdelete[i] != -1){
             sg_objs.Remove(isdelete[i]);
@@ -154,18 +237,31 @@ public class GameProgress4Online : GameProgress
     public IEnumerator GameSet(int type){
         gameset = true;
         limittime.text = "GAME FINISH";
+
+
         ResultData rd = GameObject.FindWithTag("StaticObjects").AddComponent<ResultData>();
 
         bool result = false;
-        rd.SetResult(result,10);
-
         
-        yield return new WaitForSeconds (1.0f); 
+        if((isParent && (type == 1)) || (!isParent && (type == 2))){
+          result = true;
+        }
 
-        SceneManager.LoadScene("GameSetScene");        
+        rd.SetResult(result,10);        
+        yield return new WaitForSeconds (5.0f); 
+
+
+        PhotonNetwork.Disconnect();
+        SceneManager.LoadScene("GameSetScene");
+
     }
 
-
+    public void setCrystalHP(float hp){
+      if(crystalObj != null){
+        crystalObj.GetComponent<CrystalManager>().setHP(hp);
+      }
+    }
+     
     //全てのFacilityを取得
     public GameObject[] getObjs(){
       GameObject[] vals = new GameObject[sg_objs.Values.Count];
@@ -200,8 +296,39 @@ public class GameProgress4Online : GameProgress
       return game_status;
     }
 
+    public void deadManager(int unique_id){
+      if(sg_objs.ContainsKey(unique_id)){
+        FacilityManager fm = sg_objs[unique_id].GetComponent<FacilityManager>();
+        fm.isEnd = true;
+        fm.setNum(false);
+        fm.Dead();
+        sg_objs.Remove(unique_id);
+      }
+    }
+
+    public void setCDead(bool iscdead){
+      if(isParent)return;
+      crystaldead = iscdead;
+    }
+    public void synchronizePosHP(int unique_id,float hp,float x,float y,float z){
+      FacilityManager fm = sg_objs[unique_id].GetComponent<FacilityManager>();
+      fm.setHP(hp);
+      sg_objs[unique_id].gameObject.transform.position.Set(x,y,z);
+
+      GameSettings.printLog("[GameProgress4Online] SETHP id : " + unique_id + " hp : " + fm.getHP() + " x : " + x + " y : " + y + " z : " + z);
+    }
+
+    public void TempGenerate(String name,Vector3 pos,bool isstatue,bool isparent){
+
+      //親じゃなければsynObjに追加するだけ
+      synObj.GetComponent<SynchronizeManager>().Set(name,pos);
+      if(isparent){
+         Generate(name,pos,isstatue,isparent,true);
+      }
+    }
     //召喚
-    public void Generate(String name,Vector3 pos,bool isai,bool isstatue){
+    public void Generate(String name,Vector3 pos,bool isstatue,bool isparent,bool ismaster){
+
         GameObject obj = Instantiate (ResourceManager.getObject("Statue/" + name), pos, Quaternion.identity) as GameObject;
         obj.name = name;
         FacilityManager fm = obj.GetComponent<FacilityManager>();
@@ -209,13 +336,21 @@ public class GameProgress4Online : GameProgress
         fm.setAddStatus(gs.getStatus(name));
         fm.setNum(true);
         fm.setId(count);        
-        fm.Generate(pos,fm.getSData(),isai);
+        fm.Generate(pos,fm.getSData(),false);
 
 
         sg_objs.Add(count++,obj);
-        gcm.generateCost(isai ? 0 : fm.getSData().cost);
+
+        
+        if(isparent && ismaster){
+          gcm.generateCost(fm.getSData().cost);
+        }else if(!isparent && !ismaster){
+          gcm.generateCost(fm.getSData().cost);
+        }
 
         GameSettings.printLog("[GameProgress] Generate obj : " + obj.name + " id : " + (count - 1));
+       
+
     }
 
     //ダメージ計算
@@ -248,6 +383,7 @@ public class GameProgress4Online : GameProgress
     }
     //攻撃受けた
     public void AddHP(int obj_id,int hp,Boolean isDebug){
+
       FacilityManager fm = null;
 
       fm = sg_objs[obj_id].GetComponent<FacilityManager>();
@@ -311,41 +447,62 @@ public class GameProgress4Online : GameProgress
       return myobj_num < MAX_SET_OBJ;
     }
 
-    public void doSkill(){
-      if(getStatus() != NOW_GAME)return;
+    //子が送ってきたスキル
+    public void doSkill4Net(int skilltype){
+
+      Skill(skilltype,false);
+    }
+
+    public bool doSkill(){
+      if(getStatus() != NOW_GAME)return false;
 
       int skilltype = gs.getSkillType();
 
       //スキル使用回数が最大を超えてたらできない
       if(gs.isUseSkill(useskillnum)){
         GameSettings.printLog("[GameProgress] doSkill UseSkill over!");
-        return;
+        return false;
       }
 
       //スキル用ゲージが溜まってなかったらできない
       if(skillnum < MAX_SKILL_NUM){
         GameSettings.printLog("[GameProgress] doSkill Skillgage not!");
-        return;
+        return false;
       }
 
 
-      switch(skilltype){
-        case SKILL_RECOVERY:
-          skillRecover();
-          break;
-        case SKILL_ENEMY_DEAD:
-          skillEnemyDead();
-          break;
-      }
+      //ローカルで使用回数は管理(怖い、、）
       skillnum = 0;
       //使用回数追加
       useskillnum++;
+
+      if(!isParent){
+        synObj.GetComponent<SynchronizeManager>().setSkillType(skilltype);
+        return true;
+      }
+
+      //子は無視
+      Skill(skilltype,true);
+
+      return true;
+    }
+
+    public void Skill(int skilltype,bool isParent){
+      switch(skilltype){
+        case SKILL_RECOVERY:
+          skillRecover(isParent);
+          break;
+        case SKILL_ENEMY_DEAD:
+          skillEnemyDead(isParent);
+          break;
+      }
+
     }
 
     //自分のFacility全回復
-    public void skillRecover(){
+    public void skillRecover(bool isParent){
       GameSettings.printLog("[GameProgress] SkillRecovery");
-      GameObject[] objs = getObjs(true);
+      GameObject[] objs = getObjs(isParent);
 
       for(int i=0;i<objs.Length;i++){
         FacilityManager fm = objs[i].GetComponent<FacilityManager>();
@@ -354,9 +511,9 @@ public class GameProgress4Online : GameProgress
     }
 
     //敵全滅
-    public void skillEnemyDead(){
+    public void skillEnemyDead(bool isParent){
       GameSettings.printLog("[GameProgress] SkillEnemyDead");
-      GameObject[] objs = getObjs(false);
+      GameObject[] objs = getObjs(isParent);
 
       for(int i=0;i<objs.Length;i++){
         FacilityManager fm = objs[i].GetComponent<FacilityManager>();
@@ -366,9 +523,9 @@ public class GameProgress4Online : GameProgress
 
     }
 
-    public void addSkillCost(int num){
+    public bool addSkillCost(int num){
 
-      if(getStatus() != NOW_GAME)return;
+      if(getStatus() != NOW_GAME)return false;
 
       skillnum += num;
 
@@ -376,6 +533,8 @@ public class GameProgress4Online : GameProgress
         skillnum = MAX_SKILL_NUM;
       }
       GameSettings.printLog("[GameProgress] addSkillCost num : " + num + " now : " + skillnum);
-    }
 
+      return skillnum >= MAX_SKILL_NUM;
+
+    }
 }

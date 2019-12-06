@@ -23,7 +23,7 @@ public class expData : MonoBehaviour
         int tmpexp = 0;
         for(int i=0;i<100;i++){
             tmpexp += this.exp[i];
-            Debug.Log("getlevel : " + tmpexp + " : " + this.exp[i] + " : " + i);
+       //     Debug.Log("getlevel : " + tmpexp + " : " + this.exp[i] + " : " + i);
             if(tmpexp > exp){
                 break;
             }else{

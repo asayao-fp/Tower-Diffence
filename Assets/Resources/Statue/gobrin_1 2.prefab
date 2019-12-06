@@ -1014,7 +1014,7 @@ GameObject:
   - component: {fileID: 430022426698132644}
   - component: {fileID: 7198350155045286358}
   m_Layer: 0
-  m_Name: gobrin_1
+  m_Name: gobrin_1 2
   m_TagString: Goblin
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1052,7 +1052,7 @@ Animator:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5625621833861508645}
   m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: b5d61d21f8da16143867e6d5509b00fd, type: 3}
+  m_Avatar: {fileID: 9000000, guid: e9b9c81b637c7ec4ebb8eb2f1e06c133, type: 3}
   m_Controller: {fileID: 9100000, guid: 3bbbdc1df94017343b5b581d2fef9375, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
@@ -1074,6 +1074,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a8bee7237efeb54080aabf84ad86823, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hitBox: {fileID: 0}
   lineNum: 0
   speed: 1
   nextPoint: 0
@@ -1750,6 +1751,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5423844152308153096}
     m_Modifications:
+    - target: {fileID: 3756641070062565294, guid: ca299535b74db47c3a93a2c652908df9,
+        type: 3}
+      propertyPath: m_Name
+      value: Canvas
+      objectReference: {fileID: 0}
     - target: {fileID: 3756641070062565289, guid: ca299535b74db47c3a93a2c652908df9,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1855,11 +1861,6 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 3756641070062565294, guid: ca299535b74db47c3a93a2c652908df9,
-        type: 3}
-      propertyPath: m_Name
-      value: Canvas
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ca299535b74db47c3a93a2c652908df9, type: 3}
 --- !u!224 &6360913530258463808 stripped
@@ -1887,6 +1888,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5423844152308153096}
     m_Modifications:
+    - target: {fileID: 9040233775155407025, guid: bbb03da3e63b34953889ab1bdb78b4fc,
+        type: 3}
+      propertyPath: m_Name
+      value: hit
+      objectReference: {fileID: 0}
     - target: {fileID: 9040233775155407024, guid: bbb03da3e63b34953889ab1bdb78b4fc,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1941,11 +1947,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9040233775155407025, guid: bbb03da3e63b34953889ab1bdb78b4fc,
-        type: 3}
-      propertyPath: m_Name
-      value: hit
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bbb03da3e63b34953889ab1bdb78b4fc, type: 3}

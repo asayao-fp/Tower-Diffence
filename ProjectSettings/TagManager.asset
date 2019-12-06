@@ -26,6 +26,7 @@ TagManager:
   - AttackMake
   - sound
   - Crystal
+  - NetObj
   layers:
   - Default
   - TransparentFX

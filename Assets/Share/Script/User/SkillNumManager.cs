@@ -77,12 +77,14 @@ public class SkillNumManager : MonoBehaviour
         String nokori = PlayerPrefs.GetString(UserData.USERDATA_STATUE);
         String[] statuestr = new String[5];
         for(int i=0;i<5;i++){
+            /*
             if(nokori.IndexOf(",") == -1){
                 str = nokori;
             }else{
                 str = nokori.Substring(0,nokori.IndexOf(","));
                 nokori = nokori.Substring(nokori.IndexOf(",") + 1);
-            }
+            }*/
+            str = "facility_" + (i+1);
             statuestr[i] = str;
         }
 
@@ -91,12 +93,15 @@ public class SkillNumManager : MonoBehaviour
         nokori = PlayerPrefs.GetString(UserData.USERDATA_GOBLIN);
         String[] goblinstr = new String[3];
         for(int i=0;i<3;i++){
+            /*
             if(nokori.IndexOf(",") == -1){
                 str = nokori;
             }else{
                 str = nokori.Substring(0,nokori.IndexOf(","));
                 nokori = nokori.Substring(nokori.IndexOf(",") + 1);
             }
+            */
+            str = "gobrin_" + (i + 1);
             goblinstr[i] = str;
         }
 
@@ -229,11 +234,13 @@ public class SkillNumManager : MonoBehaviour
     }
 
     public void showPanel4os(){
+        /*
         SoundManager.SoundPlay("click1",this.gameObject.name);
 
 
         isshow4os = !isshow4os;
         ospanel.gameObject.SetActive(isshow4os);
+        */
     }
 
     public AddStatus[] getAllStatus(){

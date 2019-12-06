@@ -16,12 +16,12 @@ MonoBehaviour:
   name: gobrin_1
   setpos: {x: 0, y: 0}
   attackpos: {x: 0, y: 0, z: 0}
-  settype: 01000000
+  settype: 03000000
   hp: 15
   time: 0
   atkInterval: 0
-  cost: 0
+  cost: 5
   name4Preview: gobrin1
   maxsetNum: 3
-  generateInterval: 0
+  generateInterval: 5
   attack: 0

@@ -23,6 +23,7 @@ public class InitUserData : MonoBehaviour
     }
     public void nextScene(){
         SoundManager.SoundPlay("click1",this.gameObject.name);
+        gs.setOnlineType(false);
         snm = GetComponent<SkillNumManager>();
         gs.setStatus(snm.getAllStatus());
         SceneManager.LoadScene("TestScene");
@@ -30,9 +31,10 @@ public class InitUserData : MonoBehaviour
 
     public void onlineScene(){
         SoundManager.SoundPlay("click1",this.gameObject.name);
+        gs.setOnlineType(true);
         snm = GetComponent<SkillNumManager>();
         gs.setStatus(snm.getAllStatus());
-        SceneManager.LoadScene("ConnectRoomScene");
+        SceneManager.LoadScene("OnlineWait");
     }
 
 }

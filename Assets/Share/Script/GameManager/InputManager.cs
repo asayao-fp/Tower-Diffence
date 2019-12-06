@@ -8,55 +8,54 @@ using TMPro;
 
 public class InputManager : MonoBehaviour
 {
-    private GameObject stage;　//ステージ
-    private FacilitySetting fs; //施設セッティング
-    private StageSetting ss; //ステージセッティング
-    private Stage nowStage; //現在のステージ情報
-    private StatueData nowStatue; //現在の施設情報
+    protected GameObject stage;　//ステージ
+    protected FacilitySetting fs; //施設セッティング
+    protected StageSetting ss; //ステージセッティング
+    protected Stage nowStage; //現在のステージ情報
+    protected StatueData nowStatue; //現在の施設情報
 
-    private GameSettings gs;
+    protected GameSettings gs;
 
-    private Vector3 setpos; //マウス座標
-    private GameObject generatePrefab; //ドラッグ中に使用する施設用オブジェクト
-    GameObject prefab; //生成用のプレハブ
-    private GameObject atkPrefab; //攻撃範囲用のプレハブ
-    private GameObject setPrefab; //設置範囲用のプレハブ
-    private GameObject setObj; //設置用のオブジェクト
-    private GameObject[] setObjs; //設置されてるstatue用オブジェクト
+    protected Vector3 setpos; //マウス座標
+    protected GameObject generatePrefab; //ドラッグ中に使用する施設用オブジェクト
+    protected GameObject prefab; //生成用のプレハブ
+    protected GameObject atkPrefab; //攻撃範囲用のプレハブ
+    protected GameObject setPrefab; //設置範囲用のプレハブ
+    protected GameObject setObj; //設置用のオブジェクト
+    protected GameObject[] setObjs; //設置されてるstatue用オブジェクト
 
-    private GameObject[] tglobj;
-    private Toggle[] tgls = new Toggle[5]; //施設選択用
-    private Vector2[] spos = new Vector2[4]; //設置可能時の座標
-
-    Boolean touchGui; //uGuiを選択しているか
-    String FacilityName = ""; //現在選択中の施設名
-    Boolean isSelect; //施設のアイコンを選択しているか
-    Boolean isMoving; //施設を移動中か
+    protected GameObject[] tglobj;
+    protected Toggle[] tgls = new Toggle[5]; //施設選択用
+    protected Vector2[] spos = new Vector2[4]; //設置可能時の座標
+    protected Boolean touchGui; //uGuiを選択しているか
+    protected String FacilityName = ""; //現在選択中の施設名
+    protected Boolean isSelect; //施設のアイコンを選択しているか
+    protected Boolean isMoving; //施設を移動中か
 
     public Material showSetPositionMat; //設置可能範囲用マテリアル
     public Boolean isShow; //設置可能範囲、攻撃範囲を表示するか
     public int setType = 100; //設置できるタイプ
-    private Boolean canSelect; //施設を選択できるか
-    private Boolean isdrawAttack = false; //攻撃可能範囲を表示するか
+    protected Boolean canSelect; //施設を選択できるか
+    protected Boolean isdrawAttack = false; //攻撃可能範囲を表示するか
 
     [SerializeField]
-    private TextMeshProUGUI nameText;
-    private Vector3 textpos; //ドラッグ中の名前
+    protected TextMeshProUGUI nameText;
+    protected Vector3 textpos; //ドラッグ中の名前
     [SerializeField]
-    private TextMeshProUGUI notsetText; //設置できないときに表示するオブジェクト
-    private int num ;
-    private int select_num;
+    protected TextMeshProUGUI notsetText; //設置できないときに表示するオブジェクト
+    protected int num ;
+    protected int select_num;
 
-    GameProgress gp; 
+    protected GameProgress gp; 
 
     public static bool generating = false;
 
     //タッチ判定
-    int layerNo;
-    int layerMask;
-    Ray ray ;
-    RaycastHit hit;
-    bool isRay = false; //raycast が当たってるか
+    protected int layerNo;
+    protected int layerMask;
+    protected Ray ray ;
+    protected RaycastHit hit;
+    protected　bool isRay = false; //raycast が当たってるか
     public int roottype; //ゴブリンを置いた時のルート位置
 
     public void init()
@@ -92,13 +91,13 @@ public class InputManager : MonoBehaviour
       atkPrefab.SetActive(false);
       setPrefab = ResourceManager.getObject("Other/setpos");
       canSelect = true;
-      gp = GameObject.FindWithTag("GameManager").GetComponent<GameProgress>();
+
       nameText.text = "";
       notsetText.text = "NOT SET!";
       notsetText.gameObject.SetActive(false);
 
      // nowStage = gp.setNowStage(ss.getStageList(0));//ここエラー
-      nowStage = gp.setNowStage(null);//ここエラー
+      setGp();
       textpos = new Vector3();
 
       layerNo = LayerMask.NameToLayer("SetPosition");
@@ -106,13 +105,36 @@ public class InputManager : MonoBehaviour
 
     }
 
+    protected void setGp(){
+      gp = GameObject.FindWithTag("GameManager").GetComponent<GameProgress>();
+      nowStage = gp.setNowStage(null);//ここエラー
+    }
 
+    protected bool checkGp(){
+        return gp.getStatus() != gp.NOW_GAME;
+    }
 
+    protected bool hasCost(int cost){
+        return gp.hasCost(cost);
+    }
+    public bool canObjSet(){
+        return gp.canObjSet();
+    }
+
+    public GameObject[] getObjs(){
+        return gp.getObjs();
+    }
+
+    public void Generate(String name,Vector3 pos,bool isai,bool isstatue){
+        gp.Generate(FacilityName,atkPrefab.transform.position,false,gs.isStatue());
+
+    }
 
     void Update()
     {
 
-      if(gp.getStatus() != gp.NOW_GAME)return;
+
+      if(checkGp())return;
 
       Vector2 mousepos = Input.mousePosition;
       ray = Camera.main.ScreenPointToRay(mousepos);
@@ -135,7 +157,7 @@ public class InputManager : MonoBehaviour
         Image b = tglobj[i].GetComponent<GenerateBarManager>().getBlackImage();
 
         int cost = ResourceManager.getObject("Statue/" + tgls[i].name).GetComponent<FacilityManager>().getSData().cost;
-        if(gp.hasCost(cost)){
+        if(hasCost(cost)){
             b.enabled = false;
         }else{
             b.enabled = tglobj[i].GetComponent<GenerateBarManager>().getGenerate();
@@ -218,14 +240,14 @@ public class InputManager : MonoBehaviour
 
       }
       //全体の設置可能数ok && Facility選択されてる && 選択したFacilityの設置可能数ok && コスト足りてる
-      if(gp.canObjSet() && (!FacilityName.Equals("")) && (gbm != null) && (gp.hasCost(nowStatue.cost))){
+      if(canObjSet() && (!FacilityName.Equals("")) && (gbm != null) && (hasCost(nowStatue.cost))){
         nameText.text = nowStatue.name4Preview;
         prefab = ResourceManager.getObject("Statue/" + FacilityName); //選択したFacilityのリソースを読み込む
         generating = true;
         generatePrefab = Instantiate(prefab,setpos,Quaternion.identity) as GameObject; //ドラッグ中のFacilityprefab召喚
         setObj = Instantiate(setPrefab,setpos,Quaternion.identity) as GameObject; //召喚範囲用Prefab
         setObj.transform.localScale = new Vector3(0.1f * nowStatue.setpos.x,0.1f,0.1f*nowStatue.setpos.y); 
-        GameObject[] objs = gp.getObjs();//設置されてるオブジェクト全ての設置範囲を表示
+        GameObject[] objs = getObjs();//設置されてるオブジェクト全ての設置範囲を表示
         setObjs = new GameObject[objs.Length];
         for(int i=0;i<objs.Length;i++){
             if(objs[i] == null) continue;
@@ -272,7 +294,7 @@ public class InputManager : MonoBehaviour
         generating = false;
         if(canSelect){
           if(checkPosition()){
-            gp.Generate(FacilityName,atkPrefab.transform.position,false,gs.isStatue());
+            Generate(FacilityName,atkPrefab.transform.position,false,gs.isStatue());
             tgls[select_num].GetComponent<GenerateBarManager>().setGenerate();
             tgls[select_num].isOn = false;
              
@@ -394,7 +416,7 @@ public class InputManager : MonoBehaviour
           }
           //設置されてるObjectの範囲にいないか
           if(!isinObj){
-            GameObject[] objs = gp.getObjs();
+            GameObject[] objs = getObjs();
             for(int k=0;k<objs.Length;k++){
               if(objs[k] == null) continue;
               String name = gs.isStatue() ? "Statue" : "Gobrin";
