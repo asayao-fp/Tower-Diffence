@@ -16,7 +16,7 @@ MonoBehaviour:
   name: gobrin_3
   setpos: {x: 0, y: 0}
   attackpos: {x: 0, y: 0, z: 0}
-  settype: 03000000
+  settype: 01000000
   hp: 10
   time: 0
   atkInterval: 0

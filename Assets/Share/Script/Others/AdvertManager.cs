@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Advertisements;
 public class AdvertManager : MonoBehaviour
 {
-/*    public void advertisementShow()
+    public void advertisementShow()
     {
         /*
         video:デフォルト。5秒後にスキップ可
@@ -37,5 +37,5 @@ public class AdvertManager : MonoBehaviour
                 Debug.LogError("失敗しました。");
                 break;
         }
-    }*/
+    }
 }

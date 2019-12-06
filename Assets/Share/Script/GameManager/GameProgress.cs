@@ -203,24 +203,52 @@ public class GameProgress : MonoBehaviour
       }      
     }
 
-    /*試合終了 1 -> 時間切れ　2 -> クリスタル破壊 */
-    public IEnumerator GameSet(int type){
+/*試合終了 1 -> 時間切れ　2 -> クリスタル破壊 */
+    public IEnumerator GameSet(int type)
+    {
         gameset = true;
         limittime.text = "GAME FINISH";
         ResultData rd = GameObject.FindWithTag("StaticObjects").AddComponent<ResultData>();
 
         bool result = false;
-        if((gs.isStatue() && (type == 1)) || (!gs.isStatue() && (type == 2))){
-          result = true;
+        if ((gs.isStatue() && (type == 1)) || (!gs.isStatue() && (type == 2)))
+        {
+            result = true;
         }
-        rd.SetResult(result,10);
+        rd.SetResult(result, 10);
 
-        
-        yield return new WaitForSeconds (1.0f); 
 
-        SceneManager.LoadScene("GameSetScene");        
+        yield return new WaitForSeconds(1.0f);
+
+        int ac = gs.getAdvertiseCount();
+        ac++;
+        SceneManager.LoadScene("GameSetScene");
+
+        //nullぽになった
+/*
+        if (ac == Constants.ADVERTISE_LIMIT)
+        {
+            /*
+            video:デフォルト。5秒後にスキップ可
+            rewardedVideo:スキップ不可。
+            
+            if (Advertisement.IsReady("video"))
+            {
+                ShowOptions options = new ShowOptions
+                {
+                    resultCallback = advertisementResult
+                };
+
+                Advertisement.Show("video", options);
+            }
+        }
+        else
+        {
+            gs.setAdvertiseCount(ac);
+            SceneManager.LoadScene("GameSetScene");
+        }
+        */
     }
-
 
     //全てのFacilityを取得
     public GameObject[] getObjs(){
@@ -465,5 +493,13 @@ public class GameProgress : MonoBehaviour
 
       return skillnum >= MAX_SKILL_NUM;
     }
+
+/*
+    private void advertisementResult(ShowResult result)
+    {
+        gs.setAdvertiseCount(0);
+        SceneManager.LoadScene("GameSetScene");
+    }
+    */
 
 }

@@ -36,6 +36,8 @@ public class GameSettings : MonoBehaviour
 
     private bool isOnline; //オンライン対戦かどうか
 
+    //現在の広告表示カウント
+    private int advertiseCount = 0;
     private GameSettings instance = null;
     void Awake(){
         if(instance == null){
@@ -150,6 +152,16 @@ public class GameSettings : MonoBehaviour
     }
     public bool getOnlineType(){
         return this.isOnline;
+    }
+
+      public int getAdvertiseCount()
+    {
+        return this.advertiseCount;
+    }
+
+    public void setAdvertiseCount(int ac)
+    {
+        this.advertiseCount = ac;
     }
 }
 

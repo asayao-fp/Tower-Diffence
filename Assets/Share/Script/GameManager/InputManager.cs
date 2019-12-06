@@ -251,7 +251,7 @@ public class InputManager : MonoBehaviour
         setObjs = new GameObject[objs.Length];
         for(int i=0;i<objs.Length;i++){
             if(objs[i] == null) continue;
-            if(!objs[i].gameObject.tag.Equals("Statue"))continue;
+            if(!objs[i].gameObject.tag.Equals("Statue") && !objs[i].gameObject.tag.Equals("Goblin"))continue;
             Vector2 sp = objs[i].GetComponent<FacilityManager>().getSData().setpos;
             setObjs[i] = Instantiate(setPrefab,objs[i].transform.position,Quaternion.identity) as GameObject;
             setObjs[i].transform.localScale = new Vector3(0.1f * sp.x,0.1f,0.1f * sp.y);
@@ -401,6 +401,7 @@ public class InputManager : MonoBehaviour
         bool isinObj = false; 
         for(int j=0;j<nowStage.enablelist.Count;j++){
 
+          
           if(nowStage.enablelist[j][4] > setType){
             continue;
           }
@@ -419,7 +420,7 @@ public class InputManager : MonoBehaviour
             GameObject[] objs = getObjs();
             for(int k=0;k<objs.Length;k++){
               if(objs[k] == null) continue;
-              String name = gs.isStatue() ? "Statue" : "Gobrin";
+              String name = gs.isStatue() ? "Statue" : "Goblin";
               if(!objs[k].gameObject.tag.Equals(name))continue;
               Vector2[] setposition = getSetPosition(objs[k].GetComponent<FacilityManager>().getSData(),objs[k].transform.position);
               if(checkOutside(spos[i],setposition)){

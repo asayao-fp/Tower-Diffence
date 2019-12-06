@@ -80,6 +80,10 @@ public class CrystalManager : MonoBehaviour
     {
         this.nowHP -= hp;
     }
+
+    public void setHP(float hp){
+        this.nowHP = (int)hp;
+    }
     public float getHP()
     {
         //return 1;

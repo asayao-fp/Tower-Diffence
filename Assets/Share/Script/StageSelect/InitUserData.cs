@@ -26,7 +26,8 @@ public class InitUserData : MonoBehaviour
         gs.setOnlineType(false);
         snm = GetComponent<SkillNumManager>();
         gs.setStatus(snm.getAllStatus());
-        SceneManager.LoadScene("TestScene");
+//        SceneManager.LoadScene("TestScene");
+         SceneManager.LoadScene(Constants.STAGE_SELECT_SCNENE);
     }
 
     public void onlineScene(){
@@ -34,7 +35,8 @@ public class InitUserData : MonoBehaviour
         gs.setOnlineType(true);
         snm = GetComponent<SkillNumManager>();
         gs.setStatus(snm.getAllStatus());
-        SceneManager.LoadScene("OnlineWait");
+//        SceneManager.LoadScene("OnlineWait");
+         SceneManager.LoadScene(Constants.CONNECT_ROOM_SCNENE);
     }
 
 }

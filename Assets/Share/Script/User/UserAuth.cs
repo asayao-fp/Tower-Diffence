@@ -65,7 +65,8 @@ public class UserAuth : MonoBehaviour
                     }
                 });
                 
-            	SceneManager.LoadScene ("StageSelectScene");
+//            	SceneManager.LoadScene ("StageSelectScene");
+                SceneManager.LoadScene(Constants.MENU_SCNENE);
             }
         });
     }
