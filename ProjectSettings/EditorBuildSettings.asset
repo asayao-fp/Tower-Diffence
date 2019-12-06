@@ -6,14 +6,23 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/hirata/Scenes/TitleScene.unity
+    guid: 3d5129b2ff8037e4ba7bb6fa5176d2b4
+  - enabled: 1
     path: Assets/takuma/Scene/LoginScene.unity
     guid: 8289418a0c8f54fb9a45e7f2730ce45b
   - enabled: 1
-    path: Assets/takuma/Scene/Menu.unity
-    guid: 62e126abca64348d5877b9004bae5b65
+    path: Assets/takuma/Scene/MenuScene.unity
+    guid: 4b7f766510704d140933e32559b26efd
   - enabled: 1
-    path: Assets/takuma/Scene/TestScene.unity
-    guid: 29205e47c944c0d46907eb4b18afeeb2
+    path: Assets/hirata/Scenes/Stage1.unity
+    guid: eb377a2315663c54787fbe278a54f82a
+  - enabled: 1
+    path: Assets/takuma/Scene/Stage2.unity
+    guid: 2a5c1ecd97fc3544a9cd45f9879d8c61
+  - enabled: 1
+    path: Assets/hirata/Scenes/Stage3.unity
+    guid: 602f1137925f7d84185776f9b1d6d6eb
   - enabled: 1
     path: Assets/takuma/Scene/GameSetScene.unity
     guid: 38814d1468f3e4f0db4eadb849af8bde
@@ -24,15 +33,6 @@ EditorBuildSettings:
     path: Assets/takuma/Scene/OnlineGameScene.unity
     guid: a240f6b5ce1164ceda1c75ea5293cf86
   - enabled: 1
-    path: Assets/hirata/Scenes/stageSelect.unity
+    path: Assets/hirata/Scenes/StageSelectScene.unity
     guid: daf1307ddb596914ba4332dcca2714bc
-  - enabled: 1
-    path: Assets/hirata/Scenes/stage1-1.unity
-    guid: eb377a2315663c54787fbe278a54f82a
-  - enabled: 1
-    path: Assets/hirata/Scenes/stage2.unity
-    guid: 738b107535b90ba40adacb6a4de1bc1a
-  - enabled: 1
-    path: Assets/hirata/Scenes/stage3.unity
-    guid: a004ac55151d065409ea75cff3900183
   m_configObjects: {}

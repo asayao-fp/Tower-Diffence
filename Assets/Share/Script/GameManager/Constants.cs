@@ -14,6 +14,17 @@ public static class Constants
     //スタチュー生成時のコスト
     public static readonly int[] STATUE_COST = { 10, 20, 30, 40, 50 };
 
+    //シーン名の定数
+    public static readonly string TITLE_SCNENE = "TitleScene";
+    public static readonly string LOGIN_SCNENE = "LoginScene";
+    public static readonly string MENU_SCNENE = "MenuScene";
+    public static readonly string CONNECT_ROOM_SCNENE = "ConnectRoomScene";
+    public static readonly string STAGE_SELECT_SCNENE = "StageSelectScene";
+    public static readonly string GAME_SET_SCNENE = "GameSetScene";
+
+    //広告表示変数。何回試合をやったか。
+    public static readonly int ADVERTISE_LIMIT = 3;
+
     //ゴブリンを出すAIの性格
     public enum GoblinPersonality
     {
@@ -41,6 +52,17 @@ public static class Constants
         masi,
         tuyoi,
         saikyou,
+        Num
+    }
+
+    public enum SceneName
+    {
+        TITLE_SCNENE,
+        LOGIN_SCNENE,
+        MENU_SCNENE,
+        CONNECT_ROOM_SCNENE,
+        STAGE_SELECT_SCNENE,
+        GAME_SET_SCNENE,
         Num
     }
 

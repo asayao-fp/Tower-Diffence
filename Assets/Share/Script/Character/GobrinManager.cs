@@ -9,38 +9,68 @@ public class GobrinManager : FacilityManager
     private List<StageCostManager.lineList> line = new List<StageCostManager.lineList>();
     StageCostManager scm;
     Animator animator;
+
     [SerializeField]
     private int lineNum = 0;
+
     Vector3 target;
     public float speed = 2.0f;
+
     [SerializeField]
     private int nextPoint = 0;
 
-    void Awake(){
-      isStatue = false;
-      base.initMaterial(GameObject.Find("StaticManager").GetComponent<GameSettings>().getMaterial());
-      isEnd = true;
+    private GameObject weapon;
+
+    private bool isInEnemy = false;
+    private Collider myEnemy = null;
+
+    private string ANIMATION_NAME = "state";
+
+    void Awake()
+    {
+        Transform[] transformArray = this.GetComponentsInChildren<Transform>();
+        foreach (Transform child in transformArray)
+        {
+            Debug.Log(child.name);
+            if (child.gameObject.name.Equals("weapon"))
+            {
+                weapon = child.gameObject;
+            }
+        }
+        isStatue = false;
+        base.initMaterial(GameObject.Find("StaticManager").GetComponent<GameSettings>().getMaterial());
+        isEnd = true;
     }
 
     void Update()
     {
-        if(base.check()){
-          return;
+        if (base.check())
+        {
+            return;
         }
 
         goblinRoutine();
     }
 
-    private void goblinRoutine(){
+    private void goblinRoutine()
+    {
+        checkEnemy();
+
+        //敵が攻撃範囲に内にいる場合は移動しない
+        if (isInEnemy)
+        {
+            return;
+        }
 
         Walk();
 
-        if(hpbar != null)
+        if (hpbar != null)
         {
-             hpbar.fillAmount = gstatus.hp / (float)statue.hp;
+            hpbar.fillAmount = gstatus.hp / (float)statue.hp;
         }
     }
-    public void Walk(){
+    public void Walk()
+    {
         this.transform.LookAt(this.line[lineNum].List[nextPoint].transform);
         if (Vector3.Distance(transform.position, target) < 0.1)
         {
@@ -59,19 +89,23 @@ public class GobrinManager : FacilityManager
         transform.position = Vector3.MoveTowards(transform.position, target, step);
     }
 
-    public void setRoot(int num){
-      //GetComponent<GobMane>().setRoot(num);
-      lineNum = num;
-    }   
+    public void setRoot(int num)
+    {
+        //GetComponent<GobMane>().setRoot(num);
+        lineNum = num;
+    }
 
-    public override void Generate(Vector3 pos,StatueData f,bool isai){
-        base.Generate(pos,f,isai);
+    public override void Generate(Vector3 pos, StatueData f, bool isai)
+    {
+        base.Generate(pos, f, isai);
 
         animator = this.gameObject.GetComponent<Animator>();
-        animator.SetInteger("state", 1);
+        animator.SetInteger(ANIMATION_NAME, 1);
         GameObject obj = GameObject.FindWithTag("Stage");
-        foreach(Transform child in obj.transform){
-            if(child.gameObject.name.Equals("GoblinGenerator")){
+        foreach (Transform child in obj.transform)
+        {
+            if (child.gameObject.name.Equals("GoblinGenerator"))
+            {
                 scm = child.GetComponent<StageCostManager>();
                 line = scm.line;
                 break;
@@ -81,16 +115,62 @@ public class GobrinManager : FacilityManager
         setEnd(false);
     }
 
-    public override void Attack(){
-      //とりあえずNOP
+    public override void Attack()
+    {
+        //とりあえずNOP
     }
 
-    public override void Dead(){
-      //とりあえずDestroyだけ
-      Destroy(this.gameObject);
+    public override void Dead()
+    {
+        //とりあえずDestroyだけ
+        Destroy(this.gameObject);
     }
 
-    public override void checkEnemy(){
-      //NOP
+    public override void checkEnemy()
+    {
+        if (myEnemy == null && isInEnemy)
+        {
+            OutAttackRange();
+        }
+
+    }
+
+    public void InAttackRange(Collider collider)
+    {
+        isInEnemy = true;
+        myEnemy = collider;
+        animator.SetInteger(ANIMATION_NAME, 2);
+        //Debug.Log(collider.gameObject.name + "が攻撃範囲に入った。");
+    }
+
+    public void OutAttackRange()
+    {
+        isInEnemy = false;
+        animator.SetInteger(ANIMATION_NAME, 1);
+        //Debug.Log("攻撃範囲からいなくなった。");
+    }
+
+    //アニメーションで呼ばれる
+    public void AttackStart()
+    {
+        weapon.GetComponent<BoxCollider>().enabled = true;
+    }
+
+    //アニメーションで呼ばれる
+    public void AttackEnd()
+    {
+        weapon.GetComponent<BoxCollider>().enabled = false;
+    }
+
+    void OnTriggerEnter(Collider collider)
+    {
+        InAttackRange(collider);
+    }
+
+    void OnTriggerExit(Collider collider)
+    {
+        //オブジェクトがDestroyされて検知されなくなった場合は、colliderがなくなるため、OnTriggerExitが呼ばれない。
+        //そのため、メンバ変数で管理する。
+        myEnemy = null;
     }
 }
