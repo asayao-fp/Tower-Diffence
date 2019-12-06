@@ -11,7 +11,7 @@ public class CrystalManager : MonoBehaviour
 {
     protected GameProgress gp;
     [SerializeField]
-    private int hp;
+    private int hp = 50;
     [SerializeField]
     private Image hpbar;
     [SerializeField]
@@ -21,38 +21,48 @@ public class CrystalManager : MonoBehaviour
     [SerializeField]
     private GameObject[] viewModels;
 
+    [SerializeField]
+    private int nowHP = 0;
+
     private float time;
 
-    void Start(){
-      gp = GameObject.FindWithTag("GameManager").GetComponent<GameProgress>();
-      time = 0.0f;
+    void Start()
+    {
+        nowHP = hp;
+        gp = GameObject.FindWithTag("GameManager").GetComponent<GameProgress>();
+        time = 0.0f;
 
-      GameObject obj = GameObject.Find("GameUI");
-      foreach(Transform child in obj.transform){
-        if(child.gameObject.name.Equals("progress")){
-          hpbar = child.GetComponent<ObjectReference>().objects[0].GetComponent<Image>();
+        GameObject obj = GameObject.Find("GameUI");
+        foreach (Transform child in obj.transform)
+        {
+            if (child.gameObject.name.Equals("progress"))
+            {
+                hpbar = child.GetComponent<ObjectReference>().objects[0].GetComponent<Image>();
+            }
         }
-      }
 
     }
 
-    void Update(){
-      if(gp.getStatus() != gp.NOW_GAME)return;
+    void Update()
+    {
+        if (gp.getStatus() != gp.NOW_GAME) return;
 
-      time += Time.deltaTime;
-    
-      hpbar.fillAmount = 1 - (time /(float)hp);
+        //time += Time.deltaTime;
+
+        hpbar.fillAmount = ((float)nowHP / (float)hp);
 
     }
 
-    public void Dead(){
+    public void Dead()
+    {
         canvas.SetActive(false);
 
-        for(int i=0;i<viewModels.Length;i++){
-          viewModels[i].gameObject.SetActive(false);
+        for (int i = 0; i < viewModels.Length; i++)
+        {
+            viewModels[i].gameObject.SetActive(false);
         }
         GameObject deadobj = ResourceManager.getObject("Other/" + deadName);
-        GameObject obj = Instantiate(deadobj,transform.position,Quaternion.identity) as GameObject;
+        GameObject obj = Instantiate(deadobj, transform.position, Quaternion.identity) as GameObject;
 
         obj.transform.parent = this.transform;
 
@@ -62,15 +72,17 @@ public class CrystalManager : MonoBehaviour
         ParticleSystem p = obj.GetComponent<ParticleSystem>();
         p.Play();
 
-        Destroy(this.gameObject,2);
+        Destroy(this.gameObject, 2);
 
     }
 
-    public void AddHP(int hp){
-      this.hp -= hp;
+    public void AddHP(int hp)
+    {
+        this.nowHP -= hp;
     }
-    public float getHP(){
-//      return 1;
-      return hpbar.fillAmount;
+    public float getHP()
+    {
+        //return 1;
+        return hpbar.fillAmount;
     }
 }

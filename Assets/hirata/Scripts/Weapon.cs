@@ -40,6 +40,7 @@ public class Weapon : MonoBehaviour
         {
             //もし敵に当たった場合、2回当たらないように当たり判定を消す。
             //Debug.Log("attata");
+            collider.gameObject.GetComponent<CrystalManager>().AddHP(power);
             this.gameObject.GetComponent<BoxCollider>().enabled = false;
         }
 
