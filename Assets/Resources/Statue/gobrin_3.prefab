@@ -1445,6 +1445,7 @@ GameObject:
   - component: {fileID: 9197116646873609468}
   - component: {fileID: 566330924286762431}
   - component: {fileID: 5324776259057227521}
+  - component: {fileID: 2336586122756895619}
   m_Layer: 0
   m_Name: gobrin_3
   m_TagString: Untagged
@@ -1504,8 +1505,8 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.54
-  m_Center: {x: 0, y: 0.6, z: 0.12}
+  m_Radius: 0.7
+  m_Center: {x: 0, y: 0.7, z: 0.12}
 --- !u!114 &5324776259057227521
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1537,6 +1538,22 @@ MonoBehaviour:
   lineNum: 0
   speed: 2
   nextPoint: 0
+--- !u!54 &2336586122756895619
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8373309918024592263}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0
 --- !u!1 &8538456902706931935
 GameObject:
   m_ObjectHideFlags: 0

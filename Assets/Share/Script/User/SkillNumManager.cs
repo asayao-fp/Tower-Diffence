@@ -145,6 +145,32 @@ public class SkillNumManager : MonoBehaviour
             }
         }
 
+        int dpnum = gs.isStatue() ? 2 : 3;
+        string[] dpname = gs.isStatue() ? new string[]{"skill1","skill2"} : new string[]{"skill1","skill2","skill3"};
+        foreach(Transform child in dppanel.transform){
+            if(!child.gameObject.name.StartsWith("skill")){
+                continue;
+            }
+            child.gameObject.SetActive(false);
+            for(int i=0;i<dpname.Length;i++){
+                if(child.gameObject.name.Equals(dpname[i])){
+                    child.gameObject.SetActive(true);
+                    break;
+                }
+            }
+        }
+
+        for(int i=0;i<skillselect.Length;i++){
+            if(i >= dpnum)continue;
+            if(i == 0){
+                skillselect[i].isOn = true;
+                gs.setSkillType(i);
+            }else{
+                skillselect[i].isOn = false;
+            }
+        }
+
+
         usenum = 0;
         updateLayout();
 

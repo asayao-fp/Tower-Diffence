@@ -31,7 +31,7 @@ public class GobrinManager : FacilityManager
         Transform[] transformArray = this.GetComponentsInChildren<Transform>();
         foreach (Transform child in transformArray)
         {
-            Debug.Log(child.name);
+            //Debug.Log(child.name);
             if (child.gameObject.name.Equals("weapon"))
             {
                 weapon = child.gameObject;
@@ -64,6 +64,7 @@ public class GobrinManager : FacilityManager
 
         Walk();
 
+        
         if (hpbar != null)
         {
             hpbar.fillAmount = gstatus.hp / (float)statue.hp;
@@ -71,6 +72,10 @@ public class GobrinManager : FacilityManager
     }
     public void Walk()
     {
+        if(this.line[lineNum].List.Count  == nextPoint){
+            //ゴール到達したら歩かない
+            return;
+        }
         this.transform.LookAt(this.line[lineNum].List[nextPoint].transform);
         if (Vector3.Distance(transform.position, target) < 0.1)
         {
@@ -80,7 +85,7 @@ public class GobrinManager : FacilityManager
             }
             else
             {
-                Destroy(this.gameObject);
+              //  Destroy(this.gameObject);
             }
         }
         target = this.line[lineNum].List[nextPoint].transform.position;
@@ -137,10 +142,12 @@ public class GobrinManager : FacilityManager
 
     public void InAttackRange(Collider collider)
     {
-        isInEnemy = true;
-        myEnemy = collider;
-        animator.SetInteger(ANIMATION_NAME, 2);
-        //Debug.Log(collider.gameObject.name + "が攻撃範囲に入った。");
+        if(collider.gameObject.name.Equals("crystal")){
+            isInEnemy = true;
+            myEnemy = collider;
+            animator.SetInteger(ANIMATION_NAME, 2);
+            //Debug.Log(collider.gameObject.name + "が攻撃範囲に入った。");
+        }
     }
 
     public void OutAttackRange()

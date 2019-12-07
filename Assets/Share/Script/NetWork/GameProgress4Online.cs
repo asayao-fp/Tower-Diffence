@@ -495,13 +495,20 @@ public class GameProgress4Online : GameProgress
         case SKILL_ENEMY_DEAD:
           skillEnemyDead(isParent);
           break;
+        case SKILL_CYCROPS_GENERATE:
+
       }
 
     }
 
+    //サイクロプス召喚(ゴブリン用)
+    public void skillCycropsGenerate(){
+      GameSettings.printLog("[GameProgress4Online] SkillCycropsGenerate");
+      
+    }
     //自分のFacility全回復
     public void skillRecover(bool isParent){
-      GameSettings.printLog("[GameProgress] SkillRecovery");
+      GameSettings.printLog("[GameProgress4Online] SkillRecovery");
       GameObject[] objs = getObjs(isParent);
 
       for(int i=0;i<objs.Length;i++){
@@ -512,7 +519,7 @@ public class GameProgress4Online : GameProgress
 
     //敵全滅
     public void skillEnemyDead(bool isParent){
-      GameSettings.printLog("[GameProgress] SkillEnemyDead");
+      GameSettings.printLog("[GameProgress4Online] SkillEnemyDead");
       GameObject[] objs = getObjs(isParent);
 
       for(int i=0;i<objs.Length;i++){

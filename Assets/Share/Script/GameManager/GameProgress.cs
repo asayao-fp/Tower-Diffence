@@ -47,6 +47,7 @@ public class GameProgress : MonoBehaviour
     /*** スキルの種類  ***/
     public const int SKILL_RECOVERY = 0; 
     public const int SKILL_ENEMY_DEAD = 1;
+    public const int SKILL_CYCROPS_GENERATE = 2;
 
     [SerializeField]
     protected int MAX_SKILL_NUM = 50;
@@ -57,6 +58,11 @@ public class GameProgress : MonoBehaviour
     protected bool isStatue;
     protected bool isStart;
     protected bool gameset; 
+
+    [SerializeField]
+    private int roottype4cyc; //サイクロプス用ルートタイプ
+    [SerializeField]
+    private Vector3 genepos4cyc; //サイクロプス用召喚ポジション
 
     void Awake(){
       game_status = 0;
@@ -295,7 +301,10 @@ public class GameProgress : MonoBehaviour
 
         FacilityManager fm = obj.GetComponent<FacilityManager>();
 
-        if(!isstatue && !isai){
+        bool iscyc = name.Equals("Cyc");
+        if(iscyc){
+          ((GobrinManager)fm).setRoot(roottype4cyc);
+        }else if(!isstatue && !isai){
           ((GobrinManager)fm).setRoot(GetComponent<InputManager>().roottype);
         }else if(!isstatue && isai){
           ((GobrinManager)fm).setRoot(roottype);
@@ -308,7 +317,9 @@ public class GameProgress : MonoBehaviour
 
         sg_objs.Add(count++,obj);
 
-        gcm.generateCost(isai ? 0 : fm.getSData().cost);      
+        if(!iscyc){
+          gcm.generateCost(isai ? 0 : fm.getSData().cost);      
+        }
 
         GameSettings.printLog("[GameProgress] Generate obj : " + obj.name + " id : " + (count - 1));
     }
@@ -448,6 +459,9 @@ public class GameProgress : MonoBehaviour
         case SKILL_ENEMY_DEAD:
           skillEnemyDead();
           break;
+        case SKILL_CYCROPS_GENERATE:
+          skillCycropsGenerate();
+          break;
       }
       skillnum = 0;
       //使用回数追加
@@ -478,6 +492,12 @@ public class GameProgress : MonoBehaviour
 
       }
 
+    }
+
+    //サイクロプス召喚ゴブリン専用)
+    public void skillCycropsGenerate(){
+      GameSettings.printLog("[GameProgress] SkillCycropsGenerate");
+      Generate("Cyc",genepos4cyc,false,false);
     }
 
     public bool addSkillCost(int num){
