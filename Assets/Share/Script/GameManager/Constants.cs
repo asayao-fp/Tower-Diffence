@@ -23,6 +23,9 @@ public static class Constants
     public static readonly string GAME_SET_SCNENE = "GameSetScene";
     public static readonly string ONRINE_WAIT_SCENE = "OnlineWait";
 
+     //カスタムメニューのパス名
+    public static readonly string DEBUG_MODE_MENU_PATH = "CustomMenu/DebugMode";
+
     //広告表示変数。何回試合をやったか。
     public static readonly int ADVERTISE_LIMIT = 3;
 
