@@ -22,6 +22,7 @@ MonoBehaviour:
   atkInterval: 0
   cost: 3
   name4Preview: gobrin3
-  maxsetNum: 3
+  maxsetNum: 2
   generateInterval: 5
   attack: 0
+  speed: 0.8
