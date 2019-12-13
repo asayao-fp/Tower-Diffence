@@ -21,11 +21,15 @@ public class GenerateBarManager : MonoBehaviour
     float fill;
     int setnownum; //現在の設置数
     GameProgress gp;
+    GameProgress4Online gp4online;
+    GameSettings gs;
 
     void Start()
     {
         time = 0.0f;
+        gs = GameObject.FindWithTag("StaticObjects").GetComponent<GameSettings>();
         gp = GameObject.FindWithTag("GameManager").GetComponent<GameProgress>();
+        gp4online = GameObject.FindWithTag("GameManager").GetComponent<GameProgress4Online>();
 
         sData = sm.getSData();
 
@@ -57,11 +61,14 @@ public class GenerateBarManager : MonoBehaviour
 
     void Update()
     {
+        
         if (gp.getStatus() != gp.NOW_GAME) return;
         if (!isGenerate) return;
 
-        time += Time.deltaTime;
-        fill = time / generateTime;
+        if(isGenerate){
+            time += Time.deltaTime;
+            fill = time / generateTime;
+        }
 
 
         if (fill >= 1)
@@ -89,6 +96,7 @@ public class GenerateBarManager : MonoBehaviour
     {
         isGenerate = true;
         canGenerate = false;
+        time = 0;
     }
 
     public StatueData getStatus()

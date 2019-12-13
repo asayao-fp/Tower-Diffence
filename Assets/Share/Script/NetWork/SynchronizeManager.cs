@@ -26,6 +26,8 @@ public class SynchronizeManager : MonoBehaviour{
 
     public bool iscdead;
 
+    public InputManager4Online i4online;
+
     void Awake(){
         net_objs = new Dictionary<int,NetObject>();
         net_objs4manager = new Dictionary<int,GameObject>();
@@ -33,6 +35,7 @@ public class SynchronizeManager : MonoBehaviour{
         delete_objs = new int[0];
         ncount = 0;
         gp4Online = GameObject.FindWithTag("GameManager").GetComponent<GameProgress4Online>();
+        i4online = GameObject.FindWithTag("GameManager").GetComponent<InputManager4Online>();
         gs = GameObject.FindWithTag("StaticObjects").GetComponent<GameSettings>();
         pv = GetComponent<PhotonView>(); 
         gstatus = -1;
@@ -113,13 +116,14 @@ public class SynchronizeManager : MonoBehaviour{
           stream.SendNext((string)"" + countdown + "__" + count);
           stream.SendNext((string)"" + gstatus + "__" + count);
           stream.SendNext((string)"" + gametime + "__" + count);
+          stream.SendNext((string)("" + crystalhp + "__" + count));
           stream.SendNext((string)"" + (iscdead ? "true" : "false") + "__" + count);
 
           //召喚
           stream.SendNext((string)"" + net_objs.Count + "__" + count);
           if(net_objs.Count > 0){
               for(int i=0;i<net_objs.Count;i++){
-                  string datastr = "generate_" + net_objs[i].name + "_x_" + net_objs[i].pos.x + "_y_" + net_objs[i].pos.y + "_z_" + net_objs[i].pos.z;
+                  string datastr = "generate_" + net_objs[i].name + "_x_" + net_objs[i].pos.x + "_y_" + net_objs[i].pos.y + "_z_" + net_objs[i].pos.z + "_roottype_" + i4online.roottype;
                   stream.SendNext((string)datastr);
               }
               ncount = 0;
@@ -134,7 +138,8 @@ public class SynchronizeManager : MonoBehaviour{
                   if(pair.Value != null){
                       FacilityManager fm = pair.Value.GetComponent<FacilityManager>();
                       Vector3 p = pair.Value.transform.position;
-                      datastr = "facilitymanager_uniqueid_" + pair.Key + "_hp_" + fm.getHP() + "_x_" + p.x + "_y_" + p.y + "_z_" + p.z;
+                      Vector3 r = pair.Value.transform.rotation.eulerAngles;
+                      datastr = "facilitymanager_uniqueid_" + pair.Key + "_hp_" + fm.getHP() + "_x_" + p.x + "_y_" + p.y + "_z_" + p.z + "_rotx_" + r.x + "_roty_" + r.y + "_rotz_" + r.z;
                   }
                   stream.SendNext((string)datastr);
               }
@@ -163,8 +168,6 @@ public class SynchronizeManager : MonoBehaviour{
           }
 */
 
-          //クリスタルのHP
-          stream.SendNext((string)("" + crystalhp + "__" + count));
 
 
           //スキル発動
@@ -177,7 +180,7 @@ public class SynchronizeManager : MonoBehaviour{
           if(count > 1000000){
               count = 0;
           }
-
+          
       }
       else
       {
@@ -195,6 +198,14 @@ public class SynchronizeManager : MonoBehaviour{
         string time = (string)stream.ReceiveNext();
         time = time.Substring(0,time.IndexOf("__"));
         gp4Online.setTime(float.Parse(time));
+
+        //クリスタルのhp
+        type = (string)stream.ReceiveNext();        
+        type = type.Substring(0,type.IndexOf("__"));
+        if(float.Parse(type) != -1){
+            gp4Online.setCrystalHP(float.Parse(type)); 
+        }
+
         
         //クリスタル死んだか
         type = (string)stream.ReceiveNext();
@@ -215,12 +226,15 @@ public class SynchronizeManager : MonoBehaviour{
                     int diffx = obj.IndexOf("_x_");
                     int diffy = obj.IndexOf("_y_");
                     int diffz = obj.IndexOf("_z_");
+                    int diffroot = obj.IndexOf("_roottype_");
                     string name = obj.Substring(9,diffx - 9);
                     string posx = obj.Substring(diffx+3,diffy - diffx - 3);
                     string posy = obj.Substring(diffy+3,diffz - diffy - 3);
-                    string posz = obj.Substring(diffz+3);
-                    GameSettings.printLog("[SynchronizeManager] name : " + name  + " x : " + float.Parse(posx) + " y : " + float.Parse(posy) +  " z : " + float.Parse(posz));
+                    string posz = obj.Substring(diffz+3,diffroot - diffz - 3);
+                    string root = obj.Substring(diffroot + 10);
+                    GameSettings.printLog("[SynchronizeManager] name : " + name  + " x : " + float.Parse(posx) + " y : " + float.Parse(posy) +  " z : " + float.Parse(posz) +  " roottype : " + root);
                     Vector3 gpos = new Vector3(float.Parse(posx),float.Parse(posy),float.Parse(posz));
+                    gp4Online.setInputRootType(int.Parse(root));
                     gp4Online.Generate(name,gpos,gs.isStatue(),gp4Online.isParent,false);
 
                     //自分が親で、相手から送られてきたものは自分側のSynchronizeManagerでもう一度送り返す
@@ -242,13 +256,19 @@ public class SynchronizeManager : MonoBehaviour{
                     int diffx = receivestr.IndexOf("_x_");
                     int diffy = receivestr.IndexOf("_y_");
                     int diffz = receivestr.IndexOf("_z_");
+                    int diffrx = receivestr.IndexOf("_rotx_");
+                    int diffry = receivestr.IndexOf("_roty_");
+                    int diffrz = receivestr.IndexOf("_rotz_");
                     int unique_id = int.Parse(receivestr.Substring(25,diffhp - 25));
                     float hp = float.Parse(receivestr.Substring(diffhp + 4,diffx - diffhp - 4));
                     float x = float.Parse(receivestr.Substring(diffx + 3,diffy - diffx - 3));
                     float y = float.Parse(receivestr.Substring(diffy + 3,diffz - diffy - 3));
-                    float z = float.Parse(receivestr.Substring(diffz + 3));
+                    float z = float.Parse(receivestr.Substring(diffz + 3,diffrx - diffz - 3));
+                    float rx = float.Parse(receivestr.Substring(diffrx + 6,diffry - diffrx - 6));
+                    float ry = float.Parse(receivestr.Substring(diffry + 6,diffrz - diffry - 6));
+                    float rz = float.Parse(receivestr.Substring(diffrz + 6));
 
-                    gp4Online.synchronizePosHP(unique_id,hp,x,y,z);
+                    gp4Online.synchronizePosHP(unique_id,hp,x,y,z,rx,ry,rz);
                 }
             }
         }
@@ -265,12 +285,6 @@ public class SynchronizeManager : MonoBehaviour{
             }
         }
 
-        //クリスタルのhp
-        type = (string)stream.ReceiveNext();        
-        type = type.Substring(0,type.IndexOf("__"));
-        if(float.Parse(type) != -1){
-            gp4Online.setCrystalHP(float.Parse(type));  
-        }
 
         //スキル発動
         type = (string)stream.ReceiveNext();
@@ -283,7 +297,6 @@ public class SynchronizeManager : MonoBehaviour{
             }
         }
 
-        //子がスキルを発動できるようにする
         //addHP(できたら）
       }
     }

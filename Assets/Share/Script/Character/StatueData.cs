@@ -19,4 +19,5 @@ public class StatueData : ScriptableObject
    public int maxsetNum; //最大設置可能数
    public int generateInterval; //次に召喚できるまでの時間
    public int attack; //攻撃力
+   public float speed; //歩行速度(ゴブリン）
 }

@@ -186,7 +186,7 @@ public class InputManager4Online : InputManager
       if(select_num > -1){
         gbm = tgls[select_num].GetComponent<GenerateBarManager>();
         nowStatue = gbm.getStatus(); //現在のfacilityのStatueDataを取得
-        if(!gbm.checkSet()) gbm = null; //単体の設置可能数が超えていないか
+        if(!gbm.checkSet() || !gbm.getGenerate()) gbm = null; //単体の設置可能数が超えていないか
 
       }
       //全体の設置可能数ok && Facility選択されてる && 選択したFacilityの設置可能数ok && コスト足りてる
@@ -361,8 +361,8 @@ public class InputManager4Online : InputManager
               isin = true;
               if(!gs.isStatue()){
                   //ここがindex out bounds
-                roottype = 1;
-//                roottype = (int)nowStage.enablelist[j][5];
+                //roottype = 1;
+                roottype = (int)nowStage.enablelist[j][5];
               }
             }
           }

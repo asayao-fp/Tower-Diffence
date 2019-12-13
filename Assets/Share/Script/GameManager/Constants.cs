@@ -21,6 +21,7 @@ public static class Constants
     public static readonly string CONNECT_ROOM_SCNENE = "ConnectRoomScene";
     public static readonly string STAGE_SELECT_SCNENE = "StageSelectScene";
     public static readonly string GAME_SET_SCNENE = "GameSetScene";
+    public static readonly string ONRINE_WAIT_SCENE = "OnlineWait";
 
     //広告表示変数。何回試合をやったか。
     public static readonly int ADVERTISE_LIMIT = 3;

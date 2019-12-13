@@ -236,8 +236,7 @@ public class InputManager : MonoBehaviour
       if(select_num > -1){
         gbm = tgls[select_num].GetComponent<GenerateBarManager>();
         nowStatue = gbm.getStatus(); //現在のfacilityのStatueDataを取得
-        if(!gbm.checkSet()) gbm = null; //単体の設置可能数が超えていないか
-
+        if(!gbm.checkSet() || !gbm.getGenerate()) gbm = null; //単体の設置可能数が超えていないか
       }
       //全体の設置可能数ok && Facility選択されてる && 選択したFacilityの設置可能数ok && コスト足りてる
       if(canObjSet() && (!FacilityName.Equals("")) && (gbm != null) && (hasCost(nowStatue.cost))){

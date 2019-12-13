@@ -60,9 +60,9 @@ public class GameProgress : MonoBehaviour
     protected bool gameset; 
 
     [SerializeField]
-    private int roottype4cyc; //サイクロプス用ルートタイプ
+    protected int roottype4cyc; //サイクロプス用ルートタイプ
     [SerializeField]
-    private Vector3 genepos4cyc; //サイクロプス用召喚ポジション
+    protected Vector3 genepos4cyc; //サイクロプス用召喚ポジション
 
     void Awake(){
       game_status = 0;

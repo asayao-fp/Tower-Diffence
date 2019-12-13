@@ -34,10 +34,14 @@ public class GameProgress4Online : GameProgress
       gs = stobj.GetComponent<GameSettings>();
 
       //とりあえず親がスタチューで
+      //スタチューのスキルは敵全削除
+      //ゴブリンはサイクロプス召喚
       if(isParent){
         gs.setStatue(true);
+        gs.setSkillType(SKILL_ENEMY_DEAD);
       }else{
         gs.setStatue(false);
+        gs.setSkillType(SKILL_CYCROPS_GENERATE);
       }
 
       GameObject gameui = null;
@@ -91,7 +95,7 @@ public class GameProgress4Online : GameProgress
 
       GetComponent<InputManager4Online>().init(); //ビルドしたやつでやるとエラーが起きる
       
-      Debug.Log("limit : " + limit + " : " + game_time);
+      //Debug.Log("limit : " + limit + " : " + game_time);
     }
 
     public void setCDown(string text){
@@ -102,7 +106,6 @@ public class GameProgress4Online : GameProgress
       if(isParent)return;
       game_time = (int)time;
       limittime.text = "" + (int)time;
-
     }
 
     public void setStatus(int type){
@@ -112,7 +115,6 @@ public class GameProgress4Online : GameProgress
     }
     void Update()
     {      
-
 
       if(game_status == AFTER_GAME && !gameset){
           StartCoroutine("GameSet",1);
@@ -178,9 +180,17 @@ public class GameProgress4Online : GameProgress
       synObj.GetComponent<SynchronizeManager>().SetCountDown(starttime.text);
       synObj.GetComponent<SynchronizeManager>().setCrystalDead(crystaldead);
 
+      if(crystalObj != null){
+        synObj.GetComponent<SynchronizeManager>().Set4CrystalHP(crystalObj.GetComponent<CrystalManager>().getHP());
+      }
    }
 
     public void checkObjs(){
+
+      if(sg_objs == null){
+        sg_objs = new Dictionary<int,GameObject>();
+      }
+
       int[] isdelete = new int[sg_objs.Count()];
       int count = 0;
       bool delete = false;
@@ -210,7 +220,6 @@ public class GameProgress4Online : GameProgress
           if(crystalObj == null){
             crystalObj = GameObject.Find("crystal");
           }
-          synObj.GetComponent<SynchronizeManager>().Set4CrystalHP(crystalObj.GetComponent<CrystalManager>().getHP());
           if(crystalObj.GetComponent<CrystalManager>().getHP() <= 0){
             crystalObj.GetComponent<CrystalManager>().Dead();
             crystaldead = true;
@@ -257,9 +266,11 @@ public class GameProgress4Online : GameProgress
     }
 
     public void setCrystalHP(float hp){
-      if(crystalObj != null){
-        crystalObj.GetComponent<CrystalManager>().setHP(hp);
+      if(crystalObj == null){
+        crystalObj = GameObject.Find("crystal");
+
       }
+      crystalObj.GetComponent<CrystalManager>().setHP(hp);
     }
      
     //全てのFacilityを取得
@@ -310,14 +321,18 @@ public class GameProgress4Online : GameProgress
       if(isParent)return;
       crystaldead = iscdead;
     }
-    public void synchronizePosHP(int unique_id,float hp,float x,float y,float z){
+    public void synchronizePosHP(int unique_id,float hp,float x,float y,float z,float rx,float ry,float rz){
       FacilityManager fm = sg_objs[unique_id].GetComponent<FacilityManager>();
       fm.setHP(hp);
-      sg_objs[unique_id].gameObject.transform.position.Set(x,y,z);
-
-      GameSettings.printLog("[GameProgress4Online] SETHP id : " + unique_id + " hp : " + fm.getHP() + " x : " + x + " y : " + y + " z : " + z);
+      sg_objs[unique_id].gameObject.transform.position = new Vector3(x,y,z);
+      sg_objs[unique_id].gameObject.transform.rotation = Quaternion.Euler(rx,ry,rz);
+      GameSettings.printLog("[GameProgress4Online] SETHP id : " + unique_id + " hp : " + fm.getHP() + " x : " + x + " y : " + y + " z : " + z + " rx : " + rx + " ry : " + ry + " rz : " + rz);
     }
 
+    public void setInputRootType(int rt){
+      if(!gs.isStatue())return;
+      GetComponent<InputManager4Online>().roottype = rt;
+    }
     public void TempGenerate(String name,Vector3 pos,bool isstatue,bool isparent){
 
       //親じゃなければsynObjに追加するだけ
@@ -333,6 +348,13 @@ public class GameProgress4Online : GameProgress
         obj.name = name;
         FacilityManager fm = obj.GetComponent<FacilityManager>();
 
+        bool iscyc = name.Equals("Cyc");
+        if(iscyc){
+          ((GobrinManager)fm).setRoot(roottype4cyc);
+        }else if(name.StartsWith("gob")){
+          ((GobrinManager)fm).setRoot(GetComponent<InputManager4Online>().roottype);
+        }
+
         fm.setAddStatus(gs.getStatus(name));
         fm.setNum(true);
         fm.setId(count);        
@@ -341,11 +363,10 @@ public class GameProgress4Online : GameProgress
 
         sg_objs.Add(count++,obj);
 
-        
-        if(isparent && ismaster){
-          gcm.generateCost(fm.getSData().cost);
-        }else if(!isparent && !ismaster){
-          gcm.generateCost(fm.getSData().cost);
+        if(!name.Equals("Cyc")){
+          if((fm.isStatue && gs.isStatue()) || (!fm.isStatue && !gs.isStatue())){
+              gcm.generateCost(fm.getSData().cost);
+          }
         }
 
         GameSettings.printLog("[GameProgress] Generate obj : " + obj.name + " id : " + (count - 1));
@@ -384,6 +405,9 @@ public class GameProgress4Online : GameProgress
     //攻撃受けた
     public void AddHP(int obj_id,int hp,Boolean isDebug){
 
+      if(!isParent){
+        return;
+      }
       FacilityManager fm = null;
 
       fm = sg_objs[obj_id].GetComponent<FacilityManager>();
@@ -401,9 +425,11 @@ public class GameProgress4Online : GameProgress
       {
         if(child.gameObject.tag.StartsWith("Type_")){
           int value = int.Parse(child.gameObject.tag.Substring(5));
+          int gv = int.Parse(child.gameObject.name.Substring(6)); //ゴブリンのルート結びつけるよう
+
           Vector3 pos = child.position;
           Vector3 scale = child.localScale;
-          float [] sinfo = new float[5];
+          float [] sinfo = new float[6];
           sinfo[0] = pos.x - scale.x/2.0f;//xの開始座標
           sinfo[1] = pos.x + scale.x/2.0f;//xの終了座標
           sinfo[2] = pos.z - scale.z/2.0f;//zの開始座標
@@ -411,6 +437,7 @@ public class GameProgress4Online : GameProgress
           sinfo[4] = value;               //座標の値
           sinfo[0] = sinfo[0] < 0 ? 0 : sinfo[0];
           sinfo[2] = sinfo[2] < 0 ? 0 : sinfo[2];
+          sinfo[5] = gv;
           
           s.enablelist.Add(sinfo);
           
@@ -488,6 +515,8 @@ public class GameProgress4Online : GameProgress
     }
 
     public void Skill(int skilltype,bool isParent){
+      
+
       switch(skilltype){
         case SKILL_RECOVERY:
           skillRecover(isParent);
@@ -496,7 +525,8 @@ public class GameProgress4Online : GameProgress
           skillEnemyDead(isParent);
           break;
         case SKILL_CYCROPS_GENERATE:
-
+          skillCycropsGenerate();
+          break;
       }
 
     }
@@ -504,7 +534,7 @@ public class GameProgress4Online : GameProgress
     //サイクロプス召喚(ゴブリン用)
     public void skillCycropsGenerate(){
       GameSettings.printLog("[GameProgress4Online] SkillCycropsGenerate");
-      
+      TempGenerate("Cyc",genepos4cyc,false,true);
     }
     //自分のFacility全回復
     public void skillRecover(bool isParent){
@@ -519,10 +549,11 @@ public class GameProgress4Online : GameProgress
 
     //敵全滅
     public void skillEnemyDead(bool isParent){
-      GameSettings.printLog("[GameProgress4Online] SkillEnemyDead");
-      GameObject[] objs = getObjs(isParent);
+      GameSettings.printLog("[GameProgress4Online] SkillEnemyDead " + isParent);
+      GameObject[] objs = getObjs(!isParent);
 
       for(int i=0;i<objs.Length;i++){
+        Debug.Log("skill enemy : " + objs[i].gameObject.name);
         FacilityManager fm = objs[i].GetComponent<FacilityManager>();
         fm.addHP(-100000);
 

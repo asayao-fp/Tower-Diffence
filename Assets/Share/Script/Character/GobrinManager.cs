@@ -14,7 +14,7 @@ public class GobrinManager : FacilityManager
     private int lineNum = 0;
 
     Vector3 target;
-    public float speed = 2.0f;
+    private float speed = 2.0f;
 
     [SerializeField]
     private int nextPoint = 0;
@@ -25,6 +25,9 @@ public class GobrinManager : FacilityManager
     private Collider myEnemy = null;
 
     private string ANIMATION_NAME = "state";
+
+    private GameSettings gs;
+    private GameProgress4Online gp4Online;
 
     void Awake()
     {
@@ -40,6 +43,12 @@ public class GobrinManager : FacilityManager
         isStatue = false;
         base.initMaterial(GameObject.Find("StaticManager").GetComponent<GameSettings>().getMaterial());
         isEnd = true;
+
+        speed = statue.speed;
+        gs = GameObject.FindWithTag("StaticObjects").GetComponent<GameSettings>();
+        if(gs.getOnlineType()){
+            gp4Online = GameObject.FindWithTag("GameManager").GetComponent<GameProgress4Online>();
+        }
     }
 
     void Update()
@@ -72,6 +81,11 @@ public class GobrinManager : FacilityManager
     }
     public void Walk()
     {
+
+        if(gs.getOnlineType() && !gp4Online.isParent){
+            //通信対戦で子だったら無視 
+            return;
+        }
         if(this.line[lineNum].List.Count  == nextPoint){
             //ゴール到達したら歩かない
             return;

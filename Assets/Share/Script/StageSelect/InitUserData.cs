@@ -36,7 +36,8 @@ public class InitUserData : MonoBehaviour
         snm = GetComponent<SkillNumManager>();
         gs.setStatus(snm.getAllStatus());
 //        SceneManager.LoadScene("OnlineWait");
-         SceneManager.LoadScene(Constants.CONNECT_ROOM_SCNENE);
+//         SceneManager.LoadScene(Constants.CONNECT_ROOM_SCNENE);
+         SceneManager.LoadScene(Constants.ONRINE_WAIT_SCENE);
     }
 
 }

@@ -26,8 +26,13 @@ public class CrystalManager : MonoBehaviour
 
     private float time;
 
+    private GameSettings gs;
+
     void Start()
     {
+        GameObject stobj = GameObject.FindWithTag("StaticObjects");
+        gs = stobj.GetComponent<GameSettings>();
+
         nowHP = hp;
         gp = GameObject.FindWithTag("GameManager").GetComponent<GameProgress>();
         time = 0.0f;
@@ -48,6 +53,7 @@ public class CrystalManager : MonoBehaviour
         if (gp.getStatus() != gp.NOW_GAME) return;
 
         //time += Time.deltaTime;
+        if(gs.getOnlineType() && !((GameProgress4Online)gp).isParent)return;
 
         hpbar.fillAmount = ((float)nowHP / (float)hp);
 
@@ -78,11 +84,14 @@ public class CrystalManager : MonoBehaviour
 
     public void AddHP(int hp)
     {
+        if(gs.getOnlineType() && !((GameProgress4Online)gp).isParent){
+          return;
+        }
         this.nowHP -= hp;
     }
 
     public void setHP(float hp){
-        this.nowHP = (int)hp;
+        hpbar.fillAmount = hp;
     }
     public float getHP()
     {
