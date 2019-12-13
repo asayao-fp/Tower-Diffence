@@ -6,6 +6,7 @@ using UnityEngine.Advertisements;
 
 public class TapToNextScene : MonoBehaviour
 {
+    public GameObject destroyObject = null;
     // Start is called before the first frame update
     void Start()
     {
@@ -17,6 +18,7 @@ public class TapToNextScene : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
+            Destroy(destroyObject);
             SceneManager.LoadScene(Constants.LOGIN_SCNENE);
         }
     }
