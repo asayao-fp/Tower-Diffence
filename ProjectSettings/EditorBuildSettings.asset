@@ -35,4 +35,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/hirata/Scenes/StageSelectScene.unity
     guid: daf1307ddb596914ba4332dcca2714bc
+  - enabled: 1
+    path: Assets/takuma/Scene/TestScene.unity
+    guid: 29205e47c944c0d46907eb4b18afeeb2
+  - enabled: 1
+    path: Assets/takuma/Scene/OnlineWait.unity
+    guid: 2a34eb7a7dbb84756814e18831ed55f5
   m_configObjects: {}
