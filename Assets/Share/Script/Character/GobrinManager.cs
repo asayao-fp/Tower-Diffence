@@ -8,7 +8,7 @@ public class GobrinManager : FacilityManager
     [SerializeField]
     private List<StageCostManager.lineList> line = new List<StageCostManager.lineList>();
     StageCostManager scm;
-    Animator animator;
+    public Animator animator;
 
     [SerializeField]
     private int lineNum = 0;
@@ -28,6 +28,10 @@ public class GobrinManager : FacilityManager
 
     private GameSettings gs;
     private GameProgress4Online gp4Online;
+
+    protected float atkInterval; //攻撃間隔用
+
+    public int animationType = -1;
 
     void Awake()
     {
@@ -68,6 +72,21 @@ public class GobrinManager : FacilityManager
         //敵が攻撃範囲に内にいる場合は移動しない
         if (isInEnemy)
         {
+            if(gs.getOnlineType() && !gp4Online.isParent){
+                //通信対戦で子だったら無視 
+                return;
+            }
+
+            float t = Time.deltaTime;
+            atkInterval += t;
+            if((myEnemy != null) && (atkInterval >= statue.atkInterval)){
+                animator.SetInteger(ANIMATION_NAME, 2);
+                atkInterval = 0;
+                animationType = 2;
+            }else if((myEnemy != null) && (atkInterval < statue.atkInterval)){
+                animator.SetInteger(ANIMATION_NAME, 1);
+                animationType = 1;
+            }
             return;
         }
 
@@ -159,7 +178,8 @@ public class GobrinManager : FacilityManager
         if(collider.gameObject.name.Equals("crystal")){
             isInEnemy = true;
             myEnemy = collider;
-            animator.SetInteger(ANIMATION_NAME, 2);
+
+            
             //Debug.Log(collider.gameObject.name + "が攻撃範囲に入った。");
         }
     }
@@ -168,6 +188,7 @@ public class GobrinManager : FacilityManager
     {
         isInEnemy = false;
         animator.SetInteger(ANIMATION_NAME, 1);
+        atkInterval = 0;
         //Debug.Log("攻撃範囲からいなくなった。");
     }
 

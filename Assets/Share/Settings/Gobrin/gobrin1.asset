@@ -19,10 +19,10 @@ MonoBehaviour:
   settype: 03000000
   hp: 15
   time: 0
-  atkInterval: 0
+  atkInterval: 2
   cost: 5
   name4Preview: gobrin1
   maxsetNum: 1
   generateInterval: 5
   attack: 0
-  speed: 1.2
+  speed: 2

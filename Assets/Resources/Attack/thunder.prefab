@@ -4824,6 +4824,7 @@ GameObject:
   - component: {fileID: 5173807827238431030}
   - component: {fileID: 4416690436186635719}
   - component: {fileID: 7617581421837459968}
+  - component: {fileID: 5488192485313918549}
   m_Layer: 0
   m_Name: thunder
   m_TagString: Untagged
@@ -4856,7 +4857,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.5, y: 1, z: 1.5}
+  m_Size: {x: 2, y: 1, z: 2}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &4416690436186635719
 Rigidbody:
@@ -4893,6 +4894,22 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &5488192485313918549
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3673681297278333360}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe95e4de76567463ab75344e6a8e0bab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _visualizerColor: 0
+  mes: 
+  fSize: 36
+  obj: {fileID: 3673681297278333360}
 --- !u!1 &3932682473488139706
 GameObject:
   m_ObjectHideFlags: 0
@@ -24187,7 +24204,6 @@ MonoBehaviour:
   atkObj: {fileID: 7369497913864871514}
   atkCollider: {fileID: 3673681297278333360}
   attacktype: 3
-  attack: 3
   rootobj: {fileID: 7369497913864871514}
 --- !u!1 &7369497914721858516
 GameObject:

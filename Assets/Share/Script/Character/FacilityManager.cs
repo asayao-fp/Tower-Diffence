@@ -213,7 +213,7 @@ public abstract class FacilityManager : MonoBehaviour
     public string atkCheckName;
 
     /* 攻撃中かどうかのフラグ */
-    protected bool isAttacking; 
+    public bool isAttacking; 
 
     /* 召喚数管理用 */
     protected GenerateBarManager gbm;

@@ -19,7 +19,11 @@ public class GameSettings : MonoBehaviour
 
     //制限時間
     [SerializeField]
-    private  int limitTime;
+    private int limitTime4gobrin = 120;
+    [SerializeField]
+    private int limitTime4statue = 60;
+    [SerializeField]
+    private int limitTime4online = 120;
 
     //召喚コストの上限
     [SerializeField]
@@ -35,6 +39,8 @@ public class GameSettings : MonoBehaviour
     private int skillType; //必殺技のタイプ
 
     private bool isOnline; //オンライン対戦かどうか
+
+    public bool showVisualizer;
 
     //現在の広告表示カウント
     private int advertiseCount = 0;
@@ -63,9 +69,20 @@ public class GameSettings : MonoBehaviour
         isLog = log;
     }
 
-
-    public int getLimitTime(){
-        return limitTime;
+    
+    public int getLimitTime(int type){
+        switch(type){
+            case 0:
+                return limitTime4statue;
+                break;
+            case 1:
+                return limitTime4gobrin;
+                break;
+            case 2:
+                return limitTime4online;
+                break;
+        }
+        return limitTime4gobrin;
     }
 
     public int getMaxCost(){

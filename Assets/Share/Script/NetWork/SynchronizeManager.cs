@@ -7,11 +7,15 @@ public class SynchronizeManager : MonoBehaviour{
       public string name;
       public Vector3 pos;
     }
+    public class AttackObj{
+        public int unique_id;
+        public int attacktype;
+    }
   
     public Dictionary<int,NetObject> net_objs;
     public Dictionary<int,GameObject> net_objs4manager;
     public Dictionary<int,int> net_addHpmanager;
-
+    public Dictionary<int,AttackObj> net_attackManager;
     public int[] delete_objs;
     public int ncount; //上のnet_objsの数と合わせる
     public GameProgress4Online gp4Online;
@@ -27,13 +31,17 @@ public class SynchronizeManager : MonoBehaviour{
     public bool iscdead;
 
     public InputManager4Online i4online;
+    public int acount;
+     
 
     void Awake(){
         net_objs = new Dictionary<int,NetObject>();
         net_objs4manager = new Dictionary<int,GameObject>();
         net_addHpmanager = new Dictionary<int,int>();
+        net_attackManager = new Dictionary<int,AttackObj>();
         delete_objs = new int[0];
         ncount = 0;
+        acount = 0;
         gp4Online = GameObject.FindWithTag("GameManager").GetComponent<GameProgress4Online>();
         i4online = GameObject.FindWithTag("GameManager").GetComponent<InputManager4Online>();
         gs = GameObject.FindWithTag("StaticObjects").GetComponent<GameSettings>();
@@ -64,6 +72,7 @@ public class SynchronizeManager : MonoBehaviour{
     public void Set4Manager(Dictionary<int,GameObject> objs){
         net_objs4manager = new Dictionary<int, GameObject>(objs);
     }
+    
 
     public void Set4DeadObj(int[] deleteobjs){
         delete_objs = deleteobjs;
@@ -83,6 +92,13 @@ public class SynchronizeManager : MonoBehaviour{
         no.pos = pos;
         net_objs.Add(ncount++,no);
 
+    }
+
+    public void SetAttack(int unique_id,int type){
+        AttackObj ao = new AttackObj();
+        ao.unique_id = unique_id;
+        ao.attacktype = type;
+        net_attackManager.Add(acount++,ao);
     }
 
     public void SetGameStatus(int status){
@@ -129,6 +145,17 @@ public class SynchronizeManager : MonoBehaviour{
               ncount = 0;
               net_objs.Clear();
           }
+
+          //攻撃マネージャー
+          stream.SendNext((string)"" + net_attackManager.Count + "__" + count);
+          if(net_attackManager.Count > 0){
+              for(int i=0;i<net_attackManager.Count;i++){
+                  string datastr = "fmattack_" + net_attackManager[i].unique_id + "_attack_" + net_attackManager[i].attacktype;
+                  stream.SendNext((string)datastr);
+              }
+              acount = 0;
+              net_attackManager.Clear();
+          }
           
           //facilityのHP、位置同期
           stream.SendNext((string)("" + net_objs4manager.Count + "__" + count));
@@ -137,9 +164,15 @@ public class SynchronizeManager : MonoBehaviour{
                   string datastr = "notexit__" + count;
                   if(pair.Value != null){
                       FacilityManager fm = pair.Value.GetComponent<FacilityManager>();
+                      int attack = fm.isAttacking ? 1 : 0;
+                      if(attack == 1){
+                          gp4Online.setAttackFlag(pair.Key,false);
+                      }
+                      string fmstr = fm.isStatue ? "statue_" + attack : "gobrin_" + ((GobrinManager)fm).animator.GetInteger("state");
+                    
                       Vector3 p = pair.Value.transform.position;
                       Vector3 r = pair.Value.transform.rotation.eulerAngles;
-                      datastr = "facilitymanager_uniqueid_" + pair.Key + "_hp_" + fm.getHP() + "_x_" + p.x + "_y_" + p.y + "_z_" + p.z + "_rotx_" + r.x + "_roty_" + r.y + "_rotz_" + r.z;
+                      datastr = "facilitymanager_uniqueid_" + pair.Key + "_hp_" + fm.getHP() + "_x_" + p.x + "_y_" + p.y + "_z_" + p.z + "_rotx_" + r.x + "_roty_" + r.y + "_rotz_" + r.z + "_fm_" + fmstr;
                   }
                   stream.SendNext((string)datastr);
               }
@@ -245,6 +278,23 @@ public class SynchronizeManager : MonoBehaviour{
             }
         }
 
+        type = (string)stream.ReceiveNext();
+        type = type.Substring(0,type.IndexOf("__"));
+
+        if(int.Parse(type) > 0){
+            for(int i=0;i<int.Parse(type);i++){
+                string obj = (string)stream.ReceiveNext();
+                //攻撃
+                if(obj.StartsWith("fmattack_")){
+                    int diffat = obj.IndexOf("_attack_");
+                    string unique = obj.Substring(9,diffat - 9);
+                    string atype = obj.Substring(diffat + 8);
+                    gp4Online.synchronizeAttack(int.Parse(unique),int.Parse(atype));
+                    GameSettings.printLog("[SynchronizeManager] unique_id : " + unique + " attacktype : " + atype);
+                }
+            }
+        }
+
         //HP管理
         type = (string)stream.ReceiveNext();
         type = type.Substring(0,type.IndexOf("__"));
@@ -259,6 +309,7 @@ public class SynchronizeManager : MonoBehaviour{
                     int diffrx = receivestr.IndexOf("_rotx_");
                     int diffry = receivestr.IndexOf("_roty_");
                     int diffrz = receivestr.IndexOf("_rotz_");
+                    int difffm = receivestr.IndexOf("_fm_");
                     int unique_id = int.Parse(receivestr.Substring(25,diffhp - 25));
                     float hp = float.Parse(receivestr.Substring(diffhp + 4,diffx - diffhp - 4));
                     float x = float.Parse(receivestr.Substring(diffx + 3,diffy - diffx - 3));
@@ -266,9 +317,9 @@ public class SynchronizeManager : MonoBehaviour{
                     float z = float.Parse(receivestr.Substring(diffz + 3,diffrx - diffz - 3));
                     float rx = float.Parse(receivestr.Substring(diffrx + 6,diffry - diffrx - 6));
                     float ry = float.Parse(receivestr.Substring(diffry + 6,diffrz - diffry - 6));
-                    float rz = float.Parse(receivestr.Substring(diffrz + 6));
-
-                    gp4Online.synchronizePosHP(unique_id,hp,x,y,z,rx,ry,rz);
+                    float rz = float.Parse(receivestr.Substring(diffrz + 6,difffm - diffrz - 6));
+                    string fms = receivestr.Substring(difffm + 4);
+                    gp4Online.synchronizePosHP(unique_id,hp,x,y,z,rx,ry,rz,fms);
                 }
             }
         }

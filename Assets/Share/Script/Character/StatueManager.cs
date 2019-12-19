@@ -10,17 +10,31 @@ public class StatueManager : FacilityManager
     protected float atkInterval; //攻撃間隔用
     protected List<GameObject> enemylist; //攻撃範囲内にいる敵のリスト
     protected GameObject targetEnemy; //ターゲットしてる敵オブジェクト
-
+    private GameSettings gs;
+    private GameProgress4Online gp4Online;
     void Awake()
     {
         isStatue = true;
         base.initMaterial(GameObject.Find("StaticManager").GetComponent<GameSettings>().getMaterial());
         isEnd = true;
 
+        gs = GameObject.FindWithTag("StaticObjects").GetComponent<GameSettings>();
+        if(gs.getOnlineType()){
+            gp4Online = GameObject.FindWithTag("GameManager").GetComponent<GameProgress4Online>();
+        }
+
+        isAttacking = false;
+
     }
 
     void Update()
     {
+
+        if(gs.getOnlineType() && !gp4Online.isParent){
+            //通信対戦で子だったら無視 
+            return;
+        }
+
         if (base.check())
         {
             return;
@@ -89,10 +103,15 @@ public class StatueManager : FacilityManager
     
     //攻撃の種類によって出現位置とかを変える
     public override void Attack(){
+        if(gs.getOnlineType() && !gp4Online.isParent){
+            checkEnemy();
+        }
+        
         if (targetEnemy == null)
         {
             return;
         }
+
         isAttacking = true;
         GameObject atkobj = Instantiate(atkEffect,transform.position,Quaternion.identity) as GameObject;
         atkobj.GetComponent<AttackManager>().init(statue.attack);
@@ -120,7 +139,7 @@ public class StatueManager : FacilityManager
     public override void checkEnemy()
     {
         targetEnemy = null;
-        GameObject[] objs = gp.getObjs();
+        GameObject[] objs = gs.getOnlineType() ? gp4Online.getObjs() : gp.getObjs();
         for(int i=0;i<objs.Length;i++){
             if(objs[i] == null) continue;
             if(!objs[i].tag.Equals("Statue")){

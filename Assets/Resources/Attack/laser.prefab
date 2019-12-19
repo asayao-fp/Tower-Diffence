@@ -4801,6 +4801,7 @@ GameObject:
   - component: {fileID: 2515609120647302357}
   - component: {fileID: 3832137982754123716}
   - component: {fileID: 7659074129821888460}
+  - component: {fileID: 727121134774890485}
   m_Layer: 2
   m_Name: laser
   m_TagString: Untagged
@@ -4816,8 +4817,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3331099740833431577}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 8}
-  m_LocalScale: {x: 0.8, y: 0.8, z: 4.5}
+  m_LocalPosition: {x: 0, y: 0, z: 4}
+  m_LocalScale: {x: 0.8, y: 0.8, z: 2}
   m_Children: []
   m_Father: {fileID: 5800568749587686079}
   m_RootOrder: 2
@@ -4870,6 +4871,22 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &727121134774890485
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3331099740833431577}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe95e4de76567463ab75344e6a8e0bab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _visualizerColor: 0
+  mes: 
+  fSize: 36
+  obj: {fileID: 3331099740833431577}
 --- !u!1 &5800568749587686078
 GameObject:
   m_ObjectHideFlags: 0
@@ -9706,7 +9723,6 @@ MonoBehaviour:
   atkObj: {fileID: 5800568749587686078}
   atkCollider: {fileID: 3331099740833431577}
   attacktype: 2
-  attack: 3
   rootobj: {fileID: 5800568749587686078}
 --- !u!1 &5800568750638900304
 GameObject:

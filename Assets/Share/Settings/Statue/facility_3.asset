@@ -24,4 +24,5 @@ MonoBehaviour:
   name4Preview: Statue3
   maxsetNum: 2
   generateInterval: 3
-  attack: 5
+  attack: 8
+  speed: 0

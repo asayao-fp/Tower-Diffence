@@ -94,7 +94,7 @@ public class GameProgress : MonoBehaviour
       }
       count = 0;
       limittime = GameObject.FindWithTag("LimitTime").GetComponent<TextMeshProUGUI>();
-      limit = gs.getLimitTime();
+      limit = gs.getLimitTime(gs.isStatue() ? 0 : 1);
       game_time = limit;
       limittime.text = "" + (int)game_time;
       starttime = GameObject.FindWithTag("StartTime").GetComponent<TextMeshProUGUI>();
@@ -310,7 +310,7 @@ public class GameProgress : MonoBehaviour
           ((GobrinManager)fm).setRoot(roottype);
         }
 
-        fm.setAddStatus(gs.getStatus(name));        
+        //fm.setAddStatus(gs.getStatus(name));        
         fm.setId(count);
         fm.Generate(pos,fm.getSData(),isai);
         fm.setNum(true);
@@ -321,7 +321,7 @@ public class GameProgress : MonoBehaviour
           gcm.generateCost(isai ? 0 : fm.getSData().cost);      
         }
 
-        GameSettings.printLog("[GameProgress] Generate obj : " + obj.name + " id : " + (count - 1));
+        GameSettings.printLog("[GameProgress] Generate obj : " + obj.name + " id : " + (count - 1) + " posx : " + pos.x + " posy : " + pos.y + " posz : " + pos.z);
     }
 
     //ダメージ計算
