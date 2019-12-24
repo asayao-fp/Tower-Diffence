@@ -309,7 +309,7 @@ MeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 6b5883f941c7140b5816be2a96b0e825, type: 2}
+  - {fileID: 2100000, guid: 19ee4e8a30f97c042bfbdba9e8c909e6, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -432,6 +432,7 @@ MonoBehaviour:
   FieldName: magicfield0
   deadName: dead0
   atkCheckName: AtkCheck
+  isAttacking: 0
 --- !u!65 &5938320502414432631
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -545,6 +546,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 9221345088049995439}
     m_Modifications:
+    - target: {fileID: 7933497747187121115, guid: f3b71722370df44fd9fe565c3d1145fd,
+        type: 3}
+      propertyPath: m_Name
+      value: Canvas
+      objectReference: {fileID: 0}
     - target: {fileID: 881726077048277325, guid: f3b71722370df44fd9fe565c3d1145fd,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -649,11 +655,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7933497747187121115, guid: f3b71722370df44fd9fe565c3d1145fd,
-        type: 3}
-      propertyPath: m_Name
-      value: Canvas
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f3b71722370df44fd9fe565c3d1145fd, type: 3}

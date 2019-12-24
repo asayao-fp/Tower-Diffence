@@ -733,7 +733,7 @@ GameObject:
   - component: {fileID: 6685711261998482404}
   - component: {fileID: 3617960660890024350}
   m_Layer: 0
-  m_Name: gobrin_1
+  m_Name: gobrin_3
   m_TagString: Goblin
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -814,15 +814,19 @@ MonoBehaviour:
   viewModels: []
   isDebug: 0
   hpbar: {fileID: 7334528859033698952}
-  hiteffect: {fileID: 0}
+  hiteffect: {fileID: 9040233775155407038, guid: bbb03da3e63b34953889ab1bdb78b4fc,
+    type: 3}
   atkName: 
-  generateName: 
+  generateName: generate5
   FieldName: 
   deadName: 
   atkCheckName: 
+  isAttacking: 0
   line: []
+  animator: {fileID: 0}
   lineNum: 0
   nextPoint: 0
+  animationType: -1
 --- !u!54 &3617960660890024350
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1728,6 +1732,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6436591837126731349}
     m_Modifications:
+    - target: {fileID: 6011978693777545046, guid: b64e67511b5ff9a4ba62e4abc781ad84,
+        type: 3}
+      propertyPath: m_Name
+      value: Canvas
+      objectReference: {fileID: 0}
     - target: {fileID: 6011978693777545041, guid: b64e67511b5ff9a4ba62e4abc781ad84,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1832,11 +1841,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6011978693777545046, guid: b64e67511b5ff9a4ba62e4abc781ad84,
-        type: 3}
-      propertyPath: m_Name
-      value: Canvas
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b64e67511b5ff9a4ba62e4abc781ad84, type: 3}

@@ -348,7 +348,7 @@ public class GameProgress4Online : GameProgress
         ((StatueManager)fm).Attack();
       }else{
         //gobrin
-        ((GobrinManager)fm).animator.SetInteger("state",2);
+        ((GobrinManager)fm).animator.SetInteger("state",type);
       }
     }
 

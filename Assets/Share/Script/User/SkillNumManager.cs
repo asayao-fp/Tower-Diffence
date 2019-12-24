@@ -275,11 +275,18 @@ public class SkillNumManager : MonoBehaviour
             astatus[i] = sstatus[i].GetStatus();
         }
         
+        /*
         for(int i=0;i<skillselect.Length;i++){
             if(skillselect[i].isOn){
                 gs.setSkillType(i);
                 break;
             }
+        }*/
+
+        if(gs.isStatue()){
+            gs.setSkillType(1);
+        }else{
+            gs.setSkillType(2);
         }
         return astatus;
     }

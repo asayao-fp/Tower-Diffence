@@ -343,7 +343,7 @@ Animator:
   m_GameObject: {fileID: 6334227318776138117}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 4b217b44cf7e7f94ca9a3194db3f776a, type: 3}
-  m_Controller: {fileID: 9100000, guid: 2e92f60cb5cbc7b43b68e6ddbe0f7ce0, type: 2}
+  m_Controller: {fileID: 9100000, guid: a0a9bfcfc71d54cf495c9898c81c0658, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -373,9 +373,10 @@ MonoBehaviour:
   viewModels: []
   isDebug: 0
   hpbar: {fileID: 5294735168748749007}
-  hiteffect: {fileID: 0}
+  hiteffect: {fileID: 9040233775155407038, guid: bbb03da3e63b34953889ab1bdb78b4fc,
+    type: 3}
   atkName: 
-  generateName: 
+  generateName: generate5
   FieldName: 
   deadName: 
   atkCheckName: 

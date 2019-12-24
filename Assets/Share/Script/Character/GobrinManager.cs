@@ -72,10 +72,6 @@ public class GobrinManager : FacilityManager
         //敵が攻撃範囲に内にいる場合は移動しない
         if (isInEnemy)
         {
-            if(gs.getOnlineType() && !gp4Online.isParent){
-                //通信対戦で子だったら無視 
-                return;
-            }
 
             float t = Time.deltaTime;
             atkInterval += t;
@@ -84,9 +80,17 @@ public class GobrinManager : FacilityManager
                 atkInterval = 0;
                 animationType = 2;
             }else if((myEnemy != null) && (atkInterval < statue.atkInterval)){
-                animator.SetInteger(ANIMATION_NAME, 1);
+                
+                if(!this.gameObject.Equals("Cyc"))animator.SetInteger(ANIMATION_NAME, 1);
                 animationType = 1;
             }
+            if(gs.getOnlineType() && !gp4Online.isParent){
+                //通信対戦で子だったら無視 
+                return;
+            }
+
+            this.transform.LookAt(this.line[lineNum].List[nextPoint].transform);
+
             return;
         }
 
@@ -109,6 +113,7 @@ public class GobrinManager : FacilityManager
             //ゴール到達したら歩かない
             return;
         }
+
         this.transform.LookAt(this.line[lineNum].List[nextPoint].transform);
         if (Vector3.Distance(transform.position, target) < 0.1)
         {
@@ -150,7 +155,18 @@ public class GobrinManager : FacilityManager
             }
         }
 
-        setEnd(false);
+        GameObject geneObj = Instantiate(generateEfect, transform.position, Quaternion.identity) as GameObject;
+        geneObj.transform.parent = this.transform;
+        geneObj.transform.localPosition = generateEfect.transform.position;
+        geneObj.transform.localScale = generateEfect.transform.localScale;
+        geneObj.transform.localRotation = generateEfect.transform.localRotation;
+        ParticleSystem p = geneObj.GetComponent<ParticleSystem>();
+        p.Play();
+
+        SoundManager.SoundPlay("facility_generate",this.gameObject.name);
+
+        Invoke("setEnd", 1f);
+        Invoke("setView", 0.5f);
     }
 
     public override void Attack()
@@ -160,8 +176,18 @@ public class GobrinManager : FacilityManager
 
     public override void Dead()
     {
-        //とりあえずDestroyだけ
-        Destroy(this.gameObject);
+        StartCoroutine("Destroy");
+
+    }
+
+    public IEnumerator Destroy(){
+      isEnd = true;
+      animator.SetInteger(ANIMATION_NAME, 4);
+      
+      yield return new WaitForSeconds (3.0f); 
+
+      Destroy(this.gameObject);
+
     }
 
     public override void checkEnemy()
@@ -175,11 +201,10 @@ public class GobrinManager : FacilityManager
 
     public void InAttackRange(Collider collider)
     {
-        if(collider.gameObject.name.Equals("crystal")){
+        if(collider.gameObject.tag.Equals(Constants.CRYSTAL_INATTACKAREA)){
             isInEnemy = true;
             myEnemy = collider;
 
-            
             //Debug.Log(collider.gameObject.name + "が攻撃範囲に入った。");
         }
     }

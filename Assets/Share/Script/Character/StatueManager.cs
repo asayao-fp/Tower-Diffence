@@ -145,11 +145,13 @@ public class StatueManager : FacilityManager
             if(!objs[i].tag.Equals("Statue")){
                 float distance = Vector3.Distance(objs[i].transform.position,transform.position);
                 if(distance <= (statue.attackpos.z * 0.2f)){
+                    targetEnemy = objs[i];
+                    
+                    if(statue.name.Equals("facility_5"))break;
                     Quaternion lockRotation = Quaternion.LookRotation(objs[i].transform.position - transform.position, Vector3.up);
                     lockRotation.z = 0;
                     lockRotation.x = 0;
                     transform.rotation = Quaternion.Lerp(transform.rotation, lockRotation, 10f);
-                    targetEnemy = objs[i];
                     break;
                 }
             }
