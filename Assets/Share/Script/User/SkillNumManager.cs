@@ -313,12 +313,12 @@ public class SkillNumManager : MonoBehaviour
     {
         astatus = new AddStatus[gs.isStatue() ? 5 : 3];
 
-        /*
+
         for (int i = 0; i < astatus.Length; i++)
         {
             astatus[i] = sstatus[i].GetStatus();
         }
-        */
+
 
         if (gs.isStatue())
         {
@@ -330,14 +330,14 @@ public class SkillNumManager : MonoBehaviour
         }
 
 
-        for (int i = 0; i < skillselect.Length; i++)
-        {
-            if (skillselect[i].isOn)
-            {
-                gs.setSkillType(i);
-                break;
-            }
-        }
+        // for (int i = 0; i < skillselect.Length; i++)
+        // {
+        //     if (skillselect[i].isOn)
+        //     {
+        //         gs.setSkillType(i);
+        //         break;
+        //     }
+        // }
 
 
         return astatus;
