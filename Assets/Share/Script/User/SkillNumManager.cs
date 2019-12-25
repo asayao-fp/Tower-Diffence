@@ -311,6 +311,7 @@ public class SkillNumManager : MonoBehaviour
 
     public AddStatus[] getAllStatus()
     {
+        
         astatus = new AddStatus[gs.isStatue() ? 5 : 3];
 
 

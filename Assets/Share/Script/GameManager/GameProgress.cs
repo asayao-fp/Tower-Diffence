@@ -88,7 +88,6 @@ public class GameProgress : MonoBehaviour
       GameObject ui = Instantiate(gameui) as GameObject;
       ui.name = "GameUI";
 
-
       if(sg_objs == null){
         sg_objs = new Dictionary<int,GameObject>();
       }

@@ -60,7 +60,7 @@ public class ShowResultManager : MonoBehaviour
         yield return new WaitForSeconds (1.0f); 
 
 
-        int esum = PlayerPrefs.GetInt(UserData.USERDATA_EXP,0);
+/*        int esum = PlayerPrefs.GetInt(UserData.USERDATA_EXP,0);
 
         expsum.text = "expsum : " + esum;
         yield return new WaitForSeconds (1.0f); 
@@ -143,7 +143,7 @@ public class ShowResultManager : MonoBehaviour
 
         }
 
-        imagePanel.gameObject.SetActive(true);
+        imagePanel.gameObject.SetActive(true);*/
     }
 
     public void firstScene(){
