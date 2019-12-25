@@ -67,9 +67,10 @@ public class CrystalManager : MonoBehaviour
 
         for (int i = 0; i < viewModels.Length; i++)
         {
-            viewModels[i].gameObject.SetActive(false);
+            //viewModels[i].gameObject.SetActive(false);
         }
         GetComponent<MeshRenderer>().material = material;
+        GetComponent<MeshRenderer>().enabled = false;
         GameObject deadobj = ResourceManager.getObject("Other/" + deadName);
         GameObject obj = Instantiate(deadobj, transform.position, Quaternion.identity) as GameObject;
 
