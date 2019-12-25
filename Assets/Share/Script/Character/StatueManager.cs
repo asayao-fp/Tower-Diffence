@@ -10,6 +10,9 @@ public class StatueManager : FacilityManager
     protected float atkInterval; //攻撃間隔用
     protected List<GameObject> enemylist; //攻撃範囲内にいる敵のリスト
     protected GameObject targetEnemy; //ターゲットしてる敵オブジェクト
+    private GameSettings gs;
+    private GameProgress4Online gp4Online;
+    private GameObject atkcheck;
 
     void Awake()
     {
@@ -17,10 +20,23 @@ public class StatueManager : FacilityManager
         base.initMaterial(GameObject.Find("StaticManager").GetComponent<GameSettings>().getMaterial());
         isEnd = true;
 
+        gs = GameObject.FindWithTag("StaticObjects").GetComponent<GameSettings>();
+        if(gs.getOnlineType()){
+            gp4Online = GameObject.FindWithTag("GameManager").GetComponent<GameProgress4Online>();
+        }
+
+        isAttacking = false;
+
     }
 
     void Update()
     {
+
+        if(gs.getOnlineType() && !gp4Online.isParent){
+            //通信対戦で子だったら無視 
+            return;
+        }
+
         if (base.check())
         {
             return;
@@ -28,7 +44,6 @@ public class StatueManager : FacilityManager
 
         statueRoutine();
     }
-
     private void statueRoutine(){
         checkEnemy();
 
@@ -58,7 +73,7 @@ public class StatueManager : FacilityManager
 
         base.setView(false);
 
-        GameObject atkcheck = Instantiate(atkCheckEffect, pos, Quaternion.identity) as GameObject;
+        atkcheck = Instantiate(atkCheckEffect, pos, Quaternion.identity) as GameObject;
         atkcheck.transform.position = pos;
         atkcheck.transform.parent = this.gameObject.transform;
         atkcheck.transform.localScale = atkCheckEffect.transform.localScale;
@@ -89,10 +104,15 @@ public class StatueManager : FacilityManager
     
     //攻撃の種類によって出現位置とかを変える
     public override void Attack(){
+        if(gs.getOnlineType() && !gp4Online.isParent){
+            checkEnemy();
+        }
+        
         if (targetEnemy == null)
         {
             return;
         }
+
         isAttacking = true;
         GameObject atkobj = Instantiate(atkEffect,transform.position,Quaternion.identity) as GameObject;
         atkobj.GetComponent<AttackManager>().init(statue.attack);
@@ -120,17 +140,19 @@ public class StatueManager : FacilityManager
     public override void checkEnemy()
     {
         targetEnemy = null;
-        GameObject[] objs = gp.getObjs();
+        GameObject[] objs = gs.getOnlineType() ? gp4Online.getObjs() : gp.getObjs();
         for(int i=0;i<objs.Length;i++){
             if(objs[i] == null) continue;
             if(!objs[i].tag.Equals("Statue")){
                 float distance = Vector3.Distance(objs[i].transform.position,transform.position);
-                if(distance <= (statue.attackpos.z * 0.2f)){
+                if(distance <= atkcheck.GetComponent<SphereCollider>().radius * 0.4f){
+                    targetEnemy = objs[i];
+                    
+                    if(statue.name.Equals("facility_5"))break;
                     Quaternion lockRotation = Quaternion.LookRotation(objs[i].transform.position - transform.position, Vector3.up);
                     lockRotation.z = 0;
                     lockRotation.x = 0;
                     transform.rotation = Quaternion.Lerp(transform.rotation, lockRotation, 10f);
-                    targetEnemy = objs[i];
                     break;
                 }
             }

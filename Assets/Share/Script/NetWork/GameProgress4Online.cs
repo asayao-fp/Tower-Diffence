@@ -72,7 +72,7 @@ public class GameProgress4Online : GameProgress
       count = 0;
       limittime = GameObject.FindWithTag("LimitTime").GetComponent<TextMeshProUGUI>();
       gs = stobj.GetComponent<GameSettings>();
-      limit = gs.getLimitTime();
+      limit = gs.getLimitTime(2);
       if(limit < 10){
         limit = 50;
       }
@@ -200,6 +200,11 @@ public class GameProgress4Online : GameProgress
         if(pair.Value == null){
         }else{    
           FacilityManager fm = pair.Value.GetComponent<FacilityManager>();
+          if(fm.isStatue && ((StatueManager)fm).isAttacking){
+            synObj.GetComponent<SynchronizeManager>().SetAttack(pair.Key,-5000);
+          }else if(!fm.isStatue && ((GobrinManager)fm).animationType != -1){
+            synObj.GetComponent<SynchronizeManager>().SetAttack(pair.Key,((GobrinManager)fm).animationType);
+          }
           if((isStatue && fm.isStatue) || (!isStatue && !fm.isStatue)){
               myobj_num++;
           }
@@ -240,6 +245,12 @@ public class GameProgress4Online : GameProgress
           }
         }
       }      
+    }
+
+    public void setAttackFlag(int unique_id,bool setattack){
+        if(!isParent)return;
+        FacilityManager fm = sg_objs[unique_id].GetComponent<FacilityManager>();
+        ((StatueManager)fm).isAttacking = setattack;
     }
 
     /*試合終了 1 -> 時間切れ　2 -> クリスタル破壊 */
@@ -321,12 +332,24 @@ public class GameProgress4Online : GameProgress
       if(isParent)return;
       crystaldead = iscdead;
     }
-    public void synchronizePosHP(int unique_id,float hp,float x,float y,float z,float rx,float ry,float rz){
+    public void synchronizePosHP(int unique_id,float hp,float x,float y,float z,float rx,float ry,float rz,string str){
       FacilityManager fm = sg_objs[unique_id].GetComponent<FacilityManager>();
       fm.setHP(hp);
       sg_objs[unique_id].gameObject.transform.position = new Vector3(x,y,z);
       sg_objs[unique_id].gameObject.transform.rotation = Quaternion.Euler(rx,ry,rz);
-      GameSettings.printLog("[GameProgress4Online] SETHP id : " + unique_id + " hp : " + fm.getHP() + " x : " + x + " y : " + y + " z : " + z + " rx : " + rx + " ry : " + ry + " rz : " + rz);
+      int option = int.Parse(str.Substring(7));
+      GameSettings.printLog("[GameProgress4Online] SETHP id : " + unique_id + " hp : " + fm.getHP() + " x : " + x + " y : " + y + " z : " + z + " rx : " + rx + " ry : " + ry + " rz : " + rz + " option : " + str);
+    }
+
+    public void synchronizeAttack(int unique_id,int type){
+      FacilityManager fm = sg_objs[unique_id].GetComponent<FacilityManager>();
+      if(type == -5000){
+        //statue
+        ((StatueManager)fm).Attack();
+      }else{
+        //gobrin
+        ((GobrinManager)fm).animator.SetInteger("state",type);
+      }
     }
 
     public void setInputRootType(int rt){

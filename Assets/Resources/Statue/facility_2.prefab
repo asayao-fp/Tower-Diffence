@@ -120,7 +120,7 @@ Transform:
   m_GameObject: {fileID: 3790291737731890155}
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
+  m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
   m_Children:
   - {fileID: 3787729390281326797}
   - {fileID: 3787275289941975473}
@@ -170,6 +170,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ca615d7f9307442fb9076751b7dd1bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isAI: 0
   obj_materials:
   - {fileID: 3804766113598562269}
   - {fileID: 3804936097178104457}
@@ -187,6 +188,7 @@ MonoBehaviour:
   - {fileID: 5214326894470698105}
   isDebug: 0
   hpbar: {fileID: 8627631685019693219}
+  hiteffect: {fileID: 0}
   atkName: thunder
   generateName: generate1
   FieldName: magicfield1
@@ -529,11 +531,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3787215548108423305}
     m_Modifications:
-    - target: {fileID: 7933497747187121115, guid: f3b71722370df44fd9fe565c3d1145fd,
-        type: 3}
-      propertyPath: m_Name
-      value: Canvas
-      objectReference: {fileID: 0}
     - target: {fileID: 881726077048277325, guid: f3b71722370df44fd9fe565c3d1145fd,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -638,6 +635,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7933497747187121115, guid: f3b71722370df44fd9fe565c3d1145fd,
+        type: 3}
+      propertyPath: m_Name
+      value: Canvas
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f3b71722370df44fd9fe565c3d1145fd, type: 3}

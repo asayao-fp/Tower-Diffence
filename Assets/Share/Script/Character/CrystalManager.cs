@@ -20,6 +20,8 @@ public class CrystalManager : MonoBehaviour
     private String deadName;
     [SerializeField]
     private GameObject[] viewModels;
+    [SerializeField]
+    Material material;
 
     [SerializeField]
     private int nowHP = 0;
@@ -65,8 +67,10 @@ public class CrystalManager : MonoBehaviour
 
         for (int i = 0; i < viewModels.Length; i++)
         {
-            viewModels[i].gameObject.SetActive(false);
+            //viewModels[i].gameObject.SetActive(false);
         }
+        GetComponent<MeshRenderer>().material = material;
+        GetComponent<MeshRenderer>().enabled = false;
         GameObject deadobj = ResourceManager.getObject("Other/" + deadName);
         GameObject obj = Instantiate(deadobj, transform.position, Quaternion.identity) as GameObject;
 
@@ -77,6 +81,8 @@ public class CrystalManager : MonoBehaviour
         obj.transform.localRotation = deadobj.transform.localRotation;
         ParticleSystem p = obj.GetComponent<ParticleSystem>();
         p.Play();
+
+
 
         Destroy(this.gameObject, 2);
 

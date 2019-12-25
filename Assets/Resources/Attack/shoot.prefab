@@ -4766,6 +4766,7 @@ GameObject:
   - component: {fileID: 1123059491455848597}
   - component: {fileID: 5902557033426961463}
   - component: {fileID: 1753648229492148281}
+  - component: {fileID: 8717607531541668118}
   m_Layer: 0
   m_Name: ball
   m_TagString: Untagged
@@ -4835,6 +4836,21 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &8717607531541668118
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 569001706561460830}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe95e4de76567463ab75344e6a8e0bab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _visualizerColor: 0
+  mes: 
+  fSize: 36
 --- !u!1 &1804613963877146630
 GameObject:
   m_ObjectHideFlags: 0
@@ -28980,7 +28996,6 @@ MonoBehaviour:
   atkObj: {fileID: 3764542905587614776}
   atkCollider: {fileID: 569001706561460830}
   attacktype: 1
-  attack: 3
   rootobj: {fileID: 3764542905587614776}
 --- !u!1 &3764542905780833966
 GameObject:
@@ -48487,7 +48502,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 3
+      scalar: 5
       minScalar: 1
       maxCurve:
         serializedVersion: 2

@@ -309,7 +309,7 @@ MeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 6b5883f941c7140b5816be2a96b0e825, type: 2}
+  - {fileID: 2100000, guid: 19ee4e8a30f97c042bfbdba9e8c909e6, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -356,9 +356,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9219661243949903235}
-  m_LocalRotation: {x: -0, y: 0.7211941, z: -0, w: 0.6927331}
+  m_LocalRotation: {x: 0, y: 0.72119224, z: 0, w: 0.69273496}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
+  m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
   m_Children:
   - {fileID: 9216314095252251127}
   - {fileID: 9216437834995030277}
@@ -408,6 +408,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ca615d7f9307442fb9076751b7dd1bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isAI: 0
   obj_materials:
   - {fileID: 9197710615690382695}
   - {fileID: 9198058088839952845}
@@ -425,11 +426,13 @@ MonoBehaviour:
   - {fileID: 3863495759096450302}
   isDebug: 0
   hpbar: {fileID: 755310669005187108}
+  hiteffect: {fileID: 0}
   atkName: shoot
   generateName: generate0
   FieldName: magicfield0
   deadName: dead0
   atkCheckName: AtkCheck
+  isAttacking: 0
 --- !u!65 &5938320502414432631
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -12,12 +12,12 @@ public class StatueData : ScriptableObject
    public Vector3 attackpos; //攻撃範囲
    public int[] settype; //設置可能タイプ
    public int hp; //体力
-   public int time; //消滅までの時間
-   public int atkInterval; //攻撃間隔
+   public float time; //消滅までの時間
+   public float atkInterval; //攻撃間隔
    public int cost; //召喚コスト
    public String name4Preview; //表示用の名前
    public int maxsetNum; //最大設置可能数
-   public int generateInterval; //次に召喚できるまでの時間
+   public float generateInterval; //次に召喚できるまでの時間
    public int attack; //攻撃力
    public float speed; //歩行速度(ゴブリン）
 }

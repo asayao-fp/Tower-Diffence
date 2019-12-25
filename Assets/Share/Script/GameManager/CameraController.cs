@@ -19,16 +19,29 @@ public class CameraController : MonoBehaviour
     private Vector3 startMousePos;
     private Vector3 presentCamPos;
 
-    // Start is called before the first frame update
-    public float rightMaxPos;
-    public float leftMaxPos;
+    [SerializeField]
+    private float rightMaxPos = 45;
+
+    [SerializeField]
+    public float leftMaxPos = 22;
 
     InputManager inputmanager;
+
+    GameSettings gs;
     void Start()
     {
       _camTransform = this.gameObject.transform;
       inputmanager = GameObject.FindWithTag("GameManager").GetComponent<InputManager>();
+      GameObject stobj = GameObject.FindWithTag("StaticObjects");
+      gs = stobj.GetComponent<GameSettings>();
 
+      if(gs.isStatue()){
+        _camTransform.position = new Vector3(leftMaxPos,18.3f,-1.2f);
+      }else{
+        _camTransform.position = new Vector3(rightMaxPos,18.3f,-1.2f);
+      }
+
+      _camTransform.rotation = Quaternion.Euler(48,0,0);
     }
 
     // Update is called once per frame

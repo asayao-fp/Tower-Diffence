@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 675598387631189212}
   - component: {fileID: 4849201762055273441}
   - component: {fileID: 9099317293802063613}
+  - component: {fileID: 3073510215528901178}
   m_Layer: 0
   m_Name: poison
   m_TagString: Untagged
@@ -44,7 +45,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 5, y: 1, z: 4}
+  m_Size: {x: 4, y: 1, z: 4}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &4849201762055273441
 Rigidbody:
@@ -81,6 +82,22 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &3073510215528901178
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1962920725641568365}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe95e4de76567463ab75344e6a8e0bab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _visualizerColor: 0
+  mes: 
+  fSize: 36
+  obj: {fileID: 1962920725641568365}
 --- !u!1 &4576128081156373906
 GameObject:
   m_ObjectHideFlags: 0
@@ -14322,7 +14339,6 @@ MonoBehaviour:
   atkObj: {fileID: 8144360555166222113}
   atkCollider: {fileID: 1962920725641568365}
   attacktype: 4
-  attack: 5
   rootobj: {fileID: 8144360555166222113}
 --- !u!1 &8613276779048618396
 GameObject:
