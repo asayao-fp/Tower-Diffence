@@ -9,7 +9,7 @@ public static class Constants
     public static readonly string STATUE_ATTACK_TAG = "StatueAttack";
     public static readonly string STATUE_TAG = "Statue";
     public static readonly string CRYSTAL_TAG = "Crystal";
-    public static readonly string CRYSTAL_INATTACKAREA = "Crystal_attack"
+    public static readonly string CRYSTAL_INATTACKAREA = "Crystal_attack";
     public static readonly float CAMERA_MIN_X = 6.43f;
     public static readonly float CAMERA_MAX_X = 33.24f;
     //スタチュー生成時のコスト
