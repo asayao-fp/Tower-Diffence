@@ -64,11 +64,13 @@ public class GameSettings : MonoBehaviour
     }
     void Start()
     {
-        addStatuses = new AddStatus[5];
+        if (addStatuses == null)
+        {
+            addStatuses = new AddStatus[5];
+        }
         skillType = 0;
         isLog = log;
     }
-
     
     public int getLimitTime(int type){
         switch(type){
