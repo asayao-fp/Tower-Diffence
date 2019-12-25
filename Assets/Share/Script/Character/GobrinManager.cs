@@ -79,10 +79,7 @@ public class GobrinManager : FacilityManager
                 animator.SetInteger(ANIMATION_NAME, 2);
                 atkInterval = 0;
                 animationType = 2;
-            }else if((myEnemy != null) && (atkInterval < statue.atkInterval)){
-                
-                if(!this.gameObject.Equals("Cyc"))animator.SetInteger(ANIMATION_NAME, 1);
-                animationType = 1;
+            }else if((myEnemy != null) && (atkInterval < statue.atkInterval)){                
             }
             if(gs.getOnlineType() && !gp4Online.isParent){
                 //通信対戦で子だったら無視 
@@ -227,6 +224,9 @@ public class GobrinManager : FacilityManager
     public void AttackEnd()
     {
         weapon.GetComponent<BoxCollider>().enabled = false;
+        animator.SetInteger(ANIMATION_NAME, 1);
+        animationType = 1;
+
     }
 
     void OnTriggerEnter(Collider collider)

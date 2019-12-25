@@ -15,7 +15,7 @@ MonoBehaviour:
   id: 4
   name: facility_4
   setpos: {x: 1.5, y: 1.9}
-  attackpos: {x: 0, y: 0, z: 20}
+  attackpos: {x: 0, y: 0, z: 10}
   settype: 02000000
   hp: 20
   time: 10

@@ -12,6 +12,8 @@ public class StatueManager : FacilityManager
     protected GameObject targetEnemy; //ターゲットしてる敵オブジェクト
     private GameSettings gs;
     private GameProgress4Online gp4Online;
+    private GameObject atkcheck;
+
     void Awake()
     {
         isStatue = true;
@@ -42,7 +44,6 @@ public class StatueManager : FacilityManager
 
         statueRoutine();
     }
-
     private void statueRoutine(){
         checkEnemy();
 
@@ -72,7 +73,7 @@ public class StatueManager : FacilityManager
 
         base.setView(false);
 
-        GameObject atkcheck = Instantiate(atkCheckEffect, pos, Quaternion.identity) as GameObject;
+        atkcheck = Instantiate(atkCheckEffect, pos, Quaternion.identity) as GameObject;
         atkcheck.transform.position = pos;
         atkcheck.transform.parent = this.gameObject.transform;
         atkcheck.transform.localScale = atkCheckEffect.transform.localScale;
@@ -144,7 +145,7 @@ public class StatueManager : FacilityManager
             if(objs[i] == null) continue;
             if(!objs[i].tag.Equals("Statue")){
                 float distance = Vector3.Distance(objs[i].transform.position,transform.position);
-                if(distance <= (statue.attackpos.z * 0.2f)){
+                if(distance <= atkcheck.GetComponent<SphereCollider>().radius * 0.4f){
                     targetEnemy = objs[i];
                     
                     if(statue.name.Equals("facility_5"))break;
