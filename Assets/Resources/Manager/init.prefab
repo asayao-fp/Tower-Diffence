@@ -1,0 +1,93 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1705977397573745310
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8771724155945436237}
+  - component: {fileID: 4912093089628370930}
+  - component: {fileID: 4912093089628370928}
+  - component: {fileID: 4912093089628370943}
+  m_Layer: 0
+  m_Name: init
+  m_TagString: GameController
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8771724155945436237
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1705977397573745310}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 9.849668, y: 2.793171, z: 6.497864}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4912093089628370930
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1705977397573745310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77f08ae9f228c4f0cb8ce4e8e5361099, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  levelnum: 10
+  level: {fileID: 0}
+--- !u!114 &4912093089628370928
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1705977397573745310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28810a7c2f83445ddb10055387d32ff2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skilltext4statue: {fileID: 8834988585757488967, guid: 5ad000a915e3ba54f822d5bd48fdf961,
+    type: 3}
+  skilltext4gobrin: {fileID: 8834988585757488967, guid: 5ad000a915e3ba54f822d5bd48fdf961,
+    type: 3}
+  panel4statue: {fileID: 7450444288324299924, guid: f7dcf36fec17a9544a42dda1a02ee393,
+    type: 3}
+  panel4gobrin: {fileID: 8629168804452137815, guid: b74f540e2b851d942aaea139878fe2bd,
+    type: 3}
+  optionpanel: {fileID: 2320512033911536958, guid: 0ae46645036925d46aa3fa53605cc595,
+    type: 3}
+  dppanel: {fileID: 865223763745427474, guid: 3b6c97ca131b11c4d9d7f74d162d6c82, type: 3}
+  ospanel: {fileID: 8845186429760377743, guid: 46c502bf23a50c348ac377bcde58f410, type: 3}
+  baggagepanel: {fileID: 3145484676503810913, guid: 08c8ac5d2ca0fd54fab7dd499ed8acd1,
+    type: 3}
+  goblinPanel: {fileID: 2373408296988829558, guid: 88a2e7617b66be2479f4ca24b627a982,
+    type: 3}
+  statuePanel: {fileID: 8341501347283563493, guid: f4df7549794411f428d8071372cb3d05,
+    type: 3}
+  background: {fileID: 4730888573439571063, guid: 8add5b73fd2f4664788acd32a6138c05,
+    type: 3}
+--- !u!114 &4912093089628370943
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1705977397573745310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ff7acbac9298cf46812252d272b6cdf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

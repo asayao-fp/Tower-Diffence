@@ -9,6 +9,7 @@ public static class Constants
     public static readonly string STATUE_ATTACK_TAG = "StatueAttack";
     public static readonly string STATUE_TAG = "Statue";
     public static readonly string CRYSTAL_TAG = "Crystal";
+    public static readonly string CRYSTAL_INATTACKAREA = "Crystal_attack"
     public static readonly float CAMERA_MIN_X = 6.43f;
     public static readonly float CAMERA_MAX_X = 33.24f;
     //スタチュー生成時のコスト
@@ -22,9 +23,15 @@ public static class Constants
     public static readonly string STAGE_SELECT_SCNENE = "StageSelectScene";
     public static readonly string GAME_SET_SCNENE = "GameSetScene";
     public static readonly string ONRINE_WAIT_SCENE = "OnlineWait";
+    public static readonly string INITIALIZE_SCENE = "InitializeScene";
 
-     //カスタムメニューのパス名
+    //カスタムメニューのパス名
+    //デバッグモードかどうか
     public static readonly string DEBUG_MODE_MENU_PATH = "CustomMenu/DebugMode";
+    //デバッグモード時のスタチューとゴブリンの設定
+    public static readonly string DEBUG_IS_STATUE = "CustomMenu/IsStatue";
+    //デバッグモード時のウィンドウ設定
+    public static readonly string DEBUG_SETTING_WINDOW = "CustomMenu/DebugSetting";
 
     //広告表示変数。何回試合をやったか。
     public static readonly int ADVERTISE_LIMIT = 3;

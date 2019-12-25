@@ -13,6 +13,13 @@ public class EditorCustom : MonoBehaviour
         //今設定されている値と逆にする
         Menu.SetChecked(Constants.DEBUG_MODE_MENU_PATH, !isDebugMode);
     }
+
+    [MenuItem("CustomMenu/IsStatue")]
+    static void SetDebugStatue()
+    {
+        bool isDebugStatus = Menu.GetChecked(Constants.DEBUG_IS_STATUE);
+        Menu.SetChecked(Constants.DEBUG_IS_STATUE, !isDebugStatus);
+    }
 }
 
 

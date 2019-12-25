@@ -39,7 +39,6 @@ public class StageCostManager : MonoBehaviour
         foreach (GameObject item in lineCost[lineNum].List)
         {
             sumCost += item.GetComponent<StageCost>().getCost();
-            Debug.Log("sumCost" + lineNum + " = " + sumCost);
         }
 
         return sumCost;
